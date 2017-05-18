@@ -1,0 +1,126 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 03/02/2017, 10:56:01
+    Author     : cyumbay
+*/
+#container{
+    margin: auto;
+}
+    div#container {
+      overflow: auto;
+    }
+     
+    div#container > div {
+      height: 100%;
+      min-height: 500px; /* o 200%, o lo que sea */
+    }
+.encabezado 
+{
+margin: 0 auto;
+width: 970px;
+height: 87px;
+
+background-color: #D0CBCB;
+/*background: url(../../../cabecera.png) no-repeat;*/
+ }
+ .menu-div{
+        	
+        
+                /*background-color:#203C5E;*/
+ } 
+ #slider{
+     text-align:center;
+     margin:  0 auto;
+     width: 970px;
+     /*border: 1px solid red;*/
+
+     background-color: #D0CBCB;
+     height:410px;
+     box-shadow: 0 .1em 1em black;
+     -webkit-box-shadow: 0 .1em 1em black;
+    -moz-box-shadow: 0 .1em 1em black;
+ }
+.box{
+   padding-top:5px;
+   margin: 0 auto;
+   width: 900px;
+}
+#pie{
+	margin: 0 auto;
+        text-align:center;
+        width:970px;
+        color: #ffff;
+	height:60px; 
+      /*  border: 1px solid red;*/
+	background-color:#203C5E;
+}
+.menu {  
+        margin: auto;
+	width:970px;
+        height: 45px;
+        background: #333;
+        padding: 5px;
+				
+				
+}
+.menu li { 
+                list-style: none; 
+                float: left; 
+                width: 130px; 
+                height: 35px; 
+                line-height: 35px; 
+                text-align: center;
+} 
+.menu li a { 
+                color: #fff; 
+                text-decoration: none; 
+                display: block; 
+                font-size:12px;
+                font-weight:bold;
+} 
+.menu li a:hover { 
+                background-image:url('../../../../Resources/public/images/botones.png');
+                color: #74B9F0; 
+} 
+                
+.menu li ul { 
+    position: relative; 
+    float:left;
+    padding-left: 0px;
+    display: none; 
+    list-style:none;
+    background-color:#C6BFBF;
+    z-index: 999;
+    
+           
+} 
+.menu li:hover ul { 
+                display: block; 
+                background-image:url('../../../../Resources/public/images/botones.png');
+                color: #74B9F0; 
+} 
+.menu li ul li { 
+                float: none; 
+                display: inline;
+z-index:1;				
+}
+.menu li ul li a { 
+                width: 128px; 
+                position: relative; 
+                /*border-left: 1px solid black; */
+                border-right: 1px solid black; 
+                border-bottom: 1px solid black; 
+                background: #D7DFEB;
+                color: #333; 
+                font-size:12px;
+                font-weight:bold;
+			
+}
+.menu li ul li a:hover { 
+                background-image:url('../../../../Resources/public/images/botones.png');
+                color: #FFF; 
+}

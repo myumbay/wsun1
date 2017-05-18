@@ -1,0 +1,144 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+   
+    - { resource: "@WsunBundle/Resources/config/services.yml" }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+    #your_root_path_parameter: /var/www/html/wsun/Documentos/Productos/
+framework:
+    #esi: ~
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    router:
+        resource: '%kernel.root_dir%/config/routing.yml'
+        
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_pgsql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/../var/data/data.sqlite"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path: '%database_path%'
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    #java: /usr/bin/java
+    filters:
+        less:
+            node: /usr/bin/node
+            node_paths: [/usr/lib/node_modules]
+            #apply_to: "\.less$"
+        cssrewrite: ~
+#    fontawesome_css:
+#      inputs:
+#        - %kernel.root_dir%/../vendor/fontawesome/fontawesome/less/font-awesome.less
+#      filters:
+#        - less
+#        - cssrewrite
+#      output: css/fontawesome.css
+#    fontawesome_IE7_css:
+#      inputs:
+#        - %kernel.root_dir%/../vendor/fontawesome/fontawesome/less/font-awesome-ie7.less
+#      filters:
+#        - less
+#        - cssrewrite
+#      output: css/fontawesome_IE7.css  
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: main
+    user_class: WsunBundle\Entity\Usuario
+    from_email:
+        address: "carolyumbay@gmail.com"
+        sender_name: "Carolina"
+
+# liip_imagine Configuration
+liip_imagine :
+    
+    loaders:
+        default:
+            filesystem:
+                data_root: 
+                     - "%kernel.root_dir%/../web/"
+                #"%kernel.root_dir%/../Documentos/Productos"
+               
+    # configure resolvers
+    resolvers :
+        # setup the default resolver
+        default :
+            # use the default web path
+            web_path : ~
+            
+    # your filter sets are defined here
+    filter_sets :
+        # use the default cache configuration
+        cache : ~
+        # the name of the "filter set"
+        my_special_style:
+            data_loader: my_custom_data_loader
+        my_thumb :
+            cache: ~ 
+            # %kernel.root_dir%/../web
+             
+            # adjust the image quality to 75%
+            quality : 75
+            # list of transformations to apply (the "filters")
+            filters :
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                thumbnail  : { size : [120, 90], mode : outbound }
+                # create a 2px black border: center the thumbnail on a black background
+                # 4px larger to create a 2px border around the final image
+                background : { size : [124, 94], position : center, color : '#000000' }

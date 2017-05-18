@@ -1,0 +1,60 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+
+<div class="box">
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="well well-sm">
+               
+                {{ form_start(form,{'class':"form-horizontal",'method':"POST"}) }}
+                    <fieldset>
+                        <legend class="text-center header">PEDIDO</legend>
+                        <div class="row ">
+                           
+                               <div class="col-md-4">
+                                <span class="help-block text-muted small-font" > {{ form_label(form.codigoPedido)}}</span>
+                                    {{ form_widget(form.codigoPedido, { 'attr': {'placeholder': 'Escribe el código del pedido' } }) }}
+                               </div>
+                           
+                                <div class="col-md-4">
+                                    <span class="help-block text-muted small-font" > {{ form_label(form.fechaCreacion)}}</span>
+                                    {{ form_widget(form.fechaCreacion) }}
+                                </div>
+                                
+                                 <div class="col-md-4">
+                                    <span class="help-block text-muted small-font" > Total</span>
+                                    {{ form_widget(form.totalPedido) }}
+                                </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-4">
+                                    <span class="help-block text-muted small-font" > Estado</span>
+                                    {{ form_widget(form.estadoPedido) }}
+                                </div>
+                            <div class="col-md-4">
+                                <span class="help-block text-muted small-font" > </span>
+                                <input type="submit" class="btn btn-info" value="Guardar" />
+                            </div>
+                             <div class="col-md-4">
+                               <span class="help-block text-muted small-font" > </span>
+                                
+                                
+                                </div>
+                        </div>
+                        
+                        </div>
+                    </fieldset>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+    <ul>
+        <li>
+            <a href="{{ path('pedido_index') }}">Back to the list</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

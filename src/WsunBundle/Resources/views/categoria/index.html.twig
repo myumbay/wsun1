@@ -1,0 +1,42 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    <div class="table-responsive">
+     <div class="panel-heading">
+                <strong><span>Lista</span> de Categorias</strong>
+            </div> 
+   <table class="table table-hover">
+        <thead>
+            <tr>
+                <th >Nombre Categoria</th>
+                <th>Estado</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for categorium in categorias %}
+            <tr>
+                <td><a href="{{ path('admin_categoria_show', { 'id': categorium.id }) }}">{{ categorium.nombreCat }}</a></td>
+                
+                <td>{% if(categorium.estado=='1')%}
+                    Activo
+                    {% endif %}
+                   </td>
+                
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_categoria_show', { 'id': categorium.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_categoria_edit', { 'id': categorium.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<a href="{{ path('admin_categoria_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+ </div>    
+{% endblock %}

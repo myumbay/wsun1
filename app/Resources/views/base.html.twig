@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% stylesheets
+            'bundles/wsun/css/bootstrap.min.css'            
+            'bundles/wsun/css/main.css'                       
+            'bundles/wsun/css/font-awesome.min.css'
+            
+            'bundles/wsun/css/font-awesome.css'
+            'bundles/wsun/css/font-awesome-ie7.css'
+            output='bundles/wsun/css/'         
+            filter='cssrewrite'%}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        
+    </head>
+    <body>
+      
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+        
+            {% javascripts            
+            '@WsunBundle/Resources/public/js/jquery-2.1.4.min.js'
+            '@WsunBundle/Resources/public/js/bootstrap.min.js'            
+            output='bundles/wsun/js/' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        {% endblock %}
+        
+    </body>
+</html>

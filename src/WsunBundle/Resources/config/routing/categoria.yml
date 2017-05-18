@@ -1,0 +1,24 @@
+admin_categoria_index:
+    path:     /
+    defaults: { _controller: "WsunBundle:Categoria:index" }
+    methods:  GET
+
+admin_categoria_show:
+    path:     /{id}/show
+    defaults: { _controller: "WsunBundle:Categoria:show" }
+    methods:  GET
+
+admin_categoria_new:
+    path:     /new
+    defaults: { _controller: "WsunBundle:Categoria:new" }
+    methods:  [GET, POST]
+
+admin_categoria_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WsunBundle:Categoria:edit" }
+    methods:  [GET, POST]
+
+admin_categoria_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WsunBundle:Categoria:delete" }
+    methods:  DELETE

@@ -1,0 +1,45 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    
+    <div class="box">
+    <div class="panel-body">
+    <div class="panel2">
+          
+    <h3>Categoria</h3>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Nombrecat</th>
+                <td>{{ categorium.nombreCat }}</td>
+            </tr>
+            <tr>
+                <th>Padreid</th>
+                <td>{{ categorium.padreId }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ categorium.estado }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ categorium.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_categoria_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_categoria_edit', { 'id': categorium.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

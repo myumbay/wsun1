@@ -1,0 +1,24 @@
+admin_departamento_index:
+    path:     /
+    defaults: { _controller: "WsunBundle:Departamento:index" }
+    
+
+admin_departamento_show:
+    path:     /{id}/show
+    defaults: { _controller: "WsunBundle:Departamento:show" }
+    methods:  GET
+
+admin_departamento_new:
+    path:     /new
+    defaults: { _controller: "WsunBundle:Departamento:new" }
+    methods:  [GET, POST]
+
+admin_departamento_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WsunBundle:Departamento:edit" }
+    methods:  [GET, POST]
+
+admin_departamento_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WsunBundle:Departamento:delete" }
+    methods:  DELETE

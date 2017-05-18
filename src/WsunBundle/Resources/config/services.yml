@@ -1,0 +1,6 @@
+services:
+    user.listener:
+        class: WsunBundle\Listener\SearchIndexer
+        arguments: ["@security.token_storage"]        
+        tags:
+           - { name: doctrine.event_listener, event: prePersist }

@@ -1,0 +1,41 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    <div class="table-responsive">
+     <div class="panel-heading">
+                <strong><span>Lista</span> de Departamentos</strong>
+            </div> 
+    <table class="table table-hover">
+          <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombredep</th>
+                <th>Responsable</th>
+                <th>Telefono</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for departamento in departamentos %}
+            <tr>
+                <td><a href="{{ path('admin_departamento_show', { 'id': departamento.id }) }}">{{ departamento.id }}</a></td>
+                <td>{{ departamento.nombreDep }}</td>
+                <td>{{ departamento.responsable }}</td>
+                <td>{{ departamento.telefono }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_departamento_show', { 'id': departamento.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_departamento_edit', { 'id': departamento.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('admin_departamento_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+    </div>         
+{% endblock %}

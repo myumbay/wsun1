@@ -1,0 +1,74 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container">    
+  
+    <div class="encabezado">
+   <a href="#"><img src="{{asset('../img/logo.png')}}"></a> 
+    </div>
+  
+<div class="menu-div">
+  <ul class=" menu nav">
+      
+  <li class="active"><a href="{{path('wsun_homepage')}}">Home</a></li>
+  <li ><a href="{{path('wsun_contactos')}}">Contactos</a></li>
+  <li ><a href="#">Messages</a></li>
+  <li ><a href="{{path('pedido_index')}}">Pedidos</a></li>
+  <li ><a href="#">Administrador</a>
+ <ul>
+    <li><a href ="{{path('empresa_index')}}">Empresa</a></li>
+    <li><a href ="{{path('admin_departamento_index')}}">Departamentos</a></li>
+    <li><a href ="{{path('admin_producto_index')}}">Productos</a></li>
+    <li><a href ="{{path('admin_categoria_index')}}">Categoria</a></li>
+  </ul></li>
+  </ul>
+</div>
+<div id="slider">
+  
+    {% block bloque1 %}
+     
+<div class="box">
+
+                <section id ="miSlider" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#miSlider " data-slide-to="0" class="active"></li>
+                        <li data-target="#miSlider" data-slide-to="1"></li>
+                        <li data-target="#miSlider" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="item active"><img src="{{asset('../img/slider/1.png')}}" alt="First Slide"></div>
+                        <div class="item"><img src="{{asset('../img/slider/2.png')}}" alt="Second Slide"></div>
+                        <div class="item"><img src="{{asset('../img/slider/3.png')}}" alt="Third Slide"></div>
+                    </div>
+                    <a class="carousel-control left" href="#miSlider" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="carousel-control right" href="#miSlider" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </section>
+            </div>
+<!--</div>-->
+    
+    
+    {% endblock %}
+    
+</div>
+                    </div>
+ <div id="pie">
+     <h3>Guamani /3069404 /3069432 / 0985315665 </h3>
+                
+                Todos los derechos reservados
+            </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>    
+    $('#btn1').on("click",function(){
+        alert("Hola");
+    });
+    </script>
+    
+{% endblock %}

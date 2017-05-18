@@ -1,0 +1,28 @@
+wsun_admin_departamento:
+    resource: "@WsunBundle/Resources/config/routing/departamento.yml"
+    prefix:   /admin/departamento
+
+wsun_homepage:
+    path:     /index
+    defaults: { _controller: WsunBundle:Default:index }
+    methods:  GET
+    
+wsun_contactos:
+    path:  /contactos
+    defaults: { _controller: WsunBundle:Default:contactos }
+
+wsun_empresa:
+    resource: "@WsunBundle/Resources/config/routing/empresa.yml"
+    prefix:   /admin/empresa
+
+wsun_admin_producto:
+        resource: "@WsunBundle/Resources/config/routing/producto.yml"
+        prefix:   /admin/producto
+
+wsun_admin_categoria:
+        resource: "@WsunBundle/Resources/config/routing/categoria.yml"
+        prefix:   /admin/categoria
+
+wsun_pedido:
+        resource: "@WsunBundle/Resources/config/routing/pedido.yml"
+        prefix:   /pedido

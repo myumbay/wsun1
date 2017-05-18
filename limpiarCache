@@ -1,0 +1,18 @@
+#! /bin/bash
+#script para cambiar los permisos en la limpiada de cache para symfony
+
+
+echo "iniciando el vaciado de cache"
+php bin/console cache:clear
+php bin/console cache:clear --env=prod
+php bin/console assets:install
+php bin/console assetic:dump
+php bin/console assetic:dump --env=prod
+echo "iniciando el cambio de permisos en los directorios de cache y logs";
+chmod -R 777 var/cache/*
+chmod -R 777 var/logs/*
+echo "cambiando propietarios para logs y cache"
+chown -R cyumbay:cyumbay var/cache/*
+chown -R cyumbay:cyumbay var/logs/*
+
+

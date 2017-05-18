@@ -1,0 +1,57 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+{% block bloque1 %}
+    <div class="box">
+    <div class="panel-body">
+    <div class="panel2">
+            <div class="panel-heading">
+                <h3> <strong><span>Edicion</span> de Producto</strong></h3>
+            </div> 
+        {{ form_start(edit_form,{ 'enctype':"multipart/form-data"}) }}
+        
+        <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.nombreProducto)}} </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.nombreProducto) }}</div>
+    </div>        
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.imagen)}}  </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">
+         {% if (img is not null) %}
+            {{img}}
+         {% endif %}
+                {{form_widget(edit_form.imagen)}}</div>
+    </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.codigoProducto)}}   </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.codigoProducto)}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.observacion)}}   </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.observacion)}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.estado)}}   </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.estado)}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Categoria   </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.categoria)}}</div>
+      </div>
+      <div class="row">
+<input type="submit" value="Edit" />
+</div>
+  {{ form_end(edit_form) }}
+    </div> 
+ <table>
+    <tr><td> <a href="{{ path('admin_producto_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a></td></tr>
+    
+            <tr><td>
+        {{ form_start(delete_form) }}
+        <button type="submit" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Delete</button>
+        {{ form_end(delete_form) }}
+                    
+        </td></tr>
+</table> 
+       
+ </div> </div>   
+       
+{% endblock %}

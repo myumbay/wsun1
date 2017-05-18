@@ -1,0 +1,66 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+{% block bloque1 %}
+        <div class="box">
+        <div class="panel-body">
+        <div class="panel-heading">
+                <strong><span>Datos</span> de Empresas</strong>
+            </div>    
+        <div class="panel2">
+
+ <div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">RUC: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.ruc }}</div>
+</div>        
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Nombre Empresa: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.nombreEmp }}</div>
+</div>
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Télf.: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.telefonoEmp }}</div>
+</div>
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Dirección: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.direccionEmp }}</div>
+</div>        
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">E-mail: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.email }}</div>
+</div>        
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Orden Compra: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.ordenCompra }}</div>
+</div> 
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Ubicación: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.ubicacion }}</div>
+</div> 
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Crédito: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{% if empresa.credito %}Yes{% else %}No{% endif %}</div>
+</div> 
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Límite de Orden: </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ empresa.limiteOrden }}</div>
+</div>        
+</div>    
+<table>
+    <tr><td> <a href="{{ path('empresa_index') }}"><span class="glyphicon glyphicon-arrow-left"> volver</span></a></td></tr>
+    <tr><td><a href="{{ path('empresa_edit', { 'id': empresa.id }) }}"><span class="glyphicon glyphicon-arrow-left"> Editar</span></a></td></tr>
+            <tr><td>
+                    {{ form_start(delete_form) }}
+                <input  class="glyphicon glyphicon-arrow-left" type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+                    
+        </td></tr>
+</table>       
+ </div> </div>   
+           
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>    
+  
+    </script>
+    
+{% endblock %}

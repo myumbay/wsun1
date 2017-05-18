@@ -1,0 +1,43 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    <div class="table-responsive">
+     <div class="panel-heading">
+                <strong><span>Lista</span> de Productos</strong>
+            </div> 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombreproducto</th>
+                <th>Imagen</th>
+                <th>Codigoproducto</th>
+                <th>Precioproducto</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for producto in productos %}
+            <tr>
+                <td><a href="{{ path('admin_producto_show', { 'id': producto.id }) }}">{{ producto.id }}</a></td>
+                <td>{{ producto.nombreProducto }}</td>
+                <td>{{ producto.imagen }}</td>
+                <td>{{ producto.codigoProducto }}</td>
+                <td>{{ producto.precioProducto }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_producto_show', { 'id': producto.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_producto_edit', { 'id': producto.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+            <a href="{{ path('admin_producto_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+<div class="box">
+    <div class="panel-body">
+    <div class="panel2">
+            <div class="panel-heading">
+                <h3> <strong><span>Edicion</span> de Empresas</strong></h3>
+            </div> 
+        {{ form_start(form) }}    
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.ruc)}} </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.ruc) }}</div>
+</div>        
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.nombreEmp)}}  </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(form.nombreEmp)}}</div>
+</div>
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.telefonoEmp)}}   </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.telefonoEmp)}}</div>
+</div>
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.direccionEmp)}}   </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.direccionEmp)}}</div>
+</div>
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.email)}} </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.email)}}</div>
+</div>        
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.ordenCompra)}} </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.ordenCompra)}}</div>
+</div>        
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.credito)}} </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.credito)}}</div>
+</div> 
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.limiteOrden)}} </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.limiteOrden)}}</div>
+</div> 
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.ubicacion)}}  </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.ubicacion)}}</div>
+</div> 
+<div class="row">
+  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.idubicacion)}}  </div>
+  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.idubicacion)}}</div>
+</div> 
+ 
+<div class="row">
+<a href="{{ path('empresa_index') }}">Volver</a>
+</div>
+  {{ form_end(form) }}
+    </div> 
+    
+ </div> </div> 
+{% endblock %}

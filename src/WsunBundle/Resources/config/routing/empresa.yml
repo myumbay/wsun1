@@ -1,0 +1,24 @@
+empresa_index:
+    path:     /
+    defaults: { _controller: "WsunBundle:Empresa:index" }
+    methods:  GET
+
+empresa_show:
+    path:     /{id}/show
+    defaults: { _controller: "WsunBundle:Empresa:show" }
+    methods:  GET
+
+empresa_new:
+    path:     /new
+    defaults: { _controller: "WsunBundle:Empresa:new" }
+    methods:  [GET, POST]
+
+empresa_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WsunBundle:Empresa:edit" }
+    methods:  [GET, POST]
+
+empresa_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WsunBundle:Empresa:delete" }
+    methods:  DELETE

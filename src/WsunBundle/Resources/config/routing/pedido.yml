@@ -1,0 +1,29 @@
+pedido_index:
+    path:     /
+    defaults: { _controller: "WsunBundle:Pedido:index" }
+    methods:  GET
+
+pedido_show:
+    path:     /{id}/show
+    defaults: { _controller: "WsunBundle:Pedido:show" }
+    methods:  GET
+
+pedido_new:
+    path:     /new
+    defaults: { _controller: "WsunBundle:Pedido:new" }
+    methods:  [GET, POST]
+
+pedido_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WsunBundle:Pedido:edit" }
+    methods:  [GET, POST]
+
+pedido_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WsunBundle:Pedido:delete" }
+    methods:  DELETE
+    
+pedido_registro:
+    path: /{id}/pedido
+    defaults: { _controller: "WsunBundle:Pedido:indexPedido" }
+    methods:  GET
