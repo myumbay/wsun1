@@ -1,0 +1,47 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    <legend class="text-center header">LISTA DE DETALLE DEL PEDIDO</legend>
+<table class="table table-hover table-inverse">
+  <thead class="thead-inverse">
+    <tr>
+      
+    <th scope="row">Código</th>
+    <th scope="row">Descripción</th>
+    <th scope="row">Cantidad</th>
+    <th scope="row">Valor Unitario</th> 
+    <th scope="row">Valor Total</th>
+    <th scope="row">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pd in pedidosDet %}
+            <tr>
+{#                <td><a href="{{ path('pedido_show', { 'id': pedido.id }) }}">{{ pedido.id }}</a></td>#}
+                <td>{{ pd.codigo }}</td>
+                <td>{{ pd.idProducto }}</td>
+                <td>{{ pd.cantidad }}</td>
+                <td>{{ pd.valorUnitario }}</td>
+                <td>{{ pd.valorTotal }}</td>
+                <td>
+                    <div class="row">
+                        <div class="col-md-3">
+                         <a href= "{{ path('detallepedido_show', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">show</a>
+                        </div>
+                         <div class="col-md-3">
+                         <a href= "{{ path('detallepedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
+                        </div>
+                        <div class="col-md-3">
+                         <a href= "{{ path('detallepedido_registro',{ 'id':pedido.id }) }}" class="btn btn-primary btn-sm">products</a>
+                        </div>
+                    </div>
+                    </td>
+            </tr>
+        {% endfor %}
+  </tbody>
+   <a href="{{ path('detallepedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo </span></a>
+        <br>
+        <a href="{{ path('pedido_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a>
+</table>
+       
+{% endblock %}

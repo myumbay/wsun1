@@ -124,7 +124,14 @@ class PedidoController extends Controller
             ->getForm()
         ;
     }
-    public function indexPedidoAction(Request $request){
-        var_dump('hl');die;
+        public function indexPedidoAction(Request $request,Pedido $pedido){
+        $id=$pedido->getId();
+        $em = $this->getDoctrine()->getManager();
+
+        $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findById($id);
+
+       return $this->render('WsunBundle:pedido:indexPedido.html.twig', array(
+            'pedidosDet' => $pedidosDet,
+        ));
     }
 }

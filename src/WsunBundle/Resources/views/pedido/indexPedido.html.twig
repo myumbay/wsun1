@@ -1,24 +1,28 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <legend class="text-center header">LISTA DE PEDIDO</legend>
+    <legend class="text-center header">LISTA DE DETALLE DEL PEDIDO</legend>
 <table class="table table-hover table-inverse">
   <thead class="thead-inverse">
     <tr>
       
     <th scope="row">Código</th>
-    <th scope="row">Estado</th>
-    <th scope="row">Total Pedido</th>
+    <th scope="row">Descripción</th>
+    <th scope="row">Cantidad</th>
+    <th scope="row">Valor Unitario</th> 
+    <th scope="row">Valor Total</th>
     <th scope="row">Acciones</th>
     </tr>
   </thead>
   <tbody>
-    {% for pedido in pedidos %}
+    {% for pd in pedidosDet %}
             <tr>
 {#                <td><a href="{{ path('pedido_show', { 'id': pedido.id }) }}">{{ pedido.id }}</a></td>#}
-                <td>{{ pedido.codigoPedido }}</td>
-                <td>{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</td>
-                <td>{{ pedido.totalPedido }}</td>
+                <td>{{ pd.codigo }}</td>
+                <td>{{ pd.idProducto }}</td>
+                <td>{{ pd.cantidad }}</td>
+                <td>{{ pd.valorUnitario }}</td>
+                <td>{{ pd.valorTotal }}</td>
                 <td>
                     <div class="row">
                         <div class="col-md-3">
@@ -28,13 +32,13 @@
                          <a href= "{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
                         <div class="col-md-3">
-                         <a href= "{{ path('detallepedido_index',{ 'id':pedido.id }) }}" class="btn btn-primary btn-sm">products</a>
+                         <a href= "{{ path('pedido_registro',{ 'id':pedido.id }) }}" class="btn btn-primary btn-sm">products</a>
                         </div>
                     </div>
                     </td>
             </tr>
         {% endfor %}
   </tbody>
-  <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
 </table>
+        <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
 {% endblock %}

@@ -26,3 +26,7 @@ wsun_admin_categoria:
 wsun_pedido:
         resource: "@WsunBundle/Resources/config/routing/pedido.yml"
         prefix:   /pedido
+
+wsun_detallepedido:
+        resource: "@WsunBundle/Resources/config/routing/detallepedido.yml"
+        prefix:   /detallepedido

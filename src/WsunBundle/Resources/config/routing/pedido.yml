@@ -23,7 +23,4 @@ pedido_delete:
     defaults: { _controller: "WsunBundle:Pedido:delete" }
     methods:  DELETE
     
-pedido_registro:
-    path: /{id}/pedido
-    defaults: { _controller: "WsunBundle:Pedido:indexPedido" }
-    methods:  GET
+

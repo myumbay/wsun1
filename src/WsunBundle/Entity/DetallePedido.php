@@ -21,7 +21,12 @@ class DetallePedido
      * @ORM\SequenceGenerator(sequenceName="detalle_pedido_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=250, nullable=true)
+     */
+    private $codigo;
     /**
      * @var float
      *
@@ -105,7 +110,30 @@ class DetallePedido
     {
         return $this->cantidad;
     }
+    
+    /**
+     * Set codigoPedido
+     *
+     * @param string $codigo
+     *
+     * @return DetallePedido
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
 
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return string
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
     /**
      * Set valorUnitario
      *
