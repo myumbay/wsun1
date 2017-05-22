@@ -1,16 +1,18 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <legend class="text-center header">LISTA DE PEDIDO</legend>
-<table class="table table-hover table-inverse">
-  <thead class="thead-inverse">
+<div class="box">
+    
+        <fieldset>
+            
+            <table class="table table-condensed table-striped">
+    <thead>
     <tr>
-      
-    <th scope="row">Código</th>
-    <th scope="row">Estado</th>
-    <th scope="row">Total Pedido</th>
-    <th scope="row">Acciones</th>
-    </tr>
+            <th class="col-sm-2">Código</th>
+            <th class="col-sm-1">Estado</th>
+            <th class="col-sm-2">Total Pedido</th>
+            <th class="col-sm-5">Acciones</th>
+        </tr>   
   </thead>
   <tbody>
     {% for pedido in pedidos %}
@@ -21,13 +23,13 @@
                 <td>{{ pedido.totalPedido }}</td>
                 <td>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                          <a href= "{{ path('pedido_show', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
-                         <div class="col-md-3">
+                         <div class="col-md-2">
                          <a href= "{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                          <a href= "{{ path('detallepedido_index',{ 'id':pedido.id }) }}" class="btn btn-primary btn-sm">products</a>
                         </div>
                     </div>
@@ -37,4 +39,6 @@
   </tbody>
   <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
 </table>
+</fieldset>
+</div>
 {% endblock %}

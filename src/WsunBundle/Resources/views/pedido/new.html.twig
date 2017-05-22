@@ -7,7 +7,6 @@
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">
-               
                 {{ form_start(form,{'class':"form-horizontal",'method':"POST"}) }}
                     <fieldset>
                         <legend class="text-center header">PEDIDO</legend>
@@ -39,7 +38,7 @@
                             </div>
                              <div class="col-md-4">
                                <span class="help-block text-muted small-font" > </span>
-                                
+                                 <a href="{{ path('pedido_index') }}" class="btn btn-primary btn-sm">Atras</a>
                                 
                                 </div>
                         </div>
@@ -51,10 +50,6 @@
         </div>
     </div>
 </div>
-    <ul>
-        <li>
-            <a href="{{ path('pedido_index') }}">Back to the list</a>
-        </li>
-    </ul>
+
 </div>
 {% endblock %}

@@ -1,10 +1,11 @@
 <?php
 
 namespace WsunBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
+use APY\DataGridBundle\Grid\Mapping as GRID;
 
 /**
+ *
  * DetallePedido
  *
  * @ORM\Table(name="detalle_pedido", indexes={@ORM\Index(name="IDX_A834F569F760EA80", columns={"id_producto"}), @ORM\Index(name="IDX_A834F569E2DBA323", columns={"id_pedido"})})

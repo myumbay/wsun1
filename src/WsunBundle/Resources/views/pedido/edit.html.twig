@@ -1,21 +1,68 @@
-{% extends 'base.html.twig' %}
+{% extends 'WsunBundle:Default:index.html.twig'%}
 
-{% block body %}
-    <h1>Pedido edit</h1>
+{% block bloque1 %}
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('pedido_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+<div class="box">
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="well well-sm">
+               
+                {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"}) }}
+                    <fieldset>
+                        <legend class="text-center header">EDICIÓN DE PEDIDO</legend>
+                        <div class="row ">
+                           
+                               <div class="col-md-4">
+                                <span class="help-block text-muted small-font" > {{ form_label(edit_form.codigoPedido)}}</span>
+                                    {{ form_widget(edit_form.codigoPedido, { 'attr': {'placeholder': 'Escribe el código del pedido' } }) }}
+                               </div>
+                           
+                                <div class="col-md-4">
+                                    <span class="help-block text-muted small-font" > {{ form_label(edit_form.fechaCreacion)}}</span>
+                                    {{ form_widget(edit_form.fechaCreacion) }}
+                                </div>
+                                
+                                 <div class="col-md-4">
+                                    <span class="help-block text-muted small-font" > Total</span>
+                                    {{ form_widget(edit_form.totalPedido) }}
+                                </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-4">
+                                    <span class="help-block text-muted small-font" > Estado</span>
+                                    {{ form_widget(edit_form.estadoPedido) }}
+                                </div>
+                            
+                        </div>
+                        
+                        </div>
+                    </fieldset>
+                {{ form_end(edit_form) }}
+            </div>
+        </div>
+    
+    <div class="row ">
+       <div class="col-md-2">
+                <span class="help-block text-muted small-font" > </span>
+                <input type="submit" class="btn btn-info" value="Guardar" />
+        </div>
+        <div class="col-md-2">
+                <span class="help-block text-muted small-font" > </span>
+                 <a href="{{ path('pedido_index') }}" class="btn btn-info">Atras</a>
+        </div>
+          <div class="col-md-2">
+              <span class="help-block text-muted small-font" > </span>
+            <a href= "{{ path('detallepedido_index',{ 'id':pedido.id }) }}" class="btn btn-primary btn-sm">products</a>
+         </div>
+        <div class="col-md-2">
+            <span class="help-block text-muted small-font" > </span>
+                {{ form_start(delete_form) }}
+                <input type="submit"  class="btn btn-info" value="Borrar">
+                {{ form_end(delete_form) }}
+        </div>
+       
+    </div>
+    </div>
+   </div>            
 {% endblock %}

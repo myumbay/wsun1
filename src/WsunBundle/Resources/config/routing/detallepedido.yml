@@ -7,9 +7,14 @@ detallepedido_show:
     path:     /{id}/show
     defaults: { _controller: "WsunBundle:DetallePedido:show" }
     methods:  GET
+ 
+detallepedido_list:
+    path:     /list
+    defaults: { _controller: "WsunBundle:DetallePedido:list" }
+    
 
 detallepedido_new:
-    path:     /new
+    path:    /{id}/new
     defaults: { _controller: "WsunBundle:DetallePedido:new" }
     methods:  [GET, POST]
 
