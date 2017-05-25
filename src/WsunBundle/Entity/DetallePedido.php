@@ -234,11 +234,11 @@ class DetallePedido
     /**
      * Set idPedido
      *
-     * @param \WsunBundle\Entity\Usuario $idPedido
+     * @param \WsunBundle\Entity\Pedido $idPedido
      *
      * @return DetallePedido
      */
-    public function setIdPedido(\WsunBundle\Entity\Usuario $idPedido = null)
+    public function setIdPedido(\WsunBundle\Entity\Pedido $idPedido = null)
     {
         $this->idPedido = $idPedido;
 

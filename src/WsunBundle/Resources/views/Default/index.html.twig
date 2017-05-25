@@ -69,6 +69,13 @@
     $('#btn1').on("click",function(){
         alert("Hola");
     });
+    
+    function Calc(){
+        var cant = $('#detallepedido_cantidad').val();
+        var valunit = $('#detallepedido_valorUnitario').val();
+        var total=cant*valunit;
+        $('#detallepedido_valorTotal').val(total);
+    }
     </script>
     
 {% endblock %}

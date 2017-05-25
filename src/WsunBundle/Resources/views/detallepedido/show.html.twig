@@ -1,28 +1,31 @@
-{% extends 'base.html.twig' %}
+{% extends 'WsunBundle:Default:index.html.twig'%}
 
-{% block body %}
-    <h1>Detallepedido</h1>
+{% block bloque1 %}
+  <div class="box">
+    <fieldest>
+     <legend class="text-center header">Detalle Pedido</legend>
 
-    <table>
+    <table  width="50%" cellpadding="10"  > 
         <tbody>
-            <tr>
-                <th>Id</th>
+            {#<tr>
+                <th>Id: </th>
                 <td>{{ detallePedido.id }}</td>
-            </tr>
+            </tr>#}
             <tr>
-                <th>Codigo</th>
+                
+                <th class=" align right">Código:</th>
                 <td>{{ detallePedido.codigo }}</td>
             </tr>
             <tr>
-                <th>Cantidad</th>
+                <th>Cantidad: </th>
                 <td>{{ detallePedido.cantidad }}</td>
             </tr>
             <tr>
-                <th>Valorunitario</th>
+                <th>Valor Unitario:</th>
                 <td>{{ detallePedido.valorUnitario }}</td>
             </tr>
             <tr>
-                <th>Valortotal</th>
+                <th>Valor total:</th>
                 <td>{{ detallePedido.valorTotal }}</td>
             </tr>
             <tr>
@@ -31,10 +34,10 @@
             </tr>
         </tbody>
     </table>
-
+            </fieldest>
     <ul>
         <li>
-            <a href="{{ path('detallepedido_index') }}">Back to the list</a>
+            <a href="{{ path('detallepedido_index',{ 'id': id }) }}">Regresar</a>
         </li>
         <li>
             <a href="{{ path('detallepedido_edit', { 'id': detallePedido.id }) }}">Edit</a>
@@ -45,4 +48,5 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+    </div>
 {% endblock %}

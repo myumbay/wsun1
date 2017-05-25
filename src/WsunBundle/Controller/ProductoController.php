@@ -36,7 +36,6 @@ class ProductoController extends Controller
     {
         $producto = new Producto();
         $form = $this->createForm('WsunBundle\Form\ProductoType', $producto);
-//       var_dump($request->get('imagen'));die;
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

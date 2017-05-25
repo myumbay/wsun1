@@ -1,37 +1,69 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <div class="box">
-           <div class="container">
-               <div class="well well-sm">
-               
-                {{ form_start(form,{'class':"form-horizontal",'method':"POST"}) }}
-                    <fieldset>
-                        <legend class="text-center header">DETALLE PEDIDO</legend>
-                        <div class="row ">
-                           
-                               <div class="col-md-4">
-                                <span class="help-block text-muted small-font" > </span>
-                                    {#{ form_widget(form.codigoPedido, { 'attr': {'placeholder': 'Escribe el código del pedido' } }) }#}
-                               </div>
-                           <h1>Detallepedido creation</h1>
 
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-  
-                        
-                        </div>
-                    </fieldset>
-                {{ form_end(form) }}
-            </div>
-           </div>
-    </div>
+    {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor%}
+    <fieldest>
+     <legend class="text-center header">Edición de Detalle Pedido</legend>
+     {#{dump(edit_form)}#}
+    {{ form_start(form,{'class':"form-horizontal",'method':"POST"}) }}
+        <table  width="90%" cellpadding="10"  > 
+            <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.idProducto)}}</td>
+                <td> {{ form_widget(form.idProducto, { 'attr': {'placeholder': 'search' } }) }}</td>
+            </tr>
+            <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.codigo)}}</td>
+                <td> {{ form_widget(form.codigo, { 'attr': {'placeholder': 'Ejem. 00125..' } }) }}</td>
+            </tr>
+             <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.cantidad)}}</td>
+                <td> {{ form_widget(form.cantidad, { 'attr': {'placeholder': 'Ejem. 10','id':'cantidad','onKeyUp': 'return Calc();' } }) }}</td>
+            </tr>
+             <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.valorUnitario)}}</td>
+                <td> $ {{ form_widget(form.valorUnitario, { 'attr': {'placeholder': 'Ejem. 5.5','id':'valorUnitario','onKeyUp': 'return Calc();' } }) }}</td>
+            </tr>
+            <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.valorTotal)}}</td>
+                <td> $ {{ form_widget(form.valorTotal, { 'attr': {'placeholder': 'Ejem. 5.5','id':'valorTotal','readonly':'readonly' } }) }}</td>
+            </tr>
+            <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.observaciones)}}</td>
+                <td> {{ form_widget(form.observaciones, { 'attr': {'placeholder': 'Observaciones','id':'valorTotal' } }) }}
+                    {{form_widget(form)}}
+                
+                </td>
+            </tr>
+            
+        </table>
+     <input type="submit" value="Guardar" />
+    
+    {{ form_end(form) }}
     
     
-
-    <ul>
-        <li>
+    
             <a href="{{ path('detallepedido_index',{ 'id':id }) }}">Back to the list</a>
-        </li>
-    </ul>
+        
+           
+   <script type="text/javascript">
+      {{ parent() }}
+
+    
+    {#function Calc(){
+        var cant = $('#detallepedido_cantidad').val();
+        var valunit = $('#detallepedido_valorUnitario').val();
+        var total=cant*valunit;
+        $('#detallepedido_valorTotal').val(total);
+    }#}
+
+    </script> 
 {% endblock %}

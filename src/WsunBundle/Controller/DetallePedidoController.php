@@ -5,7 +5,7 @@ namespace WsunBundle\Controller;
 use WsunBundle\Entity\DetallePedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Detallepedido controller.
@@ -13,39 +13,50 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DetallePedidoController extends Controller
 {
-        
+    private $session;
+    public function __construct() {
+        $this->session=new Session();
+    }
     public function indexAction(Request $request)
     {
       
         $id=$request->get('id');
+        
         $em = $this->getDoctrine()->getManager();
 
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($id);
-        //var_dump($pedidosDet);die;
-       return $this->render('WsunBundle:detallepedido:index.html.twig', array(
+        return $this->render('WsunBundle:detallepedido:index.html.twig', array(
            'id'=>$id,
             'pedidosDet' => $pedidosDet,
         ));
     }
 
-    /**
-     * Creates a new detallePedido entity.
-     *
-     */
     public function newAction(Request $request)
     {
+        
         $id=$request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $pedido = $em->getRepository('WsunBundle:Pedido')->find($id);
         $detallePedido = new Detallepedido();
-        $form = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido);
+        $form = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array('action'=>$this->generateUrl('detallepedido_new',array('id'=>$id))));
+        
         $form->handleRequest($request);
-
-         if ($form->isValid()){
-            //if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($detallePedido);
-            $em->flush();
-
-            return $this->redirectToRoute('detallepedido_show', array('id' => $detallePedido->getId()));
+       
+         if ($form->isSubmitted() && $form->isValid()) {
+            $detPed=$em->getRepository('WsunBundle:DetallePedido')->findBy(array('idProducto' => $form->getData()->getIdProducto()->getId(),'idPedido'=>$pedido->getId()));
+            if(count($detPed)>0)
+            {      
+            $mensaje = 'Ya existe un producto para este pedido';
+            $this->session->getFlashBag()->add("status",$mensaje);
+            return $this->redirectToRoute('detallepedido_new',array('id'=>$id));
+        
+            }
+             
+             $detallePedido->setIdPedido($pedido); 
+             $em->persist($detallePedido);
+            // $em->flush();
+             return $this->redirectToRoute('detallepedido_index', array('id' => $detallePedido->getIdPedido()->getId()));
+            //return $this->redirectToRoute('detallepedido_show', array('id' => $detallePedido->getId()));
         }
 
         return $this->render('WsunBundle:detallepedido:new.html.twig', array(
@@ -59,11 +70,13 @@ class DetallePedidoController extends Controller
      * Finds and displays a detallePedido entity.
      *
      */
-    public function showAction(DetallePedido $detallePedido)
+    public function showAction(Request $request,DetallePedido $detallePedido)
     {
+         $id=$request->get('id');
         $deleteForm = $this->createDeleteForm($detallePedido);
 
         return $this->render('WsunBundle:detallepedido:show.html.twig', array(
+            'id'=>$id,
             'detallePedido' => $detallePedido,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -75,18 +88,18 @@ class DetallePedidoController extends Controller
      */
     public function editAction(Request $request, DetallePedido $detallePedido)
     {
+        $id=$request->get('id');
         $deleteForm = $this->createDeleteForm($detallePedido);
-        $editForm = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido);
+        $editForm = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array('action'=>$this->generateUrl('detallepedido_edit',array('id'=>$detallePedido->getId()))));
         $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+         if ($editForm->isSubmitted()) {
+            
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('detallepedido_edit', array('id' => $detallePedido->getId()));
+            return $this->redirectToRoute('detallepedido_index', array('id' => $detallePedido->getIdPedido()->getId()));
         }
 
         return $this->render('WsunBundle:detallepedido:edit.html.twig', array(
-            //'id'=>$detallePedido->getId(),
+            'id'=>$detallePedido->getIdPedido()->getId(),
             'detallePedido' => $detallePedido,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

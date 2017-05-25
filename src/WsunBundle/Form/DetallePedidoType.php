@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use \Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 class DetallePedidoType extends AbstractType
 {
@@ -18,13 +20,19 @@ class DetallePedidoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+           
+//            $validador = function(FormEvent $event) {
+//            var_dump($event->getData());die;      
+//       };
+        
         $builder->add('codigo')
                 ->add('cantidad')
                 ->add('valorUnitario')
                 ->add('valorTotal')
-                ->add('observaciones')
-                ->add('idProducto');
-                //->add('idPedido');
+                ->add('observaciones',  \Symfony\Component\Form\Extension\Core\Type\TextareaType::class)
+                ->add('idProducto');    
+                //->add('idPedido',  HiddenType::class);
+      // $builder->addEventListener(FormEvents::PRE_SUBMIT, $validador);
     }
     
     /**
@@ -42,7 +50,7 @@ class DetallePedidoType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'wsunbundle_detallepedido';
+        return 'detallepedido';
     }
 
 

@@ -1,21 +1,75 @@
-{% extends 'base.html.twig' %}
+{% extends 'WsunBundle:Default:index.html.twig'%}
 
-{% block body %}
-    <h1>Detallepedido edit</h1>
+{% block bloque1 %}
+    
+    <fieldest>
+     <legend class="text-center header">Edición de Detalle Pedido</legend>
+     {#{dump(edit_form)}#}
+   {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"})}}
+        <table  width="90%" cellpadding="10"  > 
+            <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.idProducto)}}</td>
+                <td> {{ form_widget(edit_form.idProducto, { 'attr': {'placeholder': 'search' } }) }}</td>
+            </tr>
+            <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.codigo)}}</td>
+                <td> {{ form_widget(edit_form.codigo, { 'attr': {'placeholder': 'Ejem. 00125..' } }) }}</td>
+            </tr>
+             <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.cantidad)}}</td>
+                <td> {{ form_widget(edit_form.cantidad, { 'attr': {'placeholder': 'Ejem. 10','id':'cantidad','onKeyUp': 'return Calc();' } }) }}</td>
+            </tr>
+             <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.valorUnitario)}}</td>
+                <td> $ {{ form_widget(edit_form.valorUnitario, { 'attr': {'placeholder': 'Ejem. 5.5','id':'valorUnitario','onKeyUp': 'return Calc();' } }) }}</td>
+            </tr>
+            <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.valorTotal)}}</td>
+                <td> $ {{ form_widget(edit_form.valorTotal, { 'attr': {'placeholder': 'Ejem. 5.5','id':'valorTotal','readonly':'readonly' } }) }}</td>
+            </tr>
+            <tr>
+             
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.observaciones)}}</td>
+                <td> {{ form_widget(edit_form.observaciones, { 'attr': {'placeholder': 'Observaciones','id':'valorTotal' } }) }}
+                    {{form_widget(edit_form)}}
+                
+                </td>
+            </tr>
+            
+        </table>
+                    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <input class="btn btn-info" type="submit" value="Guardar" />
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-info" href="{{ path('detallepedido_index',{ 'id': id }) }}">Regresar</a>
+        </div>
+        <div class="col-md-2">
+             {{ form_end(edit_form) }}
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('detallepedido_index') }}">Back to the list</a>
-        </li>
-        <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input  class="btn btn-info" type="submit" value="Delete">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        </div>
+    </div>
+    
+    
+  
+
+    <script type="text/javascript">
+      {{ parent() }}  
+   {# function Calc(){
+
+        var cant = $('#detallepedido_cantidad').val();
+        var valunit = $('#detallepedido_valorUnitario').val();
+        var total=cant*valunit;
+        $('#detallepedido_valorTotal').val(total);
+    }#}
+
+    </script>        
+            
 {% endblock %}

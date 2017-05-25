@@ -37,9 +37,9 @@ class PedidoController extends Controller
         $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido);
         $form->handleRequest($request);
         
-        //$data = $form->getData();
-        //$user = $this->getUser();
-        //var_dump($user);
+//        $data = $form->getData();
+//        $user = $this->getUser();
+//        var_dump($user);die;
         if ($form->isValid()){//$form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($pedido);

@@ -224,6 +224,9 @@ class Pedido
     public function __construct() {
         //$this->fechaCreacion=new \DateTime;
     }
+//       public function __toString() {
+//        return $this->id;
+//    }
 
     
 }

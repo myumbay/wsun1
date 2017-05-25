@@ -18,30 +18,7 @@ class ProductoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-       
-//        $validador = function(FormEvent $event) {
-//            
-//            $form = $event->getForm();
-//            $entity = $form->getData();
-            //var_dump($entity,$form);die;
-            // Recogemos el fichero
-           // $file=$form['imagen']->getData();
-            /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-//            $file = $entity->getImagen();
-//         var_dump($file);die;            
-// Sacamos la extensión del fichero
-            //$ext=$file->guessExtension();
 
-            // Le ponemos un nombre al fichero
-            //$file_name=time().".".$ext;
-
-            // Guardamos el fichero en el directorio uploads que estará en el directorio /web del framework
-            //$file->move("uploads", $file_name);
-
-            // Establecemos el nombre de fichero en el atributo de la entidad
-            //$miEntidad->setImage($file_name);
-        
-//        };
         $builder
                 ->add('nombreProducto',  TextType::class,array('label'=>'Nombre Producto:'))
                // ->add('imagen' ,  TextType::class,array('label'=>'Imagen:'))//, array("attr"=>array("class"=>"form form-control")))
