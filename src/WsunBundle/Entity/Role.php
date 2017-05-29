@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="admin_roles")
+ * @ORM\Table(name="roles")
  */
 class Role implements RoleInterface
 {
@@ -19,7 +19,7 @@ class Role implements RoleInterface
     protected $id;
 
     /**
-     * @ORM\Column(name="nombre", type="string", length="255")
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
     protected $name;
 
