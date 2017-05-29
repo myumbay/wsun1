@@ -1,24 +1,24 @@
 admin_user_index:
     path:     /
-    defaults: { _controller: "WsunBundle:user:index" }
+    defaults: { _controller: "WsunBundle:User:index" }
     methods:  GET
 
 admin_user_show:
     path:     /{id}/show
-    defaults: { _controller: "WsunBundle:user:show" }
+    defaults: { _controller: "WsunBundle:User:show" }
     methods:  GET
 
 admin_user_new:
     path:     /new
-    defaults: { _controller: "WsunBundle:user:new" }
+    defaults: { _controller: "WsunBundle:User:new" }
     methods:  [GET, POST]
 
 admin_user_edit:
     path:     /{id}/edit
-    defaults: { _controller: "WsunBundle:user:edit" }
+    defaults: { _controller: "WsunBundle:User:edit" }
     methods:  [GET, POST]
 
 admin_user_delete:
     path:     /{id}/delete
-    defaults: { _controller: "WsunBundle:user:delete" }
+    defaults: { _controller: "WsunBundle:User:delete" }
     methods:  DELETE

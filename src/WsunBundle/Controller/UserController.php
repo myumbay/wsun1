@@ -2,7 +2,7 @@
 
 namespace WsunBundle\Controller;
 
-use WsunBundle\Entity\user;
+use WsunBundle\Entity\Usuarios;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
  * User controller.
  *
  */
-class userController extends Controller
+class UserController extends Controller
 {
     /**
      * Lists all user entities.
@@ -20,9 +20,9 @@ class userController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('WsunBundle:user')->findAll();
+        $users = $em->getRepository('WsunBundle:Usuarios')->findAll();
 
-        return $this->render('user/index.html.twig', array(
+        return $this->render('WsunBundle:user:index.html.twig', array(
             'users' => $users,
         ));
     }
@@ -33,11 +33,14 @@ class userController extends Controller
      */
     public function newAction(Request $request)
     {
-        $user = new User();
-        $form = $this->createForm('WsunBundle\Form\userType', $user);
+        $user = new Usuarios();
+        //$request = $this->getRequest();
+               
+        $form = $this->createForm('WsunBundle\Form\UsuariosType', $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->setSecurePassword($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -45,7 +48,7 @@ class userController extends Controller
             return $this->redirectToRoute('admin_user_show', array('id' => $user->getId()));
         }
 
-        return $this->render('user/new.html.twig', array(
+        return $this->render('WsunBundle:user:new.html.twig', array(
             'user' => $user,
             'form' => $form->createView(),
         ));
@@ -55,11 +58,11 @@ class userController extends Controller
      * Finds and displays a user entity.
      *
      */
-    public function showAction(user $user)
+    public function showAction(Usuarios $user)
     {
         $deleteForm = $this->createDeleteForm($user);
 
-        return $this->render('user/show.html.twig', array(
+        return $this->render('WsunBundle:user:show.html.twig', array(
             'user' => $user,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -69,19 +72,24 @@ class userController extends Controller
      * Displays a form to edit an existing user entity.
      *
      */
-    public function editAction(Request $request, user $user)
+    public function editAction(Request $request, Usuarios $user)
     {
         $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('WsunBundle\Form\userType', $user);
+        $editForm = $this->createForm('WsunBundle\Form\UsuariosType', $user);
+        $current_pass = $user->getPassword();
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            //evalua si la contraseña fue modificada: ------------------------
+            if ($current_pass != $user->getPassword()) {
+                $this->setSecurePassword($user);
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('admin_user_edit', array('id' => $user->getId()));
         }
 
-        return $this->render('user/edit.html.twig', array(
+        return $this->render('WsunBundle:user:edit.html.twig', array(
             'user' => $user,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -92,7 +100,7 @@ class userController extends Controller
      * Deletes a user entity.
      *
      */
-    public function deleteAction(Request $request, user $user)
+    public function deleteAction(Request $request, Usuarios $user)
     {
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
@@ -109,11 +117,11 @@ class userController extends Controller
     /**
      * Creates a form to delete a user entity.
      *
-     * @param user $user The user entity
+     * @param User $user The user entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(user $user)
+    private function createDeleteForm(Usuarios $user)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('admin_user_delete', array('id' => $user->getId())))
@@ -121,4 +129,10 @@ class userController extends Controller
             ->getForm()
         ;
     }
+    private function setSecurePassword(&$entity) {
+    $entity->setSalt(md5(time()));
+    $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+    $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+    $entity->setPassword($password);
+}
 }

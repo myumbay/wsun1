@@ -22,7 +22,7 @@ class RoleController extends Controller
 
         $roles = $em->getRepository('WsunBundle:Role')->findAll();
 
-        return $this->render('WsunBundle:Role:index.html.twig', array(
+        return $this->render('role/index.html.twig', array(
             'roles' => $roles,
         ));
     }

@@ -96,13 +96,13 @@ assetic:
 #        - cssrewrite
 #      output: css/fontawesome_IE7.css  
 
-fos_user:
-    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
-    firewall_name: main
-    user_class: WsunBundle\Entity\Usuario
-    from_email:
-        address: "carolyumbay@gmail.com"
-        sender_name: "Carolina"
+#fos_user:
+ #   db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+  #  firewall_name: main
+  #  user_class: WsunBundle\Entity\Usuario
+   # from_email:
+   #     address: "carolyumbay@gmail.com"
+    #    sender_name: "Carolina"
 
 # liip_imagine Configuration
 liip_imagine :

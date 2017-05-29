@@ -1,52 +1,27 @@
 <?php
 
 namespace WsunBundle\Entity;
-use Symfony\Component\Security\Core\User\UserInterface;
+
+use Symfony\Component\Security\Core\Role\RoleInterface;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity
- * @ORM\Table(name="usuarios")
+ * @ORM\Table(name="admin_roles")
  */
-class Usuarios implements UserInterface
+class Role implements RoleInterface
 {
     /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @ORM\Column(type="string", length="255")
+     * @ORM\Column(name="nombre", type="string", length="255")
      */
-    protected $username;
-
-    /**
-     * @ORM\Column(name="password", type="string", length="255")
-     */
-    protected $password;
-
-    /**
-     * @ORM\Column(name="salt", type="string", length="255")
-     */
-    protected $salt;
-
-    /**
-     * se utilizó user_roles para no hacer conflicto al aplicar ->toArray en getRoles()
-     * @ORM\ManyToMany(targetEntity="Role")
-     * @ORM\JoinTable(name="user_role",
-     *     joinColumns={@ORM\JoinColumn(name="usuario_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
-     * )
-     */
-    protected $user_roles;
-
-    public function __construct()
-    {
-        $this->user_roles = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    protected $name;
 
     /**
      * Get id
@@ -59,115 +34,30 @@ class Usuarios implements UserInterface
     }
 
     /**
-     * Set username
+     * Set name
      *
-     * @param string $username
+     * @param string $name
      */
-    public function setUsername($username)
+    public function setName($name)
     {
-        $this->username = $username;
+        $this->name = $name;
     }
 
     /**
-     * Get username
+     * Get name
      *
      * @return string
      */
-    public function getUsername()
+    public function getName()
     {
-        return $this->username;
+        return $this->name;
     }
 
-    /**
-     * Set password
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
+    public function getRole() {
+        return $this->getName();
     }
 
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
-     * Add user_roles
-     *
-     * @param Maycol\BlogBundle\Entity\Role $userRoles
-     */
-    public function addRole(\Maycol\BlogBundle\Entity\Role $userRoles)
-    {
-        $this->user_roles[] = $userRoles;
-    }
-
-    public function setUserRoles($roles) {
-        $this->user_roles = $roles;
-    }
-
-    /**
-     * Get user_roles
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getUserRoles()
-    {
-        return $this->user_roles;
-    }
-
-    /**
-     * Get roles
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getRoles()
-    {
-        return $this->user_roles->toArray(); #IMPORTANTE: el mecanismo de seguridad de Sf2 requiere ésto como un array
-    }
-
-    /**
-     * Compares this user to another to determine if they are the same.
-     *
-     * @param UserInterface $user The user
-     * @return boolean True if equal, false othwerwise.
-     */
-    public function equals(UserInterface $user) {
-        return md5($this->getUsername()) == md5($user->getUsername());
-
-    }
-
-    /**
-     * Erases the user credentials.
-     */
-    public function eraseCredentials() {
-
+    public function __toString() {
+        return $this->getRole();
     }
 }
-
