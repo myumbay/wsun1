@@ -95,7 +95,30 @@ class Empresa
      */
     private $idubicacion;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Producto")
+     * @ORM\JoinTable(name="empresa_producto",
+     *      joinColumns={@ORM\JoinColumn(name="empresa_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
 
+    private $empresaProducto;
+
+    public function __construct() {
+        $this->empresaProducto = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+        public function addEmpresaProducto(EmpresaProducto $empresaProducto)
+    {
+        $certificate->setEmpresa($this);
+        $this->empresaProducto[] = $empresaProducto;
+        return $this;
+    }
+ 
+    public function removeCertificate(EmpresaProducto $empresaProducto)
+    {
+        $this->empresaProducto->removeElement($empresaProducto);
+    }
 
     /**
      * Get id
