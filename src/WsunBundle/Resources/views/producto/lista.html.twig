@@ -1,0 +1,14 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+{% block bloque1 %}
+    
+    {% for key, prod in producto %}
+       <div class="lbl1">
+           {{555 }}
+
+        <div class="lbl2 ">
+         {{ key }}: {{ prod.nombreProducto|e }}   
+           
+        </div>
+       </div>
+        {% endfor %}
+{% endblock %}
