@@ -22,7 +22,6 @@ class ProductoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $productos = $em->getRepository('WsunBundle:Producto')->findAll();
-
         return $this->render('WsunBundle:producto:index.html.twig', array(
             'productos' => $productos,
         ));
@@ -45,10 +44,18 @@ class ProductoController extends Controller
                     $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
                     $producto->setImagen($file->getClientOriginalName());          
                     $em->persist($producto);
-                    $em->flush();
-                    $narchivo = $producto->getId() . '.' . $file->getClientOriginalName();                    
+                    
+                    $narchivo = $producto->getId() . '.' . $file->getClientOriginalName(); 
+                    //$image = new \Imagick('../Documentos/Productos/pastel.jpg' );
                     $file->move(realpath($path), $narchivo);  
-
+                    $image = new \Imagick('../Documentos/Productos/'.$narchivo );
+                    $image->cropthumbnailimage(300, 300);
+                    //Guarda el archivo mas corto
+                    //$image->writeimage( '../Documentos/Productos/imagen_thumb.png' );
+                    $image->writeimage( '../Documentos/Productos/'.$narchivo );
+                    $image->cropthumbnailimage(150, 150);
+                    $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
+                    //$em->flush();
             return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId()));
         }
 
@@ -69,11 +76,6 @@ class ProductoController extends Controller
         $root = $this->get('kernel')->getRootDir();
         $url= '../Documentos/Productos/'.$img;
         $medidas=array();
-        
-        //$img1=$this->get('kernel')->getRootDir().$url;
-        //$image= new \Liip\ImagineBundle\Form\Type\ImageType($img1);
-        //var_dump($image);die;
-        //$image->readImage("image.jpg");
         $size=$this->getParameter('dimension_imagen1');
         $medidas=$this->redimensionar($url,$size);
         
@@ -86,7 +88,6 @@ class ProductoController extends Controller
         ));
     }
 public function redimensionar($src, $ancho_forzado){
-   //var_dump($src);die;
     if (file_exists($src)) {
       list($width, $height, $type, $attr)= getimagesize($src);
       if ($ancho_forzado > $width) {
@@ -109,11 +110,12 @@ public function redimensionar($src, $ancho_forzado){
      *
      */
     public function editAction(Request $request, Producto $producto)
-    {
+    {        
         $deleteForm = $this->createDeleteForm($producto);
         $editForm = $this->createForm('WsunBundle\Form\ProductoType', $producto);
         $editForm->handleRequest($request);
-        $img=$producto->getImagen();
+        $img = $producto->getId().'.'.$producto->getImagen();
+        $url= '../Documentos/Productos/'.$img;
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
@@ -121,13 +123,19 @@ public function redimensionar($src, $ancho_forzado){
                     $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
                     $producto->setImagen($file->getClientOriginalName());          
                     $em->persist($producto);
-                    //$em->flush();
-                    
-            
-            $this->getDoctrine()->getManager()->flush();
-            $narchivo = $producto->getId() . '.' . $file->getClientOriginalName();                    
-            $file->move(realpath($path), $narchivo); 
-
+                    $em->flush();
+                    $this->getDoctrine()->getManager()->flush();
+                    $narchivo = $producto->getId() . '.' . $file->getClientOriginalName();                    
+                    $file->move(realpath($path), $narchivo); 
+                    $t1=$this->getParameter('imagesize2');//$request->get('imagesixe2');
+                    $t2=$this->getParameter('imagesize1');
+                    $image = new \Imagick('../Documentos/Productos/'.$narchivo );
+                    $image->cropthumbnailimage($t1, $t1);
+                    //Guarda el archivo mas corto
+                    //$image->writeimage( '../Documentos/Productos/imagen_thumb.png' );
+                    $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
+                    $image->cropthumbnailimage($t2, $t2);
+                    $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
             return $this->redirectToRoute('admin_producto_edit', array('id' => $producto->getId()));
         }
 
@@ -171,5 +179,43 @@ public function redimensionar($src, $ancho_forzado){
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+     public function buscarAction(Request $request) {
+       if ($valor = trim($request->get('valor'))) {
+            $request->getSession()->set('VALOR_BUSQUEDA', $valor);
+            $request->getSession()->set('DIRECCION_BUSQUEDA', $request->server->get('REQUEST_URI'));
+       } else {
+           $request->getSession()->set('VALOR_BUSQUEDA', '');
+            $request->getSession()->set('DIRECCION_BUSQUEDA', '');
+            //return $this->redirect($this->generateUrl('sercop_comun_newhomepage'));
+        }
+       
+        $valorOrig = $valor;
+        $valor = "%{$valor}%";
+        if ($pag = $request->get('pag', 0)) {
+            $request->getSession()->set('PAGE', $request->get('pag'));
+        } else {
+            $pag = $request->getSession()->get('PAGE', 1);
+        }
+        
+        $max = 10; //$this->container->getParameter('maxPorPag');
+        $em = $this->getDoctrine()->getManager();
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:Producto', 'p');
+        $qb->select('p');
+        $qb->orwhere($qb->expr()->like($qb->expr()->lower('p.nombreProducto'), $qb->expr()->lower(':valor')));
+        $qb->andwhere('p.estado = :estado');
+        $qb->setParameter('valor', $valor);
+        $qb->setParameter('estado', '1');
+        $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+         
+        foreach ($productos as $producto) {
+            $ids[] = $producto['id'];
+            
+        }
+       
+        //$path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
+      return $this->render('WsunBundle:producto:lista.html.twig', array('buscar' => $valorOrig, 'producto'=> $productos, 'listas' => array()));
     }
 }
