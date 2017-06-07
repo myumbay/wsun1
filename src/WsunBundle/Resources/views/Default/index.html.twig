@@ -4,8 +4,27 @@
 <div class="container">    
   
     <div class="encabezado">
-   <a href="#"><img src="{{asset('../img/logo.png')}}"></a> 
+           
+      <div style="width:25%; float:left; display:block;">
+      <a href="#"><img src="{{asset('../img/logo.png')}}"></a>
+      </div>
+      <div style="clear:both"></div> 
+      <div style="width:30%; float:left; display:block;">
+      <form class="navbar-form navbar-left" role="search" onsubmit="return buscar_global();">
+            <input id='buscar_input' type="text" class="form-control" placeholder="Buscar" value="{{app.session.get('VALOR_BUSQUEDA','')}}"/>
+            <button class="btn btn-default" type="button" onclick='buscar_global(); return false;'>
+            <span class="glyphicon glyphicon-search"></span>
+            </button>
+      </form>
     </div>
+        
+        
+       {# <a href="#"><img src="{{asset('../img/logo.png')}}"></a> 
+       <form class="navbar-form navbar-left" role="search" onsubmit="return buscar_global();">
+            <input id='buscar_input' type="text" class="form-control" placeholder="Buscar" value="{{app.session.get('VALOR_BUSQUEDA','')}}"/>
+            <button class="btn btn-default" type="button" onclick='buscar_global(); return false;'>
+            </button>#}
+            </div>
   
 <div class="menu-div">
   <ul class=" menu">
@@ -76,6 +95,14 @@
         var total=cant*valunit;
         $('#detallepedido_valorTotal').val(total);
     }
+    buscar_global = function() {
+        if ($('#buscar_input').val() !== '') {
+            window.location = '{ path('wsun_buscar') }}?valor=' + $('#buscar_input').val();
+        } else {
+            window.location = '{ path('wsun_buscar') }}';
+        }
+        return false;
+    };
     </script>
     
 {% endblock %}
