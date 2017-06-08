@@ -59,8 +59,13 @@ class CategoriaController extends Controller
     public function showAction(Categoria $categorium)
     {
         $deleteForm = $this->createDeleteForm($categorium);
+        $cat='Principal';
+        if($categorium->getPadre()!=null){
+            $cat=$categorium->getPadre()->getNombreCat();
+        }
 
         return $this->render('WsunBundle:categoria:show.html.twig', array(
+            'cat'=>$cat,
             'categorium' => $categorium,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -79,7 +84,8 @@ class CategoriaController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_categoria_edit', array('id' => $categorium->getId()));
+            return $this->redirectToRoute('admin_categoria_show', array('id' => $categorium->getId()));
+           // return $this->redirectToRoute('admin_categoria_edit', array('id' => $categorium->getId()));
         }
 
         return $this->render('WsunBundle:categoria:edit.html.twig', array(
