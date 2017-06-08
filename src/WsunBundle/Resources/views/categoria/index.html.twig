@@ -1,37 +1,43 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <div class="table-responsive">
-     <div class="panel-heading">
-                <strong><span>Lista</span> de Categorias</strong>
-            </div> 
-   <table class="table table-hover">
-        <thead>
+<div class="box">
+
+    <fieldset>
+
+        <legend class="text-center header"><strong><span>Lista</span> de Categorias</strong></legend>
+        <table class="table table-condensed table-striped">
+            <thead>
             <tr>
-                <th >Nombre Categoria</th>
-                <th>Estado</th>
-                <th>Actions</th>
+                <th class="col-sm-2">Nombre Categoria</th>
+                <th class="col-sm-1">Tipo</th>
+                <th class="col-sm-5">Acciones</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
+
         {% for categorium in categorias %}
             <tr>
                 <td><a href="{{ path('admin_categoria_show', { 'id': categorium.id }) }}">{{ categorium.nombreCat }}</a></td>
                 
                 <td>{% if(categorium.estado=='1')%}
-                    Activo
+                    Categoria principal
+                        {% else %}
+                        Sub - categoria
                     {% endif %}
                    </td>
                 
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_categoria_show', { 'id': categorium.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_categoria_edit', { 'id': categorium.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a href= "{{ path('admin_categoria_show', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">Ver</a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href= "{{ path('admin_categoria_edit', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">Editar</a>
+                        </div>
+
+                    </div>
+
                 </td>
             </tr>
         {% endfor %}

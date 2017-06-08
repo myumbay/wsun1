@@ -14,9 +14,10 @@
     </div>        
     <div class="row">
         <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.estado)}}  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(form.estado)}}</div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(form.estado, {'attr': {'onclick': 'return ActivarPadre()'} } )}}</div>
     </div>
     <div class="row">
+
         <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Principal  </div>
         <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(form.padre)}}</div>
     </div>
@@ -28,4 +29,21 @@
     <a href="{{ path('admin_categoria_index') }}">Back to the list</a>
  </div> </div>   
     
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(window).ready(function() {
+            ActivarPadre();
+        });
+        ActivarPadre=function () {
+            var condiciones = $("#wsunbundle_categoria_estado").is(":checked");
+            if (!condiciones) {
+                $('#wsunbundle_categoria_padre').val(null);
+                $('#wsunbundle_categoria_padre').prop('disabled', 'disabled');
+            }else {
+                $('#wsunbundle_categoria_padre').removeAttr("disabled");
+            }
+        }
+    </script>
 {% endblock %}
