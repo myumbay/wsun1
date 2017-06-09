@@ -1,7 +1,13 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
+     
 <div class="box">
+    {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor%} 
     <div class="panel-body">
     <div class="panel2">
             <div class="panel-heading">

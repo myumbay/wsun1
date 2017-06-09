@@ -39,7 +39,7 @@ class Categoria
     /**
      * @var string
      *
-     * @ORM\Column(name="estado", type="string", length=1, nullable=true, options={"comment" = "Estado del registro 1 activo, 0 inactivo"})
+     * @ORM\Column(name="estado", type="string", length=1, nullable=true, options={"comment" = "Estado del registro 1 SUb Categoria, 0 Categoria Principal"})
      */
    
     protected $estado;
@@ -267,4 +267,3 @@ class Categoria
      }
     
 }
-

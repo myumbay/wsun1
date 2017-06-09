@@ -1,53 +1,58 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 {% block bloque1 %}
-        <div class="box">
-        <div class="panel-body">
-            <div class="panel-heading">
-                <strong><span>Datos</span> de Empresas</strong>
-            </div> 
-        <div class="panel2">
-   <div class="row">
-  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Nombre producto: </div>
-  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.nombreProducto }}</div>
-</div>        
-<div class="row">
-  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Imagen: </div>
-  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">
-
-    {#  <img src="{{asset(url) }}" width="{{medidas[0]}}" height="{{medidas[1]}}" />#}
-    <img src="{{asset(url) | imagine_filter('my_special_style')}}">
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Codigo Producto: </div>
-  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.codigoProducto }}</div>
-</div>
-<div class="row">
-  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Precio: </div>
-  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.precioProducto }}</div>
-</div>
-<div class="row">
-  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Estado: </div>
-  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.observacion }}</div>
-</div>
-<div class="row">
-  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Estado: </div>
-  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.estado }}</div>
-</div>                
-<div class="row">
-  <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Categoria: </div>
-  <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.categoria }}</div>
-</div>  
- <table>
-    <tr><td> <a href="{{ path('admin_producto_index') }}"><span class="glyphicon glyphicon-arrow-left"> volver</span></a></td></tr>
-    <tr><td><a href="{{ path('admin_producto_edit', { 'id': producto.id }) }}"><span class="glyphicon glyphicon-arrow-left"> Editar</span></a></td></tr>
-            <tr><td>
-                    {{ form_start(delete_form) }}
-                <input  class="glyphicon glyphicon-arrow-left" type="submit" value="Delete">
+    
+    <div class="box">
+    <fieldset>
+    <legend class="text-center header">PRODUCTO</legend>
+            
+     <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Nombre producto: </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.nombreProducto  }}</div>
+    </div>       
+    
+     <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Nombre producto: </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.nombreProducto  }}</div>
+    </div> 
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Imagen: </div>
+        <div id="img-location">
+                       <img src="{{asset(url) }}" alt="Producto" class="img-thumbnail">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Código Producto:: </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.codigoProducto  }}</div>
+    </div> 
+    
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Precio: </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.precioProducto }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Estado: </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.observacion }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Estado: </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.estado }}</div>
+    </div>                
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Categoria: </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.categoria }}</div>
+    </div>  
+    <br>
+     <div class="row">
+        <div class="col-md-2"> <a href="{{ path('admin_producto_index') }}" class="btn btn-primary btn-sm">Atras</a></div>
+        <div class="col-md-2"> <a href="{{ path('admin_producto_edit', { 'id': producto.id }) }}" class="btn btn-primary btn-sm">Editar</a></div>
+        <div class="col-md-2">
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete" class="btn btn-primary btn-sm">
             {{ form_end(delete_form) }}
-                    
-        </td></tr>
-</table>       
- </div> </div>             
+        </div>
+    </div>
+    </fieldset>
+</div>
+       
 
 {% endblock %}

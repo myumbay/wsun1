@@ -1,38 +1,44 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
-
 {% block bloque1 %}
-    <div class="table-responsive">
-     <div class="panel-heading">
-                <strong><span>Lista</span> de Productos</strong>
-            </div> 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombreproducto</th>
-                <th>Imagen</th>
-                <th>Codigoproducto</th>
-                <th>Precioproducto</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="box">
+    
+        <fieldset>
+            <legend class="text-center header">LISTA DE PRODUCTOS</legend>
+            <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+            <th class="col-sm-2">Nombre Producto</th>
+            <th class="col-sm-2">Código Producto</th>
+            <th class="col-sm-2">Estado</th>
+            <th class="col-sm-2">Precio</th>
+            <th class="col-sm-5">Acciones</th>
+        </tr>   
+  </thead>
+    <tbody>
         {% for producto in productos %}
             <tr>
-                <td><a href="{{ path('admin_producto_show', { 'id': producto.id }) }}">{{ producto.id }}</a></td>
+{#                <td><a href="{{ path('admin_producto_show', { 'id': producto.id }) }}">{{ producto.id }}</a></td>#}
                 <td>{{ producto.nombreProducto }}</td>
-                <td>{{ producto.imagen }}</td>
                 <td>{{ producto.codigoProducto }}</td>
+                <td>{% if (producto.Estado=='1') %}
+                        <span class="text-success" > Habilidado</span>
+                        {% else %}
+                        <span class="text-danger" > No Habilidado</span>
+                    {% endif %}
+                </td> 
                 <td>{{ producto.precioProducto }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_producto_show', { 'id': producto.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_producto_edit', { 'id': producto.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-md-3">
+                         <a href= "{{ path('admin_producto_show', { 'id': producto.id }) }}" class="btn btn-primary btn-sm">show</a>
+                        </div>
+                         <div class="col-md-2">
+                         <a href= "{{ path('admin_producto_edit', { 'id': producto.id }) }}" class="btn btn-primary btn-sm">edit</a>
+                        </div>
+                        
+                    </div>
+                                       
+                   
                 </td>
             </tr>
         {% endfor %}

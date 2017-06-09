@@ -19,9 +19,7 @@ class CategoriaController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $categorias = $em->getRepository('WsunBundle:Categoria')->findAll();
-
         return $this->render('WsunBundle:categoria:index.html.twig', array(
             'categorias' => $categorias,
         ));
@@ -60,7 +58,7 @@ class CategoriaController extends Controller
     {
         $deleteForm = $this->createDeleteForm($categorium);
         $cat='Principal';
-        if($categorium->getPadre()!=null){
+        if($categorium->getPadre()!=null && $categorium->getEstado()=='1'){
             $cat=$categorium->getPadre()->getNombreCat();
         }
 

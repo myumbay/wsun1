@@ -30,7 +30,8 @@ div#slider > div {
    position:relative;
    margin-top:5px;
    margin: 0 auto;
-   height: 100%;
+   overflow-y:auto;
+   
    width: 900px;
    /*background-color: #CAC3C3;*/
 }  
@@ -138,4 +139,9 @@ z-index:1;
     float:left;
     margin-left: 0;
 }
-
+#img-location{
+    position:absolute;
+    padding-left:650px;
+    float:right;
+    /*border: 1px solid red;*/
+}

@@ -20,7 +20,7 @@ class SearchIndexer {
     {        
         $user = $this->tokenStorage->getToken()->getUser();        
         $entity = $args->getEntity();
-        var_dump($entity);
+        //var_dump($entity);
         if ($entity instanceof Pedido)
         {
             $entity->setIdUsuario($user);

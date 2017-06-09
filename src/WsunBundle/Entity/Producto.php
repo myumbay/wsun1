@@ -57,6 +57,7 @@ class Producto
      */
     
     protected $observacion;
+
     
     /**
      * @var string
@@ -223,14 +224,13 @@ class Producto
      *
      * @return string 
      */
-//    public function getEstado() {
-//        return $this->estado;
-//    }
+
     public function getEstado() {
-    if ($this->estado===1) {
-        return TRUE;
-    }
-    return FALSE;
+        return (boolean)$this->estado;
+//    if ($this->estado===1) {
+//        return TRUE;
+//    }
+//    return FALSE;
     }
     
     /**

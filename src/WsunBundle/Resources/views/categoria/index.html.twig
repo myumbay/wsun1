@@ -21,9 +21,9 @@
                 <td><a href="{{ path('admin_categoria_show', { 'id': categorium.id }) }}">{{ categorium.nombreCat }}</a></td>
                 
                 <td>{% if(categorium.estado=='1')%}
-                    Categoria principal
+                    Sub-Categoria
                         {% else %}
-                        Sub - categoria
+                        Categoria Principal
                     {% endif %}
                    </td>
                 

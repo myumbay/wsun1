@@ -7,12 +7,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Liip\ImagineBundle\Imagine\Filter\Loader\ResizeFilterLoader;
 use WsunBundle\Form\ProductoType;
+use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * Producto controller.
  *
  */
 class ProductoController extends Controller
 {
+   private $session;
+    public function __construct() {
+        $this->session=new Session();
+    }
+    
     /**
      * Lists all producto entities.
      *
@@ -20,8 +26,8 @@ class ProductoController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $productos = $em->getRepository('WsunBundle:Producto')->findAll();
+        //$productos = $em->getRepository('WsunBundle:Producto')->findBy( array('estado' => '1'), array('nombreProducto' => 'ASC'));
+        $productos = $em->getRepository('WsunBundle:Producto')->findAll(array('nombreProducto' => 'ASC'));        
         return $this->render('WsunBundle:producto:index.html.twig', array(
             'productos' => $productos,
         ));
@@ -40,11 +46,12 @@ class ProductoController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
+                if(!$em->getRepository('WsunBundle:Producto')->findByNombreProducto(trim($producto->getNombreProducto())))
+                {
                     $file = $producto->getImagen();                    
                     $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
                     $producto->setImagen($file->getClientOriginalName());          
                     $em->persist($producto);
-                    
                     $narchivo = $producto->getId() . '.' . $file->getClientOriginalName(); 
                     //$image = new \Imagick('../Documentos/Productos/pastel.jpg' );
                     $file->move(realpath($path), $narchivo);  
@@ -55,8 +62,13 @@ class ProductoController extends Controller
                     $image->writeimage( '../Documentos/Productos/'.$narchivo );
                     $image->cropthumbnailimage(150, 150);
                     $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
-                    //$em->flush();
-            return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId()));
+                    $em->flush();
+                    return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId()));
+                } else{
+                    $mensaje = 'El producto ya esta registrado';
+                    $this->session->getFlashBag()->add("status",$mensaje);
+                    return $this->redirectToRoute('admin_producto_new');
+                }   
         }
 
         return $this->render('WsunBundle:producto:new.html.twig', array(
@@ -76,13 +88,13 @@ class ProductoController extends Controller
         $root = $this->get('kernel')->getRootDir();
         $url= '../Documentos/Productos/'.$img;
         $medidas=array();
-        $size=$this->getParameter('dimension_imagen1');
-        $medidas=$this->redimensionar($url,$size);
+        //$size=$this->getParameter('dimension_imagen1');
+       // $medidas=$this->redimensionar($url,$size);
         
         $deleteForm = $this->createDeleteForm($producto);
         return $this->render('WsunBundle:producto:show.html.twig', array(
             'url'=>$url,
-            'medidas'=>$medidas,
+            //'medidas'=>$medidas,
             'producto' => $producto,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -116,31 +128,34 @@ public function redimensionar($src, $ancho_forzado){
         $editForm->handleRequest($request);
         $img = $producto->getId().'.'.$producto->getImagen();
         $url= '../Documentos/Productos/'.$img;
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+    
+        if ($editForm->isSubmitted()) {
+            
             $em = $this->getDoctrine()->getManager();
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-                    $file = $producto->getImagen();                    
-                    $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
+                    $file = $producto->getImagen(); 
+                    if($file){
+                    $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/Products/";
                     $producto->setImagen($file->getClientOriginalName());          
-                    $em->persist($producto);
-                    $em->flush();
-                    $this->getDoctrine()->getManager()->flush();
+                   
                     $narchivo = $producto->getId() . '.' . $file->getClientOriginalName();                    
                     $file->move(realpath($path), $narchivo); 
                     $t1=$this->getParameter('imagesize2');//$request->get('imagesixe2');
                     $t2=$this->getParameter('imagesize1');
                     $image = new \Imagick('../Documentos/Productos/'.$narchivo );
-                    $image->cropthumbnailimage($t1, $t1);
-                    //Guarda el archivo mas corto
-                    //$image->writeimage( '../Documentos/Productos/imagen_thumb.png' );
-                    $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
-                    $image->cropthumbnailimage($t2, $t2);
-                    $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
-            return $this->redirectToRoute('admin_producto_edit', array('id' => $producto->getId()));
+                                           $image->cropthumbnailimage($t1, $t1);
+                        $image->writeimage( '../Documentos/Productos/'.$narchivo );
+                        $image->cropthumbnailimage($t2, $t2);
+                        $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
+                    }
+                    $em->persist($producto);
+                    $em->flush();
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId()));
         }
 
         return $this->render('WsunBundle:producto:edit.html.twig', array(
-        'img'=>$img,
+        'url'=>$url,
             'producto' => $producto,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
