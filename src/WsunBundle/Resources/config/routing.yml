@@ -30,3 +30,7 @@ wsun_pedido:
 wsun_detallepedido:
         resource: "@WsunBundle/Resources/config/routing/detallepedido.yml"
         prefix:   /detallepedido
+admin_productos_empresa_index:
+        path:  /addproducts
+        defaults: { _controller: WsunBundle:Default:addProducts }
+

@@ -121,4 +121,28 @@ class EmpresaController extends Controller
             ->getForm()
         ;
     }
+    
+      public function empresaAutocompleteAction(Request $request) {
+        $query = $request->get('query');
+
+       
+
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('wsunBundle:Empresa', 'emp');
+        $qb->select('emp.nombreEmp, emp.ruc, emp.id');
+        $qb->andWhere($qb->expr()->like($qb->expr()->lower('emp.nombreEmp'), $qb->expr()->lower(":nombre")));
+        $qb->orWhere($qb->expr()->like($qb->expr()->lower('emp.ruc'), $qb->expr()->lower(":nombre")));
+        $qb->setParameter('nombre', "%{$query}%");
+        
+        $qb->setMaxResults(20);
+        $rows = $qb->getQuery()->execute();
+        $results = array();
+        foreach ($rows as $row) {
+            $results[$row['id']] = array('value' => "{$row['nombreEmp']} ({$row['ruc']})", 'data' => $row['id']);
+        }
+        $response = new Response(json_encode(array('query' => $query, 'suggestions' => $results)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 }

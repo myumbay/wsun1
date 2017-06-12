@@ -1,0 +1,85 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    
+<div class="box">
+     <div class="row">
+                        <div class="col-xs-12">
+                            <h4>CONVENIO: </h4>
+                            <div class="form-group">
+                                <div class="col-xs-12" id="autocomplete_container_empresa">
+                                    <div class="input-group">
+                                        <input type="text" class="typeahead empresa form-control input-sm" id="id_empresa" placeholder="Buscar convenio">
+                                        <span class="input-group-btn">
+                                            <button id="btnBuscarConvenio" class="btn btn-primary btn-sm" type="button" onclick="aceptar_convenio();
+                                                    return false;">Buscar Productos</button>
+                                        </span>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-warning btn-sm" type="button" onclick="limpiarConvenio();
+                                                    return false;"><span class="glyphicon glyphicon-refresh"></span> Limpiar</button>
+                                        </span>
+                                        <input type="hidden" name="empresaId" id="empresaId"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<table class="table table-bordered table-hover table-striped head-fixed table-condensed2">
+    <thead>
+    <tr>
+        <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
+        <th>Producto</th>
+    </tr>
+    </thead>
+    <tbody id="tablaProducts">
+        {% set contador = 1 %}
+        {% for producto in productos %}
+        <tr>
+            <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/></td>
+            <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.nombreProducto }} {{ (producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
+            
+        </tr>
+        {% set contador = contador + 1 %}
+    {% else %}
+        <tr>
+            <td colspan="3">
+                No se encontraron resultados
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    
+</div>
+{%endblock%}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            inicializarAutocompleteEmpresa();
+        });
+       
+     function inicializarAutocompleteEmpresa(){
+         alert('hola');
+            {#$('.typeahead.empresa').autocomplete(
+                {
+                    minChars: 3,
+                    serviceUrl: '{{ path('wsun_empresa_autocomplete') }},
+                    onSelect: function(suggestion) {
+                        $id_empresa = suggestion.data;
+                        $('#empresaId').val($id_empresa);
+                        $("#div_producto").hide();
+                        $("#btnBuscarConvenio").prop('disabled', false);
+                    }
+                    ,
+                    autoSelect: true,
+                    autoFocus: true,
+                    appendTo: '#autocomplete_container_empresa'
+                }
+            );#}
+        }
+        var aceptar_empresa = function() {
+        }
+        </script>
+{%endblock%}

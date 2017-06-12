@@ -22,3 +22,6 @@ empresa_delete:
     path:     /{id}/delete
     defaults: { _controller: "WsunBundle:Empresa:delete" }
     methods:  DELETE
+wsun_empresa_autocomplete:
+    path:  /empresa/autocomplete
+    defaults: { _controller: WsunBundle:Empresa:EmpresaAutocomplete }
