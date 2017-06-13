@@ -5,6 +5,7 @@ namespace WsunBundle\Controller;
 use WsunBundle\Entity\Empresa;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Empresa controller.
@@ -125,11 +126,9 @@ class EmpresaController extends Controller
       public function empresaAutocompleteAction(Request $request) {
         $query = $request->get('query');
 
-       
-
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
-        $qb->from('wsunBundle:Empresa', 'emp');
+        $qb->from('WsunBundle:Empresa', 'emp');
         $qb->select('emp.nombreEmp, emp.ruc, emp.id');
         $qb->andWhere($qb->expr()->like($qb->expr()->lower('emp.nombreEmp'), $qb->expr()->lower(":nombre")));
         $qb->orWhere($qb->expr()->like($qb->expr()->lower('emp.ruc'), $qb->expr()->lower(":nombre")));
@@ -137,6 +136,7 @@ class EmpresaController extends Controller
         
         $qb->setMaxResults(20);
         $rows = $qb->getQuery()->execute();
+        
         $results = array();
         foreach ($rows as $row) {
             $results[$row['id']] = array('value' => "{$row['nombreEmp']} ({$row['ruc']})", 'data' => $row['id']);
@@ -144,5 +144,71 @@ class EmpresaController extends Controller
         $response = new Response(json_encode(array('query' => $query, 'suggestions' => $results)));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+    public function EmpresaGuardarAction(Request $request)
+    {
+//        var_dump('hola');die;
+        $mensaje = "";
+        $empresa_id = $request->request->get('empresa_id');
+        $idsProductos = $request->request->get('ids_productos');
+        $capacidades = trim($request->request->get('capacidades'));
+       
+         if ($capacidades == '' || $idsProductos == '') {
+                    $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'LOS DATOS PROPORCIONADOS SON INCORRECTOS')));
+                    $response->headers->set('Content-Type', 'application/json');
+                    return $response;
+                }
+        
+         if ($empresa_id == '') {
+                $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'NO EXISTE UNA EMPRESA SELECCIONADA')));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }
+        $idsProductos = explode(',', $idsProductos);
+        $capacidades = explode(',', $capacidades);
+        $contador = 0;
+        foreach ($idsProductos as $ids) {
+                    $capacidadProducto[$ids] = $capacidades[$contador];
+                    $contador ++;
+                }
+        $proNoEncontrados = '';
+                $productosEspecificos = 0;
+                if (is_array($idsProductos) && count($idsProductos) > 0) {
+                    $productosEspecificos = $em->getRepository('SercopComunBundle:ProductoEspecifico')->findBy(array('id' => $idsProductos));
+                    if ($productosEspecificos) {
+                        if (count($productosEspecificos) != count($idsProductos)) {
+                            foreach ($idsProductos as $ids) {
+                                $encontrado = false;
+                                foreach ($productosEspecificos as $productos) {
+                                    if ($ids == $productos->getId()) {
+                                        $encontrado = true;
+                                        break;
+                                    }
+                                }
+                                if (!$encontrado) {
+                                    $proNoEncontrados.=$ids . ",";
+                                }
+                            }
+                            $response = new Response(json_encode(array('error' => 1, 'mensaje' => "ProductosNoEncontrados: " . $proNoEncontrados)));
+                            $response->headers->set('Content-Type', 'application/json');
+                            return $response;
+                        }
+                    } else {
+                        //echo "No existen productos<br>";
+                        $response = new Response(json_encode(array('error' => 1, 'mensaje' => "NO EXISTEN PRODUCTOS")));
+                        $response->headers->set('Content-Type', 'application/json');
+                        return $response;
+                    }
+                } else {
+                    $response = new Response(json_encode(array('error' => 1, 'mensaje' => "LA LISTA DE PRODUCTOS ES INCORRECTA")));
+                    $response->headers->set('Content-Type', 'application/json');
+                    return $response;
+                }
+                
+        $mensaje .= '<strong>EMPRESA:</strong> ' . $empresa_id . '<br>';
+         
+        $response = new Response(json_encode(array('error' => 0, 'mensaje' => $mensaje)));
+        $response->headers->set('Content-Type', 'application/json');
+                return $response;
     }
 }

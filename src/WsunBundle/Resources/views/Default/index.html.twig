@@ -75,7 +75,7 @@
 </div>
                     </div>
  <div id="pie">
-     <h3>Guamani /3069404 /3069432 / 0985315665 </h3>
+     <h3>Isla Genovesa N. 42-118 y Tomás de Berlanga, Quito /226803 / 2920660 /2921385 </h3>
                 
                 Todos los derechos reservados
             </div>
@@ -98,9 +98,9 @@
     }
     buscar_global = function() {
         if ($('#buscar_input').val() !== '') {
-            window.location = '{ path('wsun_buscar') }}?valor=' + $('#buscar_input').val();
+            window.location = '{{ path('wsun_buscar') }}?valor=' + $('#buscar_input').val();
         } else {
-            window.location = '{ path('wsun_buscar') }}';
+            window.location = '{{ path('wsun_buscar') }}';
         }
         return false;
     };

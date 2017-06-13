@@ -3,20 +3,22 @@
 {% block bloque1 %}
     
 <div class="box">
+    
      <div class="row">
                         <div class="col-xs-12">
-                            <h4>CONVENIO: </h4>
+                            <h4>Empresa: </h4>
                             <div class="form-group">
                                 <div class="col-xs-12" id="autocomplete_container_empresa">
                                     <div class="input-group">
-                                        <input type="text" class="typeahead empresa form-control input-sm" id="id_empresa" placeholder="Buscar convenio">
+                                        <input type="text" class="typeahead empresa form-control input-sm" id="ruc" placeholder="Buscar empresa">
+                                        
                                         <span class="input-group-btn">
-                                            <button id="btnBuscarConvenio" class="btn btn-primary btn-sm" type="button" onclick="aceptar_convenio();
-                                                    return false;">Buscar Productos</button>
+                                            <button class="btn btn-warning btn-sm" type="button" onclick="limpiarEmpresa();
+                                                    return false;"><span class="glyphicon glyphicon-refresh"></span> Limpiar</button>
                                         </span>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-warning btn-sm" type="button" onclick="limpiarConvenio();
-                                                    return false;"><span class="glyphicon glyphicon-refresh"></span> Limpiar</button>
+                                            <button id="btnGuardarEmpresa" class="btn btn-primary btn-sm" type="button" onclick="guardar();
+                                                    return false;">Guardar</button>
                                         </span>
                                         <input type="hidden" name="empresaId" id="empresaId"/>
                                     </div>
@@ -24,6 +26,7 @@
                             </div>
                         </div>
                     </div>
+
 <table class="table table-bordered table-hover table-striped head-fixed table-condensed2">
     <thead>
     <tr>
@@ -37,7 +40,7 @@
         <tr>
             <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/></td>
             <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.nombreProducto }} {{ (producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
-            
+            <td><input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ producto.id }}" name="productos[{{ producto.id }}][capacidad]" /></td>
         </tr>
         {% set contador = contador + 1 %}
     {% else %}
@@ -49,7 +52,9 @@
     {% endfor %}
     </tbody>
 </table>
-    
+     <tbody id="respuesta">
+                        
+                    </tbody>
 </div>
 {%endblock%}
 {% block javascripts %}
@@ -57,29 +62,128 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            inicializarAutocompleteEmpresa();
+            $("#seleccionarTodos").click(function() {
+            if ($(this).is(':checked')) {
+                $(".selProducto").prop("checked", true);
+            }else{
+                $(".selProducto").prop("checked", false);
+            }
         });
-       
-     function inicializarAutocompleteEmpresa(){
-         alert('hola');
-            {#$('.typeahead.empresa').autocomplete(
-                {
-                    minChars: 3,
-                    serviceUrl: '{{ path('wsun_empresa_autocomplete') }},
-                    onSelect: function(suggestion) {
-                        $id_empresa = suggestion.data;
-                        $('#empresaId').val($id_empresa);
-                        $("#div_producto").hide();
-                        $("#btnBuscarConvenio").prop('disabled', false);
+            $('.typeahead.empresa').autocomplete(
+                    {
+                        minChars: 3,
+                        serviceUrl: '{{ path('wsun_empresa_autocomplete') }}',
+                        onSelect: function(suggestion) {
+                             $id_convenio = suggestion.data;
+                            $('#empresaId').val($id_convenio);
+                            //$("#div_producto").hide();
+                             $("#btnGuardarEmpresa").prop('disabled', false);
+                        }
+                        ,
+                        autoSelect: true,
+                        autoFocus: true,
+                        appendTo: '#autocomplete_container_empresa'
                     }
-                    ,
-                    autoSelect: true,
-                    autoFocus: true,
-                    appendTo: '#autocomplete_container_empresa'
-                }
-            );#}
+            );
+        });
+       var limpiarEmpresa = function(){
+            $("#ruc").val('');
+            $('#empresaId').val('');
+            $("#ruc").prop('disabled',false);
+            $("#btnBuscarEmpresa").prop('disabled', true);
+
         }
-        var aceptar_empresa = function() {
+        var validarProductos = function () {
+            var banCapacidadproductiva = true;
+            if ($('#empresaId').val() =='' ){
+                alert('Seleccione una Empresa.');
+                return false;
+            }
+
+            if ($('#tablaProducts input[type=checkbox]:checked').length ==0){
+                alert('Seleccione un producto');
+                return false;
+            }
+            
+            $('#tablaProducts input[type=checkbox]:checked').each(function () {
+                     
+                    var idProducto = $(this).val();
+                    if ($('#capacidad' + idProducto).val() == '') {
+                        alert('Ingrese capacidad Productiva');
+                        $('#capacidad' + idProducto).focus();
+                        banCapacidadproductiva = false;
+                        return false;
+                    } else if (isNaN($('#capacidad' + idProducto).val()) || $('#capacidad' + idProducto).val() % 1 != 0) {
+                        alert('Capacidad Productiva invalida, ingrese solo números enteros.');
+                        $('#capacidad' + idProducto).focus();
+                        banCapacidadproductiva = false;
+                        return false;
+                    } 
+                    else if (!parseInt($('#capacidad' + idProducto).val())) {
+                        alert('Ingrese capacidad Productiva');
+                        $('#capacidad' + idProducto).val('');
+                        $('#capacidad' + idProducto).focus();
+                        banCapacidadproductiva = false;
+                        return false;
+                    }
+                });
+                
+                if (!banCapacidadproductiva) {
+                    return false;
+                }
+                
+            return true;
+        };
+        var guardar = function () {
+            if (!validarProductos()){
+                return false;
+            }
+            var empresa_id = $('#empresaId').val();
+            
+            var producto = '';
+            var capacidades= '';
+             $('#tablaProducts input[type=checkbox]:checked').each(function () {
+                var idProducto = $(this).val();
+                var capacidad = $('#capacidad' + idProducto).val();
+                
+                producto +=  idProducto+',';
+                capacidades+= (capacidad?capacidad:'--')+',';
+            });
+            producto = producto.slice(0,-1);
+            capacidades = capacidades.slice(0,-1);
+            var contador = 1;
+            var errores=0;
+            $.ajax({
+                    async:false,
+                    complete: function(xhr, data)
+                    {
+                        if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != - 1){
+                            //location.reload();
+                             console.log('looooo');
+                        }
+                    },
+                   
+                    method: 'POST',
+                    data: { 'ids_productos':producto,  'empresa_id':empresa_id, 'capacidades':capacidades },
+                    url: "{{ path('admin_guarda_producto_empresa')}}",
+                    context: document.body
+                }).done(function(dataJson) {
+                   
+                   /*if (dataJson['error']==1){
+                        $('#respuesta').html('<strong style="color:red;">'+dataJson['mensaje']+'</strong>');
+                        errores=1;
+                    } else if(dataJson['error']==2){
+                        $('#respuesta').append('<tr class="danger"><td width="100">'+contador+'</td><td><div><strong style="color:red;">'+dataJson['mensaje']+'</strong></div></td></tr>');
+                    } else if(dataJson['error']==0){
+                        $('#respuesta').append('<tr><td width="100">'+contador+'</td><td><div>'+dataJson['mensaje']+'</div></td></tr>');
+                    }*/
+                    contador += 1;
+                });
+                if (errores){
+                    return false;
+                }
+        }; 
+       var aceptar_empresa = function() {
         }
         </script>
 {%endblock%}

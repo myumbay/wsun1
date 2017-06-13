@@ -25,3 +25,6 @@ empresa_delete:
 wsun_empresa_autocomplete:
     path:  /empresa/autocomplete
     defaults: { _controller: WsunBundle:Empresa:EmpresaAutocomplete }
+admin_guarda_producto_empresa:
+    path:  /empresa/guardar
+    defaults: { _controller: WsunBundle:Empresa:EmpresaGuardar }
