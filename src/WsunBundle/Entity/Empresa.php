@@ -94,16 +94,12 @@ class Empresa
      * })
      */
     private $idubicacion;
-
+    
     /**
-     * @ORM\ManyToMany(targetEntity="Producto")
-     * @ORM\JoinTable(name="empresa_producto",
-     *      joinColumns={@ORM\JoinColumn(name="empresa_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id", unique=true)}
-     *      )
-     */
-
+    * @ORM\OneToMany(targetEntity="WsunBundle\Entity\EmpresaProducto", mappedBy="empresa", cascade={"persist"})
+    */
     private $empresaProducto;
+
 
     public function __construct() {
         $this->empresaProducto = new \Doctrine\Common\Collections\ArrayCollection();

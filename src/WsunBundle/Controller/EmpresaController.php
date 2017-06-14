@@ -6,7 +6,7 @@ use WsunBundle\Entity\Empresa;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use WsunBundle\Entity\EmpresaProducto;
 /**
  * Empresa controller.
  *
@@ -147,7 +147,7 @@ class EmpresaController extends Controller
     }
     public function EmpresaGuardarAction(Request $request)
     {
-//        var_dump('hola');die;
+       try{
         $mensaje = "";
         $empresa_id = $request->request->get('empresa_id');
         $idsProductos = $request->request->get('ids_productos');
@@ -172,43 +172,50 @@ class EmpresaController extends Controller
                     $contador ++;
                 }
         $proNoEncontrados = '';
-                $productosEspecificos = 0;
-                if (is_array($idsProductos) && count($idsProductos) > 0) {
-                    $productosEspecificos = $em->getRepository('SercopComunBundle:ProductoEspecifico')->findBy(array('id' => $idsProductos));
-                    if ($productosEspecificos) {
-                        if (count($productosEspecificos) != count($idsProductos)) {
-                            foreach ($idsProductos as $ids) {
-                                $encontrado = false;
-                                foreach ($productosEspecificos as $productos) {
-                                    if ($ids == $productos->getId()) {
-                                        $encontrado = true;
-                                        break;
-                                    }
-                                }
-                                if (!$encontrado) {
-                                    $proNoEncontrados.=$ids . ",";
-                                }
-                            }
-                            $response = new Response(json_encode(array('error' => 1, 'mensaje' => "ProductosNoEncontrados: " . $proNoEncontrados)));
-                            $response->headers->set('Content-Type', 'application/json');
-                            return $response;
-                        }
-                    } else {
-                        //echo "No existen productos<br>";
-                        $response = new Response(json_encode(array('error' => 1, 'mensaje' => "NO EXISTEN PRODUCTOS")));
+        $productos = 0;
+        $em = $this->getDoctrine()->getManager();
+        $empresa=$em->getRepository('WsunBundle:Empresa')->find($empresa_id);
+     
+        if (is_array($idsProductos) && count($idsProductos) > 0) {
+            for($i=0;$i<count($idsProductos);$i++)
+            {
+                $Emproductos = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('producto' => $idsProductos[$i],'empresa' =>$empresa_id));
+                
+                if($Emproductos)
+                {
+                    $Emproductos = $Emproductos[0];
+                    if($Emproductos->getCapacidad()>$capacidades[$i]){
+                        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'No guardados!! El valor '.$capacidades[$i].' no debe ser menor que'. $Emproductos->getCapacidad().'  debido a que el valor ya deben estar repartidos en los diferentes departamentos')));
                         $response->headers->set('Content-Type', 'application/json');
                         return $response;
+                    }else {
+                        $Emproductos->setCapacidad($capacidades[$i]);
+                        $em->persist($Emproductos);
                     }
-                } else {
-                    $response = new Response(json_encode(array('error' => 1, 'mensaje' => "LA LISTA DE PRODUCTOS ES INCORRECTA")));
-                    $response->headers->set('Content-Type', 'application/json');
-                    return $response;
-                }
-                
-        $mensaje .= '<strong>EMPRESA:</strong> ' . $empresa_id . '<br>';
+                }else{
+                    $hoy = new \DateTime("now");
+                    $prod= $em->getRepository('WsunBundle:Producto')->find($idsProductos[$i]);
+                    $empPr = new EmpresaProducto();
+                    $empPr->setEmpresa($empresa);
+                    $empPr->setProducto($prod);
+                    $empPr->setCapacidad($capacidades[$i]);
+                    $empPr->setCreated($hoy);
+                    $em->persist($empPr);
+                    }
+               $em->flush();
+               $mensaje .= '<strong> DATOS GUARDADOS EMPRESA: </strong> ' . $empresa->getNombreEmp() . '<br>';
+            }
+
+            }
+           
+         } catch (\Exception $e) {
+            $mensaje = "Error al Guardar los datos.";
+            
+        }    
+        
          
-        $response = new Response(json_encode(array('error' => 0, 'mensaje' => $mensaje)));
+        $response = new Response(json_encode(array('error' => 1,'mensaje' => $mensaje)));
         $response->headers->set('Content-Type', 'application/json');
-                return $response;
+        return $response;
     }
 }

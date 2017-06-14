@@ -74,6 +74,12 @@ class Producto
      * })
      */
     protected $categoria;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="WsunBundle\Entity\EmpresaProducto", mappedBy="producto", cascade={"persist"})
+    */
+    private $empresaProducto;
+    
     public function __construct() {
         $this->categoriasParaAgregar = new \Doctrine\Common\Collections\ArrayCollection();
        
