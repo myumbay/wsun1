@@ -1,7 +1,9 @@
-wsun_productos_empresa_index:
-    path: /addproducts 
-    defaults: { _controller: WsunBundle:Default:addProducts }
-    methods: POST
+admin_productos_empresa_index:
+    path:  /addproducts/{id}    
+    defaults: { _controller: WsunBundle:Default:addProducts,id: 1 }
+    requirements:
+        _method:  GET|POST
+    
 wsun_admin_departamento:
     resource: "@WsunBundle/Resources/config/routing/departamento.yml"
     prefix:   /admin/departamento
@@ -16,8 +18,8 @@ wsun_contactos:
     defaults: { _controller: WsunBundle:Default:contactos }
 
 wsun_buscar:
-    path:  /contactos1
-    defaults: { _controller: WsunBundle:Default:contactos }
+    path:     /buscar
+    defaults: { _controller: WsunBundle:Producto:buscar }
 
 wsun_empresa:
     resource: "@WsunBundle/Resources/config/routing/empresa.yml"
@@ -39,5 +41,16 @@ wsun_detallepedido:
         resource: "@WsunBundle/Resources/config/routing/detallepedido.yml"
         prefix:   /detallepedido
         
+wsun_admin_user:
+        resource: "@WsunBundle/Resources/config/routing/user.yml"
+        prefix:   /admin/user
+wsun_admin_role:
+        resource: "@WsunBundle/Resources/config/routing/role.yml"
+        prefix:   /admin/role
+
+WsunAnnotations:
+    resource: "@WsunBundle/Controller/"
+    prefix:   /
+    type:     annotation         
 
 

@@ -16,6 +16,7 @@
                                             <button class="btn btn-warning btn-sm" type="button" onclick="limpiarEmpresa();
                                                     return false;"><span class="glyphicon glyphicon-refresh"></span> Limpiar</button>
                                         </span>
+{#                                        <a href ="{{path('admin_productos_empresa_index',{'id' : '1'|default('1')})}}">Agregar Productos</a>#}
                                         <span class="input-group-btn">
                                             <button id="btnBuscarProductos" class="btn btn-primary btn-sm" type="button" onclick="aceptar_convenio();
                                                     return false;">Buscar Productos</button>
@@ -107,23 +108,11 @@
             if ($('#empresaId').val() == ''){
                 alert("Por favor, seleccione una Empresa");
                 return false;
-            } else {
-                $("#ruc").prop('disabled',true);
-                $("#btnBuscarproducto").prop('disabled', true);
-                //Consultar Cobertura
-                /*$.ajax({
-                    method: 'POST',
-                    data: {'id':$('#empresaId').val() },
-                    url: "{{ path('admin_productos_empresa_index') }}",
-                    context: document.body
-                });//.done(function(data) {*/
-                        //$('#form_area').html(data);
-                    //});
-
-            }    
+            }
+            var id_empresa = $('#empresaId').val();
+            document.location.href = "{{path('admin_productos_empresa_index',{'id' : id_empresa |default('1')})}}";
+    
         }
-        
-        
         
         var validarProductos = function () {
             var banCapacidadproductiva = true;

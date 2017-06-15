@@ -23,9 +23,11 @@
         {% block body %}{% endblock %}
         {% block javascripts %}
         
-            {% javascripts            
-            '@WsunBundle/Resources/public/js/jquery-2.1.4.min.js'
-            '@WsunBundle/Resources/public/js/bootstrap.min.js'            
+            {% javascripts    
+            
+            'bundles/wsun/js/jquery-2.1.4.min.js'
+            'bundles/wsun/js/bootstrap.min.js' 
+            'bundles/wsun/js/jQuery-Autocomplete-1.2.9/dist/jquery.autocomplete.min.js'
             output='bundles/wsun/js/' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}

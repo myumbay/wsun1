@@ -27,9 +27,12 @@
 !bin/symfony_requirements
 
 # Assets and user uploads
-/web/bundles/
-/web/uploads/
 
+vendor/*
+web/bundles/*
+web/css/*
+web/js/*
+web/uploads/*
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
@@ -39,3 +42,5 @@
 
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
+
+/vendor/*

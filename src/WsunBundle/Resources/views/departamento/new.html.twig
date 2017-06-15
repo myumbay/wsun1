@@ -1,7 +1,13 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
+        
 <div class="box">
+    {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor%}
     <div class="panel-body">
     <div class="panel2">
             <div class="panel-heading">
@@ -19,6 +25,10 @@
       <div class="row">
         <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.telefono)}}   </div>
         <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.telefono)}}</div>
+      </div>
+       <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.valor)}}   </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.valor)}}</div>
       </div>
       <div class="row">
         <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Empresa   </div>

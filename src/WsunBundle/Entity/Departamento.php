@@ -28,7 +28,12 @@ class Departamento
      * @ORM\Column(name="nombre_dep", type="string", length=50, nullable=true)
      */
     private $nombreDep;
-
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="valor", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $valor;
     /**
      * @var string
      *
@@ -88,7 +93,31 @@ class Departamento
     {
         return $this->nombreDep;
     }
+    
+    /**
+     * Set limiteOrden
+     *
+     * @param float $valor
+     *
+     * @return Departamento
+     */
+    public function setValor($valor)
+    {
+        $this->valor = $valor;
 
+        return $this;
+    }
+
+    /**
+     * Get valor
+     *
+     * @return float
+     */
+    public function getValor()
+    {
+        return $this->valor;
+    }
+    
     /**
      * Set responsable
      *

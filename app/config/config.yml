@@ -9,6 +9,8 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    imagesize1: 150
+    imagesize2: 300
     #your_root_path_parameter: /var/www/html/wsun/Documentos/Productos/
 framework:
     #esi: ~

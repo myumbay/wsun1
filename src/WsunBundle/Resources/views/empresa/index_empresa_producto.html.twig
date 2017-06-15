@@ -1,45 +1,46 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-<div class="table-responsive">
-    <div class="panel-heading">
+<div class="box">
+    
+        <fieldset>
+             <div class="panel-heading">
                 <strong><span>Lista</span> de Empresas</strong>
             </div> 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Ruc</th>
-                <th>Nombre Empresa</th>
-                <th>Tel&#233;fono</th>
-                <th>Direcci&#243;n</th>
-                <th>Email</th>
-              
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for empresa in empresas %}
+            <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+            <th>Id</th>
+            <th>Nombre del Producto</th>
+            <th>Capacidad</th>
+            <th>Estado</th>
+            
+            <th>Actions</th>
+        </tr>   
+  </thead>
+  <tbody>
+        {% for empresa in empresaP %}
             <tr>
                 <td><a href="{{ path('empresa_show', { 'id': empresa.id }) }}">{{ empresa.id }}</a></td>
-                <td>{{ empresa.ruc }}</td>
-                <td>{{ empresa.nombreEmp }}</td>
-                <td>{{ empresa.telefonoEmp }}</td>
-                <td>{{ empresa.direccionEmp }}</td>
-                <td>{{ empresa.email }}</td>
-                
+                <td>{{ empresa.producto.nombreProducto }}</td>
+                <td>{{ empresa.capacidad }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('empresa_show', { 'id': empresa.id }) }}">
-                                <span class="glyphicon glyphicon-plus"> Ver</span></a>
-                        </li>
-                        <li>
-                            <a href="{{ path('empresa_edit', { 'id': empresa.id }) }}">
-                                <span class="glyphicon glyphicon-pencil"> Ver</span></a>
-                                </a>
-                        </li>
-                    </ul>
+                    {% if (empresa.producto.estado)=='1' %}
+                        Activo
+                    {%else%} 
+                        Inactivo
+                    {% endif %}
+                    
+                </td>
+                   <td>
+                    <div class="row">
+                        <div class="col-md-3">
+                         <a href= "{{ path('admin_empresa_producto_delete', { 'id': empresa.id }) }}" class="btn btn-primary btn-sm">Borrar</a>
+                        </div>
+                         
+                    </div>
+                    </td> 
+                                        
                 </td>
             </tr>
         {% endfor %}

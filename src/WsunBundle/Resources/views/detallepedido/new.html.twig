@@ -3,7 +3,7 @@
 {% block bloque1 %}
 
     {% for message in app.session.flashbag().get('status')%}
-        <div class="alert alert-success">
+        <div class="alert alert-danger">
             {{message}}
         </div>
     {% endfor%}

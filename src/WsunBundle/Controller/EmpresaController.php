@@ -218,4 +218,31 @@ class EmpresaController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+    
+    public function showProductosAction(Request $request)
+    {
+        $id=$request->query->get("id");
+        $em = $this->getDoctrine()->getManager();
+        $empresasP = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('empresa'=>$id));
+//        $deleteForm = $this->createDeleteForm($empresa);
+//
+        return $this->render('WsunBundle:empresa:index_empresa_producto.html.twig', array(
+            'empresaP' => $empresasP
+            //'delete_form' => $deleteForm->createView(),
+       ));
+    }
+    public function DeleteProductosAction(Request $request)
+    {
+        $id=$request->query->get("id");
+        var_dump($id);die;
+        
+//        $em = $this->getDoctrine()->getManager();
+//        $empresasP = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('empresa'=>$id));
+////        $deleteForm = $this->createDeleteForm($empresa);
+////
+//        return $this->render('WsunBundle:empresa:index_empresa_producto.html.twig', array(
+//            'empresaP' => $empresasP
+//            //'delete_form' => $deleteForm->createView(),
+//       ));
+    }
 }

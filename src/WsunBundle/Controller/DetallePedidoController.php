@@ -54,7 +54,7 @@ class DetallePedidoController extends Controller
              
              $detallePedido->setIdPedido($pedido); 
              $em->persist($detallePedido);
-            // $em->flush();
+             $em->flush();
              return $this->redirectToRoute('detallepedido_index', array('id' => $detallePedido->getIdPedido()->getId()));
             //return $this->redirectToRoute('detallepedido_show', array('id' => $detallePedido->getId()));
         }

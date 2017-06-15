@@ -18,6 +18,7 @@ class DepartamentoType extends AbstractType
                 ->add('nombreDep',  TextType::class,array('label'=>'Nombre Departamento:'))
                 ->add('responsable' ,  TextType::class,array('label'=>'Nombre Responsable:'))//, array("attr"=>array("class"=>"form form-control")))
                 ->add('telefono', TextType::class,array('label'=>'Telf.:'))
+                ->add('valor', TextType::class,array('label'=>'Valor:'))
                 ->add('idEmpresa');
                 ;
         
