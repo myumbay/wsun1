@@ -55,13 +55,13 @@ class ProductoController extends Controller
                     $narchivo = $producto->getId() . '.' . $file->getClientOriginalName(); 
                     //$image = new \Imagick('../Documentos/Productos/pastel.jpg' );
                     $file->move(realpath($path), $narchivo);  
-                    $image = new \Imagick('../Documentos/Productos/'.$narchivo );
-                    $image->cropthumbnailimage(300, 300);
+                    //$image = new \Imagick('../Documentos/Productos/'.$narchivo );
+                    //$image->cropthumbnailimage(300, 300);
                     //Guarda el archivo mas corto
                     //$image->writeimage( '../Documentos/Productos/imagen_thumb.png' );
-                    $image->writeimage( '../Documentos/Productos/'.$narchivo );
-                    $image->cropthumbnailimage(150, 150);
-                    $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
+                    //$image->writeimage( '../Documentos/Productos/'.$narchivo );
+                    //$image->cropthumbnailimage(150, 150);
+                    //$image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
                     $em->flush();
                     return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId()));
                 } else{
@@ -87,7 +87,7 @@ class ProductoController extends Controller
         $img= $producto->getId().'.'.$producto->getImagen();  
         $root = $this->get('kernel')->getRootDir();
         $url= '../Documentos/Productos/'.$img;
-        $medidas=array();
+        //$medidas=array();
         //$size=$this->getParameter('dimension_imagen1');
        // $medidas=$this->redimensionar($url,$size);
         
@@ -135,18 +135,18 @@ public function redimensionar($src, $ancho_forzado){
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
                     $file = $producto->getImagen(); 
                     if($file){
-                    $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/Products/";
+                    $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
                     $producto->setImagen($file->getClientOriginalName());          
                    
                     $narchivo = $producto->getId() . '.' . $file->getClientOriginalName();                    
                     $file->move(realpath($path), $narchivo); 
-                    $t1=$this->getParameter('imagesize2');//$request->get('imagesixe2');
-                    $t2=$this->getParameter('imagesize1');
-                    $image = new \Imagick('../Documentos/Productos/'.$narchivo );
-                                           $image->cropthumbnailimage($t1, $t1);
-                        $image->writeimage( '../Documentos/Productos/'.$narchivo );
-                        $image->cropthumbnailimage($t2, $t2);
-                        $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
+//                    $t1=$this->getParameter('imagesize2');//$request->get('imagesixe2');
+//                    $t2=$this->getParameter('imagesize1');
+//                    $image = new \Imagick('../Documentos/Productos/'.$narchivo );
+//                                           $image->cropthumbnailimage($t1, $t1);
+//                        $image->writeimage( '../Documentos/Productos/'.$narchivo );
+//                        $image->cropthumbnailimage($t2, $t2);
+//                        $image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
                     }
                     $em->persist($producto);
                     $em->flush();
