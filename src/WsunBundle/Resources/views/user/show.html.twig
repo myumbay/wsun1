@@ -1,40 +1,39 @@
-{% extends 'base.html.twig' %}
+{% extends 'WsunBundle:Default:index.html.twig'%}
 
-{% block body %}
-    <h1>User</h1>
-
-    <table>
+{% block bloque1 %}
+  <div class="box">
+    <fieldest>
+     <legend class="text-center header">Usuario</legend>
+     <table  width="50%" cellpadding="10"  > 
         <tbody>
             <tr>
-                <th>Id</th>
+                <th class=" align right">Id: </th>
                 <td>{{ user.id }}</td>
             </tr>
             <tr>
-                <th>Username</th>
+                <th class=" align right">Username:</th>
                 <td>{{ user.username }}</td>
             </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
+             <tr>
+                <th class=" align right">Ruc:</th>
+                <td>{{ user.ruc }}</td>
+            </tr>
+             <tr>
+                <th class=" align right">Correo:</th>
+                <td>{{ user.correo }}</td>
             </tr>
             <tr>
-                <th>Salt</th>
-                <td>{{ user.salt }}</td>
+                <th class=" align right">Departamento:</th>
+                <td>{{ user.departamento.nombreDep }}</td>
             </tr>
-        </tbody>
+     </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_user_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('admin_user_edit', { 'id': user.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    </fieldest>
+    <br>
+    <a href="{{ path('admin_user_index') }}">Volver</a><br>
+    <a href="{{ path('admin_user_edit', { 'id': user.id }) }}">Edit</a> <br>
+    {{ form_start(delete_form) }}
+        <input type="submit" value="Delete">
+    {{ form_end(delete_form) }}
+   
 {% endblock %}

@@ -1,16 +1,47 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <h1>User creation</h1>
+    <fieldest>
+     <legend class="text-center header">Nuevo Usuario</legend>
+    {{ form_start(form,{'class':"form-horizontal",'method':"POST"})}}
+    <table  width="90%" cellpadding="10"  > 
+         <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.username)}}</td>
+                <td> {{ form_widget(form.username) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.password)}}</td>
+                <td> {{ form_widget(form.password) }}</td>
+        </tr> 
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.ruc)}}</td>
+                <td> {{ form_widget(form.ruc   ) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.correo)}}</td>
+                <td> {{ form_widget(form.correo) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.departamento)}}</td>
+                <td> {{ form_widget(form.departamento) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(form.user_roles)}}</td>
+                <td> {{ form_widget(form.user_roles) }}</td>
+        </tr>
+        <div class="row">
+            <div class="col-md-3">
+            <input type="submit" value="Create" />
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-info" href="{{ path('admin_user_index') }}">Regresar</a>
+            </div>
+             </div>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    </table>
+        
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_user_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    
 {% endblock %}
+
+

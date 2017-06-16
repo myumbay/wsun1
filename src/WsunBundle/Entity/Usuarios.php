@@ -19,7 +19,12 @@ class Usuarios implements UserInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ruc", type="string", length=50, nullable=true)
+     */
+    private $ruc;
     /**
     * @ORM\Column(type="string", length=255)
     */
@@ -34,6 +39,22 @@ class Usuarios implements UserInterface
      * @ORM\Column(name="salt", type="string", length=255)
      */
     protected $salt;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="correo", type="string", length=180, nullable=true)
+     */
+    private $correo;
+    /**
+     * @var \Departamento
+     *
+     * @ORM\ManyToOne(targetEntity="Departamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_departamento", referencedColumnName="id")
+     * })
+     */
+    private $departamento;
  
     /**
      * se utilizó user_roles para no hacer conflicto al aplicar ->toArray en getRoles()
@@ -69,7 +90,7 @@ class Usuarios implements UserInterface
     {
         $this->username = $username;
     }
- 
+     
     /**
      * Get username
      *
@@ -171,4 +192,75 @@ class Usuarios implements UserInterface
     public function eraseCredentials() {
  
     }
+    
+    /**
+     * Set departamento
+     *
+     * @param \WsunBundle\Entity\Departamento $departamento
+     *
+     * @return Departamento
+     */
+    public function setDepartamento(\WsunBundle\Entity\Departamento $departamento = null)
+    {
+        $this->departamento = $departamento;
+
+        return $this;
+    }
+
+    /**
+     * Get departamento
+     *
+     * @return \WsunBundle\Entity\Departamento
+     */
+    public function getDepartamento()
+    {
+        return $this->departamento;
+    }
+    /**
+     * Set ruc
+     *
+     * @param string $ruc
+     *
+     * @return Usuario
+     */
+    public function setRuc($ruc)
+    {
+        $this->ruc = $ruc;
+
+        return $this;
+    }
+
+    /**
+     * Get ruc
+     *
+     * @return string
+     */
+    public function getRuc()
+    {
+        return $this->ruc;
+    }
+    /**
+     * Set correo
+     *
+     * @param string $correo
+     *
+     * @return Usuario
+     */
+    public function setCorreo($correo)
+    {
+        $this->correo = $correo;
+
+        return $this;
+    }
+
+    /**
+     * Get correo
+     *
+     * @return string
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
 }

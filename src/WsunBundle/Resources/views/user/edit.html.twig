@@ -1,21 +1,53 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <h1>User edit</h1>
+    
+    <fieldest>
+     <legend class="text-center header">Edición de Usuario</legend>
+    
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+    {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"})}}
+    <table  width="90%" cellpadding="10"  > 
+         <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.username)}}</td>
+                <td> {{ form_widget(edit_form.username) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.password)}}</td>
+                <td> {{ form_widget(edit_form.password) }}</td>
+        </tr> 
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.ruc)}}</td>
+                <td> {{ form_widget(edit_form.ruc   ) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.correo)}}</td>
+                <td> {{ form_widget(edit_form.correo) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.departamento)}}</td>
+                <td> {{ form_widget(edit_form.departamento) }}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.user_roles)}}</td>
+                <td> {{ form_widget(edit_form.user_roles) }}</td>
+        </tr>
+        <div class="row">
+            <div class="col-md-3">
+            <input class="btn btn-info" type="submit" value="Edit" />
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-info" href="{{ path('admin_user_index') }}">Regresar</a>
+            </div>
+             </div>
+
+    </table>
+        
     {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_user_index') }}">Back to the list</a>
-        </li>
-        <li>
+            
+    <div class="col-md-3">
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+     </div>
 {% endblock %}

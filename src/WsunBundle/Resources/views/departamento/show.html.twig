@@ -32,7 +32,7 @@
     <tr><td> <a href="{{ path('admin_departamento_index') }}"><span class="glyphicon glyphicon-arrow-left"> volver</span></a></td></tr>
     <tr><td><a href="{{ path('admin_departamento_edit', { 'id': departamento.id }) }}"><span class="glyphicon glyphicon-arrow-left"> Editar</span></a></td></tr>
             <tr><td>
-                    {{ form_start(delete_form) }}
+            {{ form_start(delete_form) }}
                 <input  class="glyphicon glyphicon-arrow-left" type="submit" value="Delete">
             {{ form_end(delete_form) }}
                     

@@ -34,5 +34,14 @@ class SecurityController extends Controller
             'error'         => $error,
         ));
     }
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction()
+    {
+        $this->container->get('security.context')->setToken(null);
+
+        return $this->redirect($this->generateUrl('login'));
+    }
 }
 

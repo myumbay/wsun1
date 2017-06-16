@@ -17,14 +17,7 @@
             </button>
       </form>
     </div>
-        
-        
-       {# <a href="#"><img src="{{asset('../img/logo.png')}}"></a> 
-       <form class="navbar-form navbar-left" role="search" onsubmit="return buscar_global();">
-            <input id='buscar_input' type="text" class="form-control" placeholder="Buscar" value="{{app.session.get('VALOR_BUSQUEDA','')}}"/>
-            <button class="btn btn-default" type="button" onclick='buscar_global(); return false;'>
-            </button>#}
-            </div>
+    </div>
   
 <div class="menu-div">
   <ul class=" menu">
@@ -42,8 +35,17 @@
     <li><a href ="{{path('admin_categoria_index')}}">Categoria</a></li>
     <li><a href ="{{path('admin_productos_empresa_index',{'id' : 0|default('1')})}}">Agregar Productos</a></li>
   </ul></li>
+  <li style="float:left; position: relative; width: 10px;">
+       {% if app.user %}
+        {% include 'WsunBundle:Default:usuario.html.twig'%}
+        {% endif %}
+        {% if not app.user and not is_granted('ROLE_USER') %}
+            <li><a href="{{path('login')}}"> <span class="glyphicon glyphicon-user"></span>&nbsp;Iniciar sesión</a>
+        {% endif %}
+  </li>
   </ul>
 </div>
+
 <div id="slider">
   
     {% block bloque1 %}

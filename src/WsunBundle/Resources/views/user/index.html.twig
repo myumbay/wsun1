@@ -1,38 +1,37 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-<div class="box">
-    
-        <fieldset>
-            
-            <table class="table table-condensed table-striped">
-    <thead>
+<legend class="text-center header">LISTA DE USUARIOS</legend>    
+ <table id="example" class="table display" cellspacing="0" width="100%">
+  <thead class="thead-inverse">
     <tr>
-            <th class="col-sm-2">Id</th>
-            <th class="col-sm-3">Username</th>
-            <!--<th class="col-sm-2">Password</th> -->
-            <th class="col-sm-2">Acciones</th>
-        </tr>   
+      
+    <th scope="row">Id</th>
+    <th scope="row">Username</th>
+    <th scope="row">Ruc</th>
+    <th scope="row">Correo</th> 
+    <th scope="row">Acciones</th>
+    </tr>
+ 
   </thead>
   <tbody>
         {% for user in users %}
             <tr>
                 <td><a href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
                 <td>{{ user.username }}</td>
-                {#<td>{{ user.password }}</td>
-                <td>{{ user.salt }}</td>#}
+                <td>{{ user.ruc }}</td>
+                <td>{{ user.correo }}</td>
                 <td>
-                     <td>
                     <div class="row">
-                        <div class="col-md-2">
-                         <a href= "{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-primary btn-sm">show</a>
+                        <div class="col-md-3">
+                         <a href= "{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-primary btn-sm">Ver</a>
                         </div>
-                         <div class="col-md-2">
-                         <a href= "{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary btn-sm">edit</a>
+                         <div class="col-md-3">
+                         <a   href= "{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary btn-sm">Editar</a>
                         </div>
+                       
                     </div>
-                    </td>
-                    
+                                      
                 </td>
             </tr>
         {% endfor %}
@@ -41,7 +40,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('admin_user_new') }}">Create a new user</a>
+            <a href="{{ path('admin_user_new') }}">Nuevo Usuario</a>
         </li>
     </ul>
 </div>
