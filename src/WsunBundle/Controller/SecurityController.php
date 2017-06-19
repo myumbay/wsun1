@@ -34,12 +34,21 @@ class SecurityController extends Controller
             'error'         => $error,
         ));
     }
+    public function checkAction(Request $request) {
+        $session = $request->getSession();
+        // The security layer will NOT intercept this request
+        if ($session->get('_security.secured_area.target_path')) {
+            return $this->redirect($session->get('_security.secured_area.target_path'));
+        } else {
+            return $this->redirect($this->generateUrl('login2'));
+        }
+    }
     /**
      * @Route("/logout", name="logout")
      */
     public function logoutAction()
     {
-        $this->container->get('security.context')->setToken(null);
+        $this->container->get('security.token_storage')->setToken(null);
 
         return $this->redirect($this->generateUrl('login'));
     }

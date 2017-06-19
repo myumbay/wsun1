@@ -1,0 +1,17 @@
+<li class="dropdown">
+    <a href="#" title="Usuario" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><span class="caret"></span></a>
+    <ul class="">
+        <li style="padding: 5px 20px;width: 300px">
+            <div class="row" style="">
+                <div class="col-sm-3"><strong>Usuario:</strong></div>
+                <div class="col-sm-9">({{ app.user.username }})</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"><strong>RUC:</strong></div>
+                <div class="col-sm-9">{{ app.user.ruc }}</div>
+            </div>
+        </li>
+        <li class="divider"></li>
+        <li><a href="{{ path('logout') }}">Salir</a></li>
+    </ul>
+</li>

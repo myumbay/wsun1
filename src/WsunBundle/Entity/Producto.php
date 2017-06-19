@@ -259,7 +259,7 @@ class Producto
     public function getCategoria() {
         return $this->categoria;
     }
-     public function __toString() {
+    public function __toString() {
         return $this->nombreProducto;
     }
 }

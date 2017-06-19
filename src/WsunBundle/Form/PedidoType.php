@@ -16,13 +16,16 @@ class PedidoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('codigoPedido',TextType::class,array('label'=>'Codigo:'),array('class'=>'form-control'))
-                ->add('fechaCreacion', DateType::class,array('label'=>'Fecha registro:'))
+        $rol=$options[0];       
+        $builder->add('codigoPedido',TextType::class,array('label'=>'Codigo:'),array('class'=>'form-control'));
+        $builder->add('fechaCreacion', DateType::class,array('label'=>'Fecha registro:'));
                 //->add('idDepartamento')
-                ->add('estadoPedido',CheckboxType::class,array('label'=>'Estado:'))
-                ->add('iva',HiddenType::class)
-                ->add('totalPedido');
-                
+        if($rol == 'ROLE_SUPER_USUARIO' || $rol=='ROLE_ADMIN')
+        {
+        $builder->add('estadoPedido',  CheckboxType::class ,array('label'=>'Activar:','required' => false));
+        }
+        $builder->add('iva',HiddenType::class);
+        $builder->add('totalPedido');   
     }
     
     /**
@@ -31,7 +34,7 @@ class PedidoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'WsunBundle\Entity\Pedido'
+            'data_class' => 'WsunBundle\Entity\Pedido','rol' 
         ));
     }
 

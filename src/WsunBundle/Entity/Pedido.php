@@ -178,11 +178,11 @@ class Pedido
     /**
      * Set idUsuario
      *
-     * @param \WsunBundle\Entity\Usuario $idUsuario
+     * @param \WsunBundle\Entity\Usuarios $idUsuario
      *
      * @return Pedido
      */
-    public function setIdUsuario(\WsunBundle\Entity\Usuario $idUsuario = null)
+    public function setIdUsuario(\WsunBundle\Entity\Usuarios $idUsuario = null)
     {
         $this->idUsuario = $idUsuario;
 
@@ -192,7 +192,7 @@ class Pedido
     /**
      * Get idUsuario
      *
-     * @return \WsunBundle\Entity\Usuario
+     * @return \WsunBundle\Entity\Usuarios
      */
     public function getIdUsuario()
     {

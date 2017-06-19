@@ -133,5 +133,7 @@ private $created;
     {
         return $this->capacidad;
     }
-    
+      public function __toString() {
+        return (string)$this->producto;
+    }
 }

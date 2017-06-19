@@ -3,6 +3,13 @@
 {% block bloque1 %}
 
 <div class="box">
+{#    {% if is_granted('ROLE_ADMIN') %}
+    Administrator
+{% elseif is_granted('ROLE_USER') %}
+    User
+{% else %}
+    Anonymous
+{% endif %}#}
     <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -27,11 +34,14 @@
                                     {{ form_widget(form.totalPedido) }}
                                 </div>
                         </div>
-                        <div class="row ">
-                            <div class="col-md-4">
+                            <div class="row ">
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_USUARIO')%}
+                                
+                                   <div class="col-md-4">
                                     <span class="help-block text-muted small-font" > Estado</span>
                                     {{ form_widget(form.estadoPedido) }}
-                                </div>
+                                    </div>
+                                {% endif %}
                             <div class="col-md-4">
                                 <span class="help-block text-muted small-font" > </span>
                                 <input type="submit" class="btn btn-info" value="Create" />

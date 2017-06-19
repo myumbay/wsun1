@@ -31,7 +31,7 @@ security:
             security: false
         
         secured_area:
-            pattern:    ^/admin
+            pattern:    ^/
 #            http_basic:
 #                realm: "Introduzca Usuario y Contraseña"
             form_login:
@@ -52,6 +52,6 @@ security:
             anonymous:    ~
     access_control:
         - { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/webservices, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: [ROLE_USER, IS_AUTHENTICATED_ANONYMOUSLY] }
-        - { path: ^/admin, role: [ROLE_SUPER_ADMIN] }
+        #- { path: ^/admin, role: [ROLE_SUPER_ADMIN] }
+        - { path: ^/wsun, roles: [ROLE_USER,ROLE_SUPER_ADMIN, IS_AUTHENTICATED_ANONYMOUSLY] }

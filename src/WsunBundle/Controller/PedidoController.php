@@ -33,8 +33,11 @@ class PedidoController extends Controller
      */
     public function newAction(Request $request)
     {
+        $rol='';
+        if($this->getUser())
+            $rol=$this->getUser()->getRoles()[0]->getName();
         $pedido = new Pedido();
-        $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido);
+        $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
         $form->handleRequest($request);
     
         if ($form->isValid()){//$form->isSubmitted() && $form->isValid()) {

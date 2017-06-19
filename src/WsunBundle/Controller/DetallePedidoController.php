@@ -19,11 +19,9 @@ class DetallePedidoController extends Controller
     }
     public function indexAction(Request $request)
     {
-      
+         
         $id=$request->get('id');
-        
         $em = $this->getDoctrine()->getManager();
-
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($id);
         return $this->render('WsunBundle:detallepedido:index.html.twig', array(
            'id'=>$id,
@@ -33,12 +31,12 @@ class DetallePedidoController extends Controller
 
     public function newAction(Request $request)
     {
-        
         $id=$request->get('id');
+        $id_empresa=$this->getUser()->getDepartamento()->getIdEmpresa()->getId();
         $em = $this->getDoctrine()->getManager();
         $pedido = $em->getRepository('WsunBundle:Pedido')->find($id);
         $detallePedido = new Detallepedido();
-        $form = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array('action'=>$this->generateUrl('detallepedido_new',array('id'=>$id))));
+        $form = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array($id_empresa));
         
         $form->handleRequest($request);
        

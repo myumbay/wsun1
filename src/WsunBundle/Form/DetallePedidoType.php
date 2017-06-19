@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use \Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 class DetallePedidoType extends AbstractType
 {
@@ -21,16 +23,31 @@ class DetallePedidoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
            
-//            $validador = function(FormEvent $event) {
-//            var_dump($event->getData());die;      
-//       };
+        $id_empresa = $options[0];
+        //$validador = function(FormEvent $event) {
+           // var_dump($event->getData());die;      
+       //};
         
         $builder->add('codigo')
                 ->add('cantidad')
                 ->add('valorUnitario')
                 ->add('valorTotal')
                 ->add('observaciones',  \Symfony\Component\Form\Extension\Core\Type\TextareaType::class)
-                ->add('idProducto');    
+                ->add('idProducto', EntityType::class, array(
+                    'class' => 'WsunBundle:EmpresaProducto',
+                    'query_builder' => function(EntityRepository $er) use ($id_empresa) {
+                        return $er->createQueryBuilder('ep')
+                            ->leftJoin('producto p ON ep.producto=p.id')
+                            ->andWhere('p.estado = :id')
+                            ->andWhere('ep.empresa = :id')
+                            
+                            ->setParameter('id', $id_empresa);
+                            //->orderBy('c.nombreCat', 'ASC');
+                    },
+                ));
+                
+               // ->add('idProducto');
+        
                 //->add('idPedido',  HiddenType::class);
       // $builder->addEventListener(FormEvents::PRE_SUBMIT, $validador);
     }
@@ -41,7 +58,7 @@ class DetallePedidoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'WsunBundle\Entity\DetallePedido'
+            'data_class' => 'WsunBundle\Entity\DetallePedido','id_empresa'
         ));
     }
 
