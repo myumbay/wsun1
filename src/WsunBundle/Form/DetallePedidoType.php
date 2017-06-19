@@ -37,10 +37,10 @@ class DetallePedidoType extends AbstractType
                     'class' => 'WsunBundle:EmpresaProducto',
                     'query_builder' => function(EntityRepository $er) use ($id_empresa) {
                         return $er->createQueryBuilder('ep')
-                            ->leftJoin('producto p ON ep.producto=p.id')
-                            ->andWhere('p.estado = :id')
+                            ->leftJoin('ep.producto', 'p')
+                            ->andWhere('p.estado = :estado')
                             ->andWhere('ep.empresa = :id')
-                            
+                            ->setParameter('estado', '1')
                             ->setParameter('id', $id_empresa);
                             //->orderBy('c.nombreCat', 'ASC');
                     },
