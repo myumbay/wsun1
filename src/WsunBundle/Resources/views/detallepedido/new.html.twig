@@ -9,12 +9,20 @@
     {% endfor%}
     <fieldest>
      <legend class="text-center header">Edición de Detalle Pedido</legend>
-     {#{dump(edit_form)}#}
-    {{ form_start(form,{'class':"form-horizontal",'method':"POST"}) }}
+    <form name="detallepedido" action="{{path('detallepedido_new',{ 'id':id })}}" method="post">
+    {#{ form_start(form,{'class':"form-horizontal",'method':"POST"}) }#}
         <table  width="90%" cellpadding="10"  > 
             <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(form.idProducto)}}</td>
-                <td> {{ form_widget(form.idProducto, { 'attr': {'placeholder': 'search' } }) }}</td>
+                <td ><span class="help-block text-muted text-center" > Producto: </span></td>    
+                <td><select id="detallepedido_idProducto" name="detallepedido[idProducto]" placeholder="search">
+                <option value=""></option>
+                {% for key,val in prod %}
+                    <option value="{{ prod[key].producto.id}}" >{{ val}}</option>
+                {% endfor %}
+                  </select> 
+            </td>
+              {# <td > <span class="help-block text-muted text-center" > {{ form_label(form.idProducto)}}</td>
+               <td> {{ form_widget(form.idProducto, { 'attr': {'placeholder': 'search' } }) }}</td>#}
             </tr>
             <tr>
                 <td > <span class="help-block text-muted text-center" > {{ form_label(form.codigo)}}</td>
@@ -45,17 +53,17 @@
             </tr>
             
         </table>
-     <input type="submit" value="Guardar" />
+     <input type="submit" value="Create" />
     
-    {{ form_end(form) }}
-    
+{#    {{ form_end(form) }}#}
+    </form>
     
     
             <a href="{{ path('detallepedido_index',{ 'id':id }) }}">Back to the list</a>
         
            
    <script type="text/javascript">
-      {{ parent() }}
+      
 
     
     {#function Calc(){

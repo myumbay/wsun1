@@ -64,7 +64,7 @@ class DetallePedido
      *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
      * })
      */
-    private $idProducto;
+    protected $idProducto;
 
     /**
      * @var \Pedido
@@ -229,7 +229,7 @@ class DetallePedido
     public function getIdProducto()
     {
         return $this->idProducto;
-    }
+    }   
 
     /**
      * Set idPedido

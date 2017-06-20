@@ -6,7 +6,6 @@ use WsunBundle\Entity\DetallePedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-
 /**
  * Detallepedido controller.
  *
@@ -32,24 +31,25 @@ class DetallePedidoController extends Controller
     public function newAction(Request $request)
     {
         $id=$request->get('id');
-        $id_empresa=$this->getUser()->getDepartamento()->getIdEmpresa()->getId();
         $em = $this->getDoctrine()->getManager();
+        $id_empresa=$this->getUser()->getDepartamento()->getIdEmpresa()->getId();
+        $prod = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('empresa'=>$id_empresa));
+  
         $pedido = $em->getRepository('WsunBundle:Pedido')->find($id);
         $detallePedido = new Detallepedido();
         $form = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array($id_empresa));
-        
         $form->handleRequest($request);
-       
-         if ($form->isSubmitted() && $form->isValid()) {
+         if ($form->isSubmitted() ) {
+             var_dump($form->getData());die;
             $detPed=$em->getRepository('WsunBundle:DetallePedido')->findBy(array('idProducto' => $form->getData()->getIdProducto()->getId(),'idPedido'=>$pedido->getId()));
             if(count($detPed)>0)
-            {      
-            $mensaje = 'Ya existe un producto para este pedido';
-            $this->session->getFlashBag()->add("status",$mensaje);
-            return $this->redirectToRoute('detallepedido_new',array('id'=>$id));
-        
-            }
-             
+                {      
+                $mensaje = 'Ya existe un producto para este pedido';
+                $this->session->getFlashBag()->add("status",$mensaje);
+                return $this->redirectToRoute('detallepedido_new',array('id'=>$id));
+
+                }
+             $detallePedido->setIdProducto(2);
              $detallePedido->setIdPedido($pedido); 
              $em->persist($detallePedido);
              $em->flush();
@@ -58,6 +58,7 @@ class DetallePedidoController extends Controller
         }
 
         return $this->render('WsunBundle:detallepedido:new.html.twig', array(
+            'prod'=>$prod,
             'id'=>$id,
             'detallePedido' => $detallePedido,
             'form' => $form->createView(),
