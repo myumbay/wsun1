@@ -40,7 +40,6 @@ class DetallePedidoController extends Controller
         $form = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array($id_empresa));
         $form->handleRequest($request);
          if ($form->isSubmitted() ) {
-             var_dump($form->getData());die;
             $detPed=$em->getRepository('WsunBundle:DetallePedido')->findBy(array('idProducto' => $form->getData()->getIdProducto()->getId(),'idPedido'=>$pedido->getId()));
             if(count($detPed)>0)
                 {      
@@ -49,7 +48,6 @@ class DetallePedidoController extends Controller
                 return $this->redirectToRoute('detallepedido_new',array('id'=>$id));
 
                 }
-             $detallePedido->setIdProducto(2);
              $detallePedido->setIdPedido($pedido); 
              $em->persist($detallePedido);
              $em->flush();

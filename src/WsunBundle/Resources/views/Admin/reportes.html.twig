@@ -1,0 +1,26 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+     <div class="panel icon-li">
+        <div class="panel-heading">
+            <strong><span class="icon-list"> Reportes</span></strong>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4 col-xs-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr><th>Reportes dispobibles</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a class="text-info" href="{{ path('wsun_admin_reportes_productos_empresa') }}">Reporte de productos por Empresa</a><br/></td></tr>
+                            <tr><td><a class="text-info" href="#">Reporte de productos mas vendidos</a><br/></td></tr>
+                            <tr><td><a class="text-info" href="#"></a><br/></td></tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

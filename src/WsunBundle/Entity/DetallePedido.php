@@ -57,9 +57,9 @@ class DetallePedido
     private $observaciones;
 
     /**
-     * @var \Producto
+     * @var \EmpresaProducto
      *
-     * @ORM\ManyToOne(targetEntity="Producto")
+     * @ORM\ManyToOne(targetEntity="EmpresaProducto")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
      * })
@@ -210,11 +210,11 @@ class DetallePedido
     /**
      * Set idProducto
      *
-     * @param \WsunBundle\Entity\Producto $idProducto
+     * @param \WsunBundle\Entity\EmpresaProducto $idProducto
      *
      * @return DetallePedido
      */
-    public function setIdProducto(\WsunBundle\Entity\Producto $idProducto = null)
+    public function setIdProducto(\WsunBundle\Entity\EmpresaProducto $idProducto = null)
     {
         $this->idProducto = $idProducto;
 
@@ -224,7 +224,7 @@ class DetallePedido
     /**
      * Get idProducto
      *
-     * @return \WsunBundle\Entity\Producto
+     * @return \WsunBundle\Entity\EmpresaProducto
      */
     public function getIdProducto()
     {

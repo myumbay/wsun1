@@ -135,5 +135,5 @@ private $created;
     }
       public function __toString() {
         return (string)$this->producto;
-    }
+   }
 }

@@ -3,6 +3,13 @@ admin_productos_empresa_index:
     defaults: { _controller: WsunBundle:Default:addProducts,id: 1 }
     requirements:
         _method:  GET|POST
+admin_reportes:
+    path:  /reportes
+    defaults: { _controller: WsunBundle:Admin:Reportes }
+    
+wsun_admin_reportes_productos_empresa:
+    path:  /reportes_empresa
+    defaults: { _controller: WsunBundle:Admin:Empresa }
     
 wsun_admin_departamento:
     resource: "@WsunBundle/Resources/config/routing/departamento.yml"

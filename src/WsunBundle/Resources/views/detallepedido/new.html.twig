@@ -13,16 +13,9 @@
     {#{ form_start(form,{'class':"form-horizontal",'method':"POST"}) }#}
         <table  width="90%" cellpadding="10"  > 
             <tr>
-                <td ><span class="help-block text-muted text-center" > Producto: </span></td>    
-                <td><select id="detallepedido_idProducto" name="detallepedido[idProducto]" placeholder="search">
-                <option value=""></option>
-                {% for key,val in prod %}
-                    <option value="{{ prod[key].producto.id}}" >{{ val}}</option>
-                {% endfor %}
-                  </select> 
-            </td>
-              {# <td > <span class="help-block text-muted text-center" > {{ form_label(form.idProducto)}}</td>
-               <td> {{ form_widget(form.idProducto, { 'attr': {'placeholder': 'search' } }) }}</td>#}
+                
+              <td > <span class="help-block text-muted text-center" > {{ form_label(form.idProducto)}}</td>
+               <td> {{ form_widget(form.idProducto, { 'attr': {'placeholder': 'search' } }) }}</td>
             </tr>
             <tr>
                 <td > <span class="help-block text-muted text-center" > {{ form_label(form.codigo)}}</td>

@@ -32,20 +32,20 @@ class DetallePedidoType extends AbstractType
                 ->add('cantidad')
                 ->add('valorUnitario')
                 ->add('valorTotal')
-                ->add('observaciones',  \Symfony\Component\Form\Extension\Core\Type\TextareaType::class);
+                ->add('observaciones',  \Symfony\Component\Form\Extension\Core\Type\TextareaType::class)
                 //->add('idProducto',  HiddenType::class);
-//                ->add('idProducto', EntityType::class, array(
-//                    'class' => 'WsunBundle:EmpresaProducto',
-//                    'query_builder' => function(EntityRepository $er) use ($id_empresa) {
-//                        return $er->createQueryBuilder('ep')
-//                            ->leftJoin('ep.producto', 'p')
-//                            ->andWhere('p.estado = :estado')
-//                            ->andWhere('ep.empresa = :id')
-//                            ->setParameter('estado', '1')
-//                            ->setParameter('id', $id_empresa);
-//                            //->orderBy('c.nombreCat', 'ASC');
-//                    },
-//                ));
+                ->add('idProducto', EntityType::class, array(
+                    'class' => 'WsunBundle:EmpresaProducto',
+                    'query_builder' => function(EntityRepository $er) use ($id_empresa) {
+                        return $er->createQueryBuilder('ep')
+                            ->leftJoin('ep.producto', 'p')
+                            ->andWhere('p.estado = :estado')
+                            ->andWhere('ep.empresa = :id')
+                            ->setParameter('estado', '1')
+                            ->setParameter('id', $id_empresa);
+                            //->orderBy('c.nombreCat', 'ASC');
+                    },'choice_label' => 'producto',  'placeholder' => 'Seleccione..',
+                ));
          
                // ->add('idProducto');
         

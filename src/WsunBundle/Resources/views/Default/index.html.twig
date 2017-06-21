@@ -27,14 +27,16 @@
   <li ><a href="#">Messages</a></li>
   <li ><a href="{{path('pedido_index')}}">Pedidos</a></li>
   <li ><a href="#">Administrador</a>
- <ul>
-    <li><a href ="{{path('admin_user_index')}}">Usuarios</a></li>
-    <li><a href ="{{path('empresa_index')}}">Empresa</a></li>
-    <li><a href ="{{path('admin_departamento_index')}}">Departamentos</a></li>
-    <li><a href ="{{path('admin_producto_index')}}">Productos</a></li>
-    <li><a href ="{{path('admin_categoria_index')}}">Categoria</a></li>
-    <li><a href ="{{path('admin_productos_empresa_index',{'id' : 0|default('1')})}}">Agregar Productos</a></li>
-  </ul></li>
+    <ul>
+       <li ><a href ="{{path('admin_user_index')}}"><span class="icon-user">Usuarios</span></a></li>
+       <li><a href ="{{path('empresa_index')}}"><span class="icon-desktop">Empresa</span></a></li>
+       <li><a href ="{{path('admin_departamento_index')}}">Departamentos</a></li>
+       <li><a href ="{{path('admin_producto_index')}}">Productos</a></li>
+       <li><a href ="{{path('admin_categoria_index')}}">Categoria</a></li>
+       <li><a href ="{{path('admin_productos_empresa_index',{'id' : 0|default('1')})}}">Agregar Productos</a></li>
+       <li><a href ="{{path('admin_reportes')}}">Reportes</a></li>
+     </ul>
+  </li>
   <li style="float:left; position: relative; width: 10px;">
        {% if app.user %}
         {% include 'WsunBundle:Default:usuario.html.twig'%}
