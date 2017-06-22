@@ -13,13 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Ubicacion
 {
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="id", type="string", length=8, nullable=false)
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="ubicacion_id_seq", allocationSize=1, initialValue=1)
-     */
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */ 
     private $id;
 
     /**
@@ -48,7 +47,7 @@ class Ubicacion
     /**
      * Get id
      *
-     * @return string
+     * @return integer
      */
     public function getId()
     {

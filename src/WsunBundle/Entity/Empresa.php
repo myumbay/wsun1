@@ -64,12 +64,6 @@ class Empresa
      */
     private $ordenCompra;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ubicacion", type="string", length=255, nullable=false)
-     */
-    private $ubicacion;
 
     /**
      * @var boolean
@@ -84,7 +78,7 @@ class Empresa
      * @ORM\Column(name="limite_orden", type="float", precision=10, scale=0, nullable=true)
      */
     private $limiteOrden;
-
+ 
     /**
      * @var \Ubicacion
      *
@@ -270,29 +264,7 @@ class Empresa
         return $this->ordenCompra;
     }
 
-    /**
-     * Set ubicacion
-     *
-     * @param string $ubicacion
-     *
-     * @return Empresa
-     */
-    public function setUbicacion($ubicacion)
-    {
-        $this->ubicacion = $ubicacion;
-
-        return $this;
-    }
-
-    /**
-     * Get ubicacion
-     *
-     * @return string
-     */
-    public function getUbicacion()
-    {
-        return $this->ubicacion;
-    }
+   
 
     /**
      * Set credito
