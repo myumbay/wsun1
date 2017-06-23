@@ -7,9 +7,13 @@
              <div class="panel-heading">
                 <strong><span>Lista</span> de Empresas</strong>
             </div> 
-            <table class="table table-condensed table-striped">
+            
+            
+
+<div class="table-responsive">
+<table class="table table-hover">
     <thead>
-    <tr>
+        <tr>
             <th>Id</th>
             <th>Ruc</th>
             <th>Nombre Empresa</th>
@@ -17,10 +21,10 @@
             <th>Direcci&#243;n</th>
             <th>Email</th>
             <th>Actions</th>
-        </tr>   
-  </thead>
-  <tbody>
-        {% for empresa in empresas %}
+        </tr>
+    </thead>
+    <tbody>
+       {% for empresa in empresas %}
             <tr>
                 <td><a href="{{ path('empresa_show', { 'id': empresa.id }) }}">{{ empresa.id }}</a></td>
                 <td>{{ empresa.ruc }}</td>
@@ -35,10 +39,10 @@
                         <div class="col-md-3">
                          <a href= "{{ path('empresa_show', { 'id': empresa.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
-                         <div class="col-md-2">
+                         <div class="col-md-3">
                          <a href= "{{ path('empresa_edit', { 'id': empresa.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                          <a href= "{{ path('admin_show_empresa_productos',{ 'id':empresa.id }) }}" class="btn btn-primary btn-sm">products</a>
                         </div>
                     </div>
@@ -47,13 +51,15 @@
                 </td>
             </tr>
         {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
+</div>
+
             <a href="{{ path('empresa_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
     </div>        
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
+   
     <script>    
     $('#btn1').on("click",function(){
         

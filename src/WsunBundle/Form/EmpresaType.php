@@ -16,14 +16,14 @@ class EmpresaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('ruc',  TextType::class,array('label'=>'Ruc:'))
+                ->add('ruc',  TextType::class,array('label'=>'Ruc:'))//, array("attr"=>array("class"=>"col-lg-2 control-label")))
                 ->add('nombreEmp' ,  TextType::class,array('label'=>'Nombre Empresa:'))//, array("attr"=>array("class"=>"form form-control")))
                 ->add('telefonoEmp', TextType::class,array('label'=>'Telf. Empresa:'))
                 ->add('direccionEmp', TextType::class,array('label'=>'Dirección Empresa:'))
                 ->add('email', TextType::class,array('label'=>'E-mail Empresa:'))
                 ->add('ordenCompra', TextType::class,array('label'=>'N. Orden:'))
-                ->add('ubicacion')
-                ->add('credito',  CheckboxType::class,array('label'=>'Crédito:'))
+                
+                ->add('credito',  CheckboxType::class,array('label'=>'Crédito:','required' => false,))
                 ->add('limiteOrden', TextType::class,array('label'=>'limite:'))
                 ->add('idubicacion');
         

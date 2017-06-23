@@ -125,4 +125,7 @@ class Ubicacion
     {
         return $this->detalle;
     }
+    public function __toString() {
+        return $this->detalle;
+    }
 }
