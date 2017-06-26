@@ -56,7 +56,7 @@ class AdminController extends Controller
                 return $this->redirectToRoute('wsun_admin_reportes_productos_empresa');
             
             } 
-            var_dump($filtros);
+           
 //            $totalregistros=$this->getTotalEntidad($filtros['provincia'],$filtros['desde'],$filtros['hasta']);
 //            $page=$request->get('pagina');
 //            
@@ -64,8 +64,8 @@ class AdminController extends Controller
 //            {    
 //            $arrayPage=$this->fnPage($page, $totalregistros);
 //            $porpagina=$arrayPage[3];
-          //$Empresa = $em->getRepository('WsunBundle:Empresa')->findBy($filtros['empresaId']);  
-          var_dump($filtros);//die;  
+          $Empresa = $em->getRepository('WsunBundle:Empresa')->findBy($filtros['idEmpresa']);  
+         var_dump($Empresa);
           /* @var $qb \Doctrine\ORM\QueryBuilder */
            // $qb = $em->createQueryBuilder();
             //$qb->from('WsunBundle:Usuarios', 'u');
