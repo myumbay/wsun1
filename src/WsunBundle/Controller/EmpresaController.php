@@ -125,7 +125,6 @@ class EmpresaController extends Controller
     
       public function empresaAutocompleteAction(Request $request) {
         $query = $request->get('query');
-
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->from('WsunBundle:Empresa', 'emp');
@@ -152,8 +151,7 @@ class EmpresaController extends Controller
         $empresa_id = $request->request->get('empresa_id');
         $idsProductos = $request->request->get('ids_productos');
         $capacidades = trim($request->request->get('capacidades'));
-       
-         if ($capacidades == '' || $idsProductos == '') {
+        if ($capacidades == '' || $idsProductos == '') {
                     $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'LOS DATOS PROPORCIONADOS SON INCORRECTOS')));
                     $response->headers->set('Content-Type', 'application/json');
                     return $response;

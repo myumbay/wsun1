@@ -1,0 +1,147 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+<div class="box">  
+            <strong><span class="icon-list"> Reportes</span> de órdenes por provincia</strong>
+    <div class="panel panel-azul">    
+        <div class="panel-body">
+            {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+        </div>
+        {% endfor%}
+            
+{#        <div class="row">#}
+        {{ form_start(form) }}
+            {#<div class="col-lg-12">
+             
+              <div  id="autocomplete_container_empresa">
+                                    <div class="input-group">
+                                        {{ form_row(form.nombre, {'label':'Ruc/Empresa','label_col':2,'widget_col':8,'onkeydown':'if (event.keyCode == 13) {
+                                            return false;}','style': 'horizontal'}) }}
+                                       
+                                        <span class="input-group-btn">
+                                            <button id="btnBuscarProductos" class="btn btn-primary btn-sm" type="button" onclick="aceptar_convenio();
+                                                    return false;">Buscar Productos</button>
+                                        </span>
+                                        <input type="hidden" name="empresaId" id="empresaId" />
+                                    </div>
+                                </div>  #} 
+         
+            <div class="row">
+                <div class="col-sm-4">
+                    {{ form_row(form.nombre, {'label':'Ruc/Empresa','onkeydown':'if (event.keyCode == 13) {
+                                            return false;}'}) }}
+                    <div  id="autocomplete_container_empresa">
+                    </div>
+                </div>
+            </div> 
+            <div class="row">
+                <!--input type="hidden" name="empresaId" id="empresaId" /> -->
+{#            <input type="hidden" name="form_empresaId" id="from_empresaId"/>#}
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    {{ form_row(form.provincia, {'class': 'horizontal'}) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.desde, {'style': 'horizontal'} ) }}
+                </div>
+                <div class="col-sm-4">
+                   {{ form_row(form.hasta, {'style': 'horizontal'} ) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <button id='btnBuscar' class="btn btn-primary">Buscar</button>
+                </div>
+                <div class="col-sm-4">
+                    <a class="btn btn-danger" href="{#{ path('sercop_sercop_bundle_admin_reportes_proveedores') }#}" >Reiniciar búsqueda</a>
+                </div>
+{#                {% if (proveedores|length) %}#}
+                <div class="col-sm-4">
+                    <button id='btnExportar' class="btn btn-warning">Exportar a CSV</button>
+                </div>
+{#                        {% endif %}#}
+            </div>
+            
+            {{ form_end(form)}}
+    </div>
+    <div>
+    <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Ruc</th>
+                        <th>Departamento</th>
+                            <th>Productos</th>
+                        <th>cantidad</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+               {# {% for proveedor in proveedores %}
+                    
+                    <tr>
+                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.nombreComercial }}</td>
+                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.razonSocial}}</td>
+                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.ruc }}</td>
+                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.representanteLegal }}</td>
+                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.usuario | length?proveedor.usuario[0].correo:'--'  }}</td>
+                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ (provincias[proveedor.id] is defined?(provincias[proveedor.id]|join(', ')):' -- ') }}</td>
+                        {% for producto in productos[proveedor.id] %}
+                            <td>{{ producto.cat }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.precio?(producto.precio| number_format(num_decimales,',','.')):'' }}</td>
+                            {% if (not loop.last)%}
+                            </tr>
+                            <tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9"> No se encontraron registros</td>
+                    </tr>
+                {% endfor %}#}
+                </tbody>
+            </table>
+        </div>
+    
+</div>
+{% endblock %}
+ {% block javascripts %}
+     {{ parent() }}
+    <script type="text/javascript">
+         $(document).ready(function () {
+     
+            $('.typeahead.empresa').autocomplete(
+                    {
+                        minChars: 3,
+                        serviceUrl: '{{ path('wsun_bundle_admin_reportes_empresaProd_ajax') }}',
+                        onSelect: function(suggestion) {
+                             $id_convenio = suggestion.data;
+                            $('#form_idEmpresa').val($id_convenio);
+                            //$("#div_producto").hide();
+                             $("#btnGuardarEmpresa").prop('disabled', false);
+                        }
+                        ,
+                        autoSelect: true,
+                        autoFocus: true,
+                        appendTo: '#autocomplete_container_empresa'
+                    }
+            );
+              $( "#btnBuscar" ).click(function() {
+                   
+                $('#pagina').val(1);
+                $('#exportar').val('');
+            });
+            $( "#btnExportar" ).click(function() {
+                $('#exportar').val('csv');
+            });
+        });
+        
+    </script>
+   {% endblock %}

@@ -11,6 +11,10 @@ wsun_admin_reportes_productos_empresa:
     path:  /reportes_empresa
     defaults: { _controller: WsunBundle:Admin:Empresa }
     
+wsun_bundle_admin_reportes_empresaProd_ajax:
+    path:  /consulta
+    defaults: { _controller: WsunBundle:Admin:ConsultaAjax }
+    
 wsun_admin_departamento:
     resource: "@WsunBundle/Resources/config/routing/departamento.yml"
     prefix:   /admin/departamento
