@@ -4,11 +4,25 @@
 {% if error %}
 <div>{{ error.message }}</div>
 {% endif %}
-<form action="{{ path('login_check') }}" method="post"><label for="username">Username:</label>
- <input id="username" type="text" name="_username" value="{{ last_username }}" />
- <label for="password">Password:</label>
- <input id="password" type="password" name="_password" />
- <input type="submit" name="login" />
-</form>
 
+<div class="col-lg-4">
+  
+    {% if is_granted('ROLE_ADMIN')%}
+        <strong> Estas Logueado como Administrador</strong>
+    {% endif %}
+    {% if is_granted('ROLE_USER')%}
+        <strong> Estas Logueado como Usuario Normal</strong>
+    {% endif %}
+    <h2>Identificate </h2>
+    <hr>
+    <form action="{{ path('login_check') }}" method="post">
+        <label for="username">Username:</label>
+        <input id="username" type="text" name="_username" value="{{ last_username }}" class="form-control"/>
+        <label for="password">Password:</label>
+        <input id="password" type="password" name="_password" class="form-control" />
+        <input type="submit" name="login" class="btn-success"/>
+        <input type="hidden" name="_target_path" value="/login"> <!-- Para redireccionar a otro lado-->
+    </form>
+</div>
+ <div class="clearfix"></div>
 {%endblock%}

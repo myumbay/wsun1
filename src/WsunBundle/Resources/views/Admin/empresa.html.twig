@@ -2,8 +2,8 @@
 
 {% block bloque1 %}
 <div class="box">  
+     <div class="panel panel-azul">
             <strong><span class="icon-list"> Reportes</span> de órdenes por provincia</strong>
-    <div class="panel panel-azul">    
         <div class="panel-body">
             {% for message in app.session.flashbag().get('status')%}
         <div class="alert alert-success">
@@ -12,23 +12,7 @@
         </div>
         {% endfor%}
             
-{#        <div class="row">#}
         {{ form_start(form) }}
-            {#<div class="col-lg-12">
-             
-              <div  id="autocomplete_container_empresa">
-                                    <div class="input-group">
-                                        {{ form_row(form.nombre, {'label':'Ruc/Empresa','label_col':2,'widget_col':8,'onkeydown':'if (event.keyCode == 13) {
-                                            return false;}','style': 'horizontal'}) }}
-                                       
-                                        <span class="input-group-btn">
-                                            <button id="btnBuscarProductos" class="btn btn-primary btn-sm" type="button" onclick="aceptar_convenio();
-                                                    return false;">Buscar Productos</button>
-                                        </span>
-                                        <input type="hidden" name="empresaId" id="empresaId" />
-                                    </div>
-                                </div>  #} 
-         
             <div class="row">
                 <div class="col-sm-4">
                     {{ form_row(form.nombre, {'label':'Ruc/Empresa','onkeydown':'if (event.keyCode == 13) {
@@ -37,11 +21,7 @@
                     </div>
                 </div>
             </div> 
-            <div class="row">
-                <!--input type="hidden" name="empresaId" id="empresaId" /> -->
-{#            <input type="hidden" name="form_empresaId" id="from_empresaId"/>#}
-                
-            </div>
+
             <div class="row">
                 <div class="col-sm-4">
                     {{ form_row(form.provincia, {'class': 'horizontal'}) }}
@@ -76,30 +56,16 @@
                         <th>Empresa</th>
                         <th>Ruc</th>
                         <th>Departamento</th>
-                            <th>Productos</th>
+                        <th>Productos</th>
                         <th>cantidad</th>
                         
                     </tr>
                 </thead>
                 <tbody>
-               {# {% for proveedor in proveedores %}
+               {% for orden in ordenes[0] %}
                     
                     <tr>
-                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.nombreComercial }}</td>
-                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.razonSocial}}</td>
-                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.ruc }}</td>
-                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.representanteLegal }}</td>
-                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ proveedor.usuario | length?proveedor.usuario[0].correo:'--'  }}</td>
-                        <td rowspan="{{ productos[proveedor.id] is defined?(productos[proveedor.id]|length):1}}">{{ (provincias[proveedor.id] is defined?(provincias[proveedor.id]|join(', ')):' -- ') }}</td>
-                        {% for producto in productos[proveedor.id] %}
-                            <td>{{ producto.cat }}</td>
-                            <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.precio?(producto.precio| number_format(num_decimales,',','.')):'' }}</td>
-                            {% if (not loop.last)%}
-                            </tr>
-                            <tr>
-                            {% endif %}
-                        {% endfor %}
+                        
                     </tr>
                 {% else %}
                     <tr>

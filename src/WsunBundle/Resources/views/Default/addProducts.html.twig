@@ -3,7 +3,7 @@
 {% block bloque1 %}
     
 <div class="box">
-    
+     <div class="panel panel-azul">
      <div class="row">
                         <div class="col-xs-12">
                             <h4>Empresa: </h4>
@@ -37,6 +37,7 @@
     <tr>
         <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
         <th>Producto</th>
+        <th>Capacidad</th>
     </tr>
     </thead>
     <tbody id="tablaProducts">
@@ -62,7 +63,7 @@
      </div>    
                         
                     </tbody>
-</div>
+     </div></div>
 {%endblock%}
 {% block javascripts %}
     {{ parent() }}

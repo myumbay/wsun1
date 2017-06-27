@@ -49,15 +49,12 @@ class Pedido
      * @ORM\Column(name="total_pedido", type="float", precision=10, scale=0, nullable=true)
      */
     private $totalPedido;
-
-    /**
-     * @var \Usuario
-     *
-     * @ORM\ManyToOne(targetEntity="Usuarios")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
-     * })
-     */
+    
+     /**
+    * @ORM\ManyToOne(targetEntity="Usuarios", inversedBy="Pedido")
+     * @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
+    */
+    
     private $idUsuario;
     
      /**

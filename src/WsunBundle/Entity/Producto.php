@@ -70,7 +70,7 @@ class Producto
      *
      * @ORM\ManyToOne(targetEntity="WsunBundle\Entity\Categoria", inversedBy="producto")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="categoria_id", referencedColumnName="id",nullable=true)
      * })
      */
     protected $categoria;

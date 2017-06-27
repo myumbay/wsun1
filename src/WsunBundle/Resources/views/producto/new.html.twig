@@ -3,6 +3,7 @@
 {% block bloque1 %}
      
 <div class="box">
+    <div class="panel panel-azul">
     {% for message in app.session.flashbag().get('status')%}
         <div class="alert alert-success">
             {{message}}
@@ -51,6 +52,6 @@
     </div> 
     <a href="{{ path('admin_producto_index') }}">Back to the list</a>
  </div> </div>   
-        
+</div>  
         
 {% endblock %}

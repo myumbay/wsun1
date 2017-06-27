@@ -64,14 +64,21 @@ class AdminController extends Controller
 //            {    
 //            $arrayPage=$this->fnPage($page, $totalregistros);
 //            $porpagina=$arrayPage[3];
-          $Empresa = $em->getRepository('WsunBundle:Empresa')->findBy($filtros['idEmpresa']);  
-         var_dump($Empresa);
+          $Empresa = $em->getRepository('WsunBundle:Empresa')->findOneByRuc($filtros['idEmpresa']);  
+         
           /* @var $qb \Doctrine\ORM\QueryBuilder */
-           // $qb = $em->createQueryBuilder();
+            $qb = $em->createQueryBuilder();
+            $qb->from('WsunBundle:Pedido', 'ped');
             //$qb->from('WsunBundle:Usuarios', 'u');
-            //$qb->select('u ');
+            $qb->select('ped,u,dpt,e');
             //$qb->addSelect("SUM( dO.cantidad * (dO.subtotal - dO.descuento)* (dO.iva + 100)/100 ) as total,dO.plazoServicio as plazo,(case when (dO.plazoServicio>0 and dO.tipoPlazo is not null) then dO.tipoPlazo else '1' end) as tipoPlazo");
-           // $qb->innerJoin('u.Departamento', 'dto');
+            $qb->innerJoin('ped.idUsuario', 'u');
+            $qb->innerJoin('u.departamento', 'dpt');
+            $qb->innerjoin('dpt.idEmpresa', 'e');
+            $qb->andWhere('dpt.idEmpresa = :empresa');
+            $qb->setParameter('empresa', $Empresa->getId());
+            $ordenes=$qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);; 
+           //var_dump($ordenes);die;
             //$qb->innerJoin('dto.Empresa', 'e');
             //$qb->innerJoin('u.Pedido', 'p');
 //            if ($filtros['provincia']) {
@@ -110,7 +117,8 @@ class AdminController extends Controller
 //            } 
             }
    
-            return $this->render('WsunBundle:Admin:empresa.html.twig', array('ordenes' => $ordenes, 'form' => $form->createView(),'page'=>$request->get('pagina')));
+            //return $this->render('WsunBundle:Admin:empresa.html.twig', array('ordenes' => $ordenes, 'form' => $form->createView(),'page'=>$request->get('pagina')));
+            return $this->render('WsunBundle:Admin:empresa.html.twig', array('ordenes' => $ordenes, 'form' => $form->createView()));
       
     }
 public function ConsultaAjaxAction(Request $request) {

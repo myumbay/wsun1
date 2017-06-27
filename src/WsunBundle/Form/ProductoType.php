@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class ProductoType extends AbstractType
 {
     /**
@@ -37,8 +38,8 @@ class ProductoType extends AbstractType
                 ->add('precioProducto',TextType::class,array('label'=>'Precio:'))
                 ->add('observacion', TextareaType::class,array('label'=>'Descripcion:'))
                 ->add('estado',  CheckboxType::class,array('label'=>'Estado:','required' => false))
-                ->add('categoria', \Symfony\Bridge\Doctrine\Form\Type\EntityType::class,
-                        array('class' => 'WsunBundle\Entity\Categoria'));
+                ->add('categoria', EntityType::class,
+                        array('class' => 'WsunBundle\Entity\Categoria','required' => true));
 //                $builder->addEventListener(FormEvents::PRE_SUBMIT, $validador);
     }
     

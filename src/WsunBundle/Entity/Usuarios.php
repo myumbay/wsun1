@@ -46,14 +46,11 @@ class Usuarios implements UserInterface
      * @ORM\Column(name="correo", type="string", length=180, nullable=true)
      */
     private $correo;
+    
     /**
-     * @var \Departamento
-     *
-     * @ORM\ManyToOne(targetEntity="Departamento")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_departamento", referencedColumnName="id")
-     * })
-     */
+    * @ORM\ManyToOne(targetEntity="Departamento", inversedBy="Usuarios")
+     * @ORM\JoinColumn(name="id_departamento", referencedColumnName="id")
+    */
     private $departamento;
  
     /**

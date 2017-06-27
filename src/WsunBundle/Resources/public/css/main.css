@@ -7,10 +7,13 @@ and open the template in the editor.
     Created on : 03/02/2017, 10:56:01
     Author     : cyumbay
 */
+body{
+    background-image: url('../images/fondo-1.png');
+}
 .container{
     margin: auto;
-    background-image: url('../images/fondo-1.png');
-    width: 1567px;
+    /*background-image: url('../images/fondo-1.png');*/
+    width: 100%;
     height: auto;
 
 }
@@ -63,13 +66,13 @@ background-image: url('../images/cabecera.png');
         color: #ffff;
 	height:60px; 
       /*  border: 1px solid red;*/
-	background-color:#203C5E;
+	background-color:#8a8886;
 }
 .menu {  
         margin: auto;
 	width:970px;
-        height: 45px;
-        background: #333;
+        height: 50px;
+        background: #8a8886;
         padding: 5px;
 				
 				

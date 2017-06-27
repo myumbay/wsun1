@@ -20,10 +20,21 @@ wsun_admin_departamento:
     prefix:   /admin/departamento
 
 wsun_homepage:
-    path:     /index
+    path:     /
     defaults: { _controller: WsunBundle:Default:index }
     methods:  GET
     
+login:
+    path: /login
+    defaults: { _controller: "WsunBundle:Security:login" }
+login_check:
+    path: /login_check
+logout:
+    path: /login
+   
+login2:
+    path:     /entrar
+    defaults: { _controller: WsunBundle:Security:login }    
 wsun_contactos:
     path:  /contactos
     defaults: { _controller: WsunBundle:Default:contactos }

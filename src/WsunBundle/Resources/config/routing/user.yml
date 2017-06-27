@@ -23,7 +23,5 @@ admin_user_delete:
     defaults: { _controller: "WsunBundle:User:delete" }
     methods:  DELETE
     
-admin_user_logout:
-    path: /logout
-    defaults: { _controller: "WsunBundle:Default:index" }
+
 

@@ -33,9 +33,9 @@ class DefaultController extends Controller
         $qb = $em->createQueryBuilder();
         $qb->from('WsunBundle:Producto', 'p');
         $qb->select('p')->distinct();
-        
+       
         if($id>0){
-        $qb->andWhere($qb->expr()->notIn('p.id',$idprod));
+        $qb->andWhere($qb->expr()->notIn('p.id',$id));
         }
         $qb->andWhere('p.estado = :estado');
         $qb->setParameter('estado', '1');
