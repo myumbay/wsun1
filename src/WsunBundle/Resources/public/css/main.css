@@ -18,7 +18,7 @@ and open the template in the editor.
        padding-top:20px;
        background-image: url('../images/fondo-2.png');
        overflow: auto;
-       height: auto;
+       min-height: 500px;
        text-align:center;
        margin:  0 auto;
        width: 970px;
@@ -30,7 +30,7 @@ and open the template in the editor.
    margin-top:5px;
    margin: 0 auto;
    overflow-y:auto;
-   
+
    width: 900px;
    /*background-color: #CAC3C3;*/
 }  
@@ -43,18 +43,18 @@ height: 210px;
 background-image: url('../images/cabecera.png');
 /*background: url(../../../cabecera.png) no-repeat;*/
  }
- 
+ /*
  #slider{
      text-align:center;
      margin:  0 auto;
      width: 970px;
      /*border: 1px solid red;*/
 
-
+/*
      box-shadow: 0 .1em 1em black;
      -webkit-box-shadow: 0 .1em 1em black;
     -moz-box-shadow: 0 .1em 1em black;
- }
+ }*/
 
 #pie{
 	margin: 0 auto;
