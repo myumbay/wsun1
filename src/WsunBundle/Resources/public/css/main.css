@@ -7,24 +7,23 @@ and open the template in the editor.
     Created on : 03/02/2017, 10:56:01
     Author     : cyumbay
 */
-container{
+.container{
     margin: auto;
-   
+    background-image: url('../images/fondo-1.png');
+    width: 1567px;
+    height: auto;
+
 }
-   
-   div#slider  {
-      margin: auto;
-      height: auto;
-      min-height: 500px; /* o 200%, o lo que sea */
-      overflow: auto;
-      position:relative; 
-      /*border: 1px solid red;*/
-    }
-    
-div#slider > div {
-  height: 100%;
-  min-height: 500px; /* o 200%, o lo que sea */
-}    
+   #slider{
+       padding-top:20px;
+       background-image: url('../images/fondo-2.png');
+       overflow: auto;
+       height: auto;
+       text-align:center;
+       margin:  0 auto;
+       width: 970px;
+       padding-bottom: 20px;
+}
  .box{
    float:clear;
    position:relative;
@@ -40,9 +39,8 @@ div#slider > div {
 {
 margin: 0 auto;
 width: 970px;
-height: 87px;
-
-background-color: #D0CBCB;
+height: 210px;
+background-image: url('../images/cabecera.png');
 /*background: url(../../../cabecera.png) no-repeat;*/
  }
  
@@ -52,8 +50,7 @@ background-color: #D0CBCB;
      width: 970px;
      /*border: 1px solid red;*/
 
-     background-color: #D0CBCB;
-     height:410px;
+
      box-shadow: 0 .1em 1em black;
      -webkit-box-shadow: 0 .1em 1em black;
     -moz-box-shadow: 0 .1em 1em black;
