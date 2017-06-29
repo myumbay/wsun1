@@ -19,9 +19,7 @@ class PedidoController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $pedidos = $em->getRepository('WsunBundle:Pedido')->findAll();
-
         return $this->render('WsunBundle:pedido:index.html.twig', array(
             'pedidos' => $pedidos,
         ));

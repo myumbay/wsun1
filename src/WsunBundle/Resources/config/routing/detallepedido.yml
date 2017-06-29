@@ -27,3 +27,6 @@ detallepedido_delete:
     path:     /{id}/delete
     defaults: { _controller: "WsunBundle:DetallePedido:delete" }
     methods:  DELETE
+guarda_detalle_pedido:
+    path:  /empresa/guardar
+    defaults: { _controller: WsunBundle:DetallePedido:DetalleGuardar }

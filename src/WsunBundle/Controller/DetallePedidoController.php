@@ -6,6 +6,7 @@ use WsunBundle\Entity\DetallePedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
 /**
  * Detallepedido controller.
  *
@@ -20,11 +21,13 @@ class DetallePedidoController extends Controller
     {
          
         $id=$request->get('id');
+        $idEmpresa=$request->get('idEmpresa');
         $em = $this->getDoctrine()->getManager();
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($id);
         return $this->render('WsunBundle:detallepedido:index.html.twig', array(
            'id'=>$id,
-            'pedidosDet' => $pedidosDet,
+           'idEmpresa'=>$idEmpresa,
+           'pedidosDet' => $pedidosDet,
         ));
     }
 
@@ -138,6 +141,7 @@ class DetallePedidoController extends Controller
     }
     public function addPedidoAction(Request $request,$id)
     {
+        $idPedido=$request->get('idPedido');
         $em = $this->getDoctrine()->getManager();
         $in = $em->createQueryBuilder()
             ->select('ep')
@@ -145,24 +149,133 @@ class DetallePedidoController extends Controller
             ->where('ep.empresa=:slug')
             ->setParameter('slug', $id);
         $pem=$in->getQuery()->getResult();
-
-        for($i=0;$i< count($pem);$i++)
+        
+        $em = $this->getDoctrine()->getManager();
+        $in = $em->createQueryBuilder()
+            ->select('dp')
+            ->from('WsunBundle:DetallePedido','dp')
+            ->where('dp.idPedido=:id')
+            ->setParameter('id', $idPedido);
+        $det=$in->getQuery()->getResult();
+        $idprod='';
+        if(count($det)>0)
         {
-            $idprod[]=$pem[$i]->getProducto()->getId();
+         for($i=0;$i< count($det);$i++)
+         {
+             $idprod[]=$det[$i]->getIdProducto()->getProducto()->getId();
+             $c[]=$det[$i]->getCantidad();
+             $iva[]=$det[$i]->getObservaciones();
+            $vt[]=$det[$i]->getValorTotal();
+         }
         }
+         //var_dump($idprod);die;
         /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $em->createQueryBuilder();
-        $qb->from('WsunBundle:Producto', 'p');
-        $qb->select('p')->distinct();
-
-        if($id>0){
-            $qb->andWhere($qb->expr()->notIn('p.id',$id));
-        }
-        $qb->andWhere('p.estado = :estado');
-        $qb->setParameter('estado', '1');
-        $qb->addOrderBy('p.nombreProducto', 'ASC');
-        $p = $qb->getQuery()->getResult();
+//        $qb = $em->createQueryBuilder();
+//        $qb->from('WsunBundle:EmpresaProducto', 'emp');
+//        
+//        $qb->select('emp');
+//
+//        if($id>0){
+//            $qb->andWhere($qb->expr()->In('emp.id',$idprod));
+//            $qb->andWhere('emp.empresa = :id');
+//             $qb->setParameter('id', $id);
+//        }
+//        $qb->andWhere('p.estado = :estado');
+//        $qb->setParameter('estado', '1');
+//        $qb->addOrderBy('p.nombreProducto', 'ASC');
+//        $p = $qb->getQuery()->getResult();
+       
         //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
-        return $this->render('WsunBundle:Default:addProducts.html.twig',array('productos' => $p,));
+     
+        return $this->render('WsunBundle:detallepedido:addPedido.html.twig',array('productos' => $pem,'idPedido'=>$idPedido,'prod'=>$idprod,'c'=>$c));
+    }
+     public function DetalleGuardarAction(Request $request)
+    {
+       try{
+        $mensaje = "";
+        $pedido_id = $request->request->get('pedido_id');
+        $idsProductos = $request->request->get('ids_productos');
+        $capacidades = trim($request->request->get('capacidades'));
+        $ivas = trim($request->request->get('ivas'));
+        $pu = trim($request->request->get('pu'));
+        $vt = trim($request->request->get('vt'));
+       
+        if ($capacidades == '' || $idsProductos == '' || $ivas == '' || $pu == ''|| $vt == '') {
+                    $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'LOS DATOS PROPORCIONADOS SON INCORRECTOS')));
+                    $response->headers->set('Content-Type', 'application/json');
+                    return $response;
+                }
+        
+         if ($pedido_id == '') {
+                $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'NO EXISTE EL PEDIDO')));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }
+        $idsProductos = explode(',', $idsProductos);
+        $capacidades = explode(',', $capacidades);
+        $ivas = explode(',', $ivas);
+        $pu = explode(',', $pu);
+        $vt = explode(',', $vt);
+        $contador = 0;
+        foreach ($idsProductos as $ids) {
+                    $capacidadProducto[$ids] = $capacidades[$contador];
+                    $ivasProducto[$ids] = $ivas[$contador];
+                    $puProducto[$ids] = $pu[$contador];
+                    $puProducto[$ids] = $vt[$contador];
+                    $contador ++;
+                }
+        $proNoEncontrados = '';
+        $productos = 0;
+        $em = $this->getDoctrine()->getManager();
+        $pedido=$em->getRepository('WsunBundle:Pedido')->find($pedido_id);
+    
+        if (is_array($idsProductos) && count($idsProductos) > 0) {
+            
+            for($i=0;$i<count($idsProductos);$i++)
+            {
+                $detallePedido = $em->getRepository('WsunBundle:DetallePedido')->findBy(array('idProducto' => $idsProductos[$i],'idPedido' =>$pedido_id));
+             
+                if($detallePedido)
+                {
+                    $detallePedido = $detallePedido[0];
+                    
+                    if($detallePedido->getCapacidad()>$capacidades[$i]){
+                    //if($Emproductos->getCapacidad()>$capacidades[$i]){
+                        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'No guardados!! El valor '.$capacidades[$i].' no debe ser menor que'. $Emproductos->getCapacidad().'  debido a que el valor ya deben estar repartidos en los diferentes departamentos')));
+                        $response->headers->set('Content-Type', 'application/json');
+                        return $response;
+                    }else {
+                        $Emproductos->setCapacidad($capacidades[$i]);
+                        $em->persist($Emproductos);
+                    }
+                }else{
+                   // $hoy = new \DateTime("now");
+                    $prod= $em->getRepository('WsunBundle:EmpresaProducto')->find($idsProductos[$i]);
+                    $empPr = new DetallePedido();
+                    $empPr->setIdPedido($pedido);
+                    $empPr->setIdProducto($prod);
+                    $empPr->setCantidad($capacidades[$i]);
+                    $empPr->setValorUnitario($pu[$i]);
+                    $empPr->setValorTotal($vt[$i]);
+                    $empPr->setObservaciones($ivas[$i]);
+                    
+                    //$empPr->setCreated($hoy);
+                    $em->persist($empPr);
+                    }
+               $em->flush();
+               $mensaje .= '<strong> DATOS GUARDADOS EMPRESA: </strong> ' . $empresa->getNombreEmp() . '<br>';
+            }
+
+            }
+           
+         } catch (\Exception $e) {
+            $mensaje = "Error al Guardar los datos.";
+            
+        }    
+        
+         
+        $response = new Response(json_encode(array('error' => 1,'mensaje' => $mensaje)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

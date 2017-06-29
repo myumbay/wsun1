@@ -17,7 +17,7 @@
   <tbody>
     {% for pedido in pedidos %}
             <tr>
-{#                <td><a href="{{ path('pedido_show', { 'id': pedido.id }) }}">{{ pedido.id }}</a></td>#}
+               
                 <td>{{ pedido.codigoPedido }}</td>
                 <td>{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</td>
                 <td>{{ pedido.totalPedido }}</td>
@@ -30,7 +30,7 @@
                          <a href= "{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
                         <div class="col-md-2">
-                         <a href= "{{ path('detallepedido_index',{ 'id':pedido.id }) }}" class="btn btn-primary btn-sm">products</a>
+                         <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idUsuario.departamento.idEmpresa.id }) }}" class="btn btn-primary btn-sm">products</a>
                         </div>
                     </div>
                     </td>
