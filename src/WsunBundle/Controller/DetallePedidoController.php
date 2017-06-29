@@ -163,9 +163,7 @@ class DetallePedidoController extends Controller
          for($i=0;$i< count($det);$i++)
          {
              $idprod[]=$det[$i]->getIdProducto()->getProducto()->getId();
-             $c[]=$det[$i]->getCantidad();
-             $iva[]=$det[$i]->getObservaciones();
-            $vt[]=$det[$i]->getValorTotal();
+            
          }
         }
          //var_dump($idprod);die;
@@ -187,7 +185,7 @@ class DetallePedidoController extends Controller
        
         //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
      
-        return $this->render('WsunBundle:detallepedido:addPedido.html.twig',array('productos' => $pem,'idPedido'=>$idPedido,'prod'=>$idprod,'c'=>$c));
+        return $this->render('WsunBundle:detallepedido:addPedido.html.twig',array('productos' => $pem,'idPedido'=>$idPedido,'prod'=>$idprod,'det'=>$det));
     }
      public function DetalleGuardarAction(Request $request)
     {
