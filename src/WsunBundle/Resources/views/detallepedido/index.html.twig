@@ -51,6 +51,7 @@
         {% endfor %}
         <tr><td colspan="4">Subtotal</td><td> ${{total |number_format(2,'.',',')}}</td></tr>
   </tbody>
+    <a href ="{{path('addpedido_index',{'id' :id |default('empresa')})}}"><span>Seleccionar Productos</span></a>
    <a  href="{{ path('detallepedido_new',{ 'id':id }) }}"> <span class="glyphicon glyphicon-file"> Nuevo </span></a>
    
         <br>

@@ -4,9 +4,10 @@
 {% if error %}
 <div>{{ error.message }}</div>
 {% endif %}
+    <div class="col-lg-4" >
+    </div>
+<div class="col-lg-4" >
 
-<div class="col-lg-4">
-  
     {% if is_granted('ROLE_ADMIN')%}
         <strong> Estas Logueado como Administrador</strong>
     {% endif %}

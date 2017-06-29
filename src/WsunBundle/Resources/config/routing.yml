@@ -3,6 +3,13 @@ admin_productos_empresa_index:
     defaults: { _controller: WsunBundle:Default:addProducts,id: 1 }
     requirements:
         _method:  GET|POST
+
+addpedido_index:
+    path:  /addpedido/{id}
+    defaults: { _controller: WsunBundle:DetallePedido:addPedido,id: empresa }
+    requirements:
+        _method:  GET|POST
+
 admin_reportes:
     path:  /reportes
     defaults: { _controller: WsunBundle:Admin:Reportes }

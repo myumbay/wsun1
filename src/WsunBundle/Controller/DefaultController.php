@@ -23,8 +23,9 @@ class DefaultController extends Controller
             ->select('ep')
             ->from('WsunBundle:EmpresaProducto','ep')
             ->where('ep.empresa=:slug')
-            ->setParameter('slug', 1);    
+            ->setParameter('slug', $id);
         $pem=$in->getQuery()->getResult();
+
         for($i=0;$i< count($pem);$i++)
             {
                 $idprod[]=$pem[$i]->getProducto()->getId();

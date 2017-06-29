@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<div class="container">    
+
   
     <div class="encabezado">
            
@@ -16,13 +16,46 @@
       </form>
     </div>
     </div>
-  
+
+    <nav>
+        <ul class="nav">
+            <li class="active"><a href="{{path('wsun_homepage')}}">Home</a></li>
+            <li ><a href="{{path('wsun_contactos')}}">Contactos</a></li>
+            <li ><a href="#">Productos</a></li>
+            {% if(is_granted('ROLE_USER'))%}
+                <li ><a href="{{path('pedido_index')}}">Pedidos</a></li>
+            {% endif %}
+            {% if( is_granted('ROLE_ADMIN'))%}
+                <li ><a href="#">Administrador</a>
+                    <ul>
+                        <li ><a href ="{{path('admin_user_index')}}"><span class="icon-user">Usuarios</span></a></li>
+                        <li><a href ="{{path('empresa_index')}}"><span class="icon-desktop">Empresa</span></a></li>
+                        <li><a href ="{{path('admin_departamento_index')}}"><span class="icon-home">Departamentos</span></a></li>
+                        <li><a href ="{{path('admin_producto_index')}}"><span class="icon-print">Productos</span></a></li>
+                        <li><a href ="{{path('admin_categoria_index')}}"><span class="icon-list">Categoria</span></a></li>
+                        <li><a href ="{{path('admin_productos_empresa_index',{'id' : 0|default('1')})}}"><span>Agregar Productos</span></a></li>
+                        <li><a href ="{{path('admin_reportes')}}"><span class="icon-resize-full">Reportes</span></a></li>
+                    </ul>
+                </li>
+            {% endif %}
+            <li style="float:left; position: relative; width: 10px;">
+                {% if app.user %}
+                    {% include 'WsunBundle:Default:usuario.html.twig'%}
+                {% endif %}
+                {% if not app.user and not is_granted('ROLE_USER') %}
+            <li><a href="{{path('login')}}"> <span class="icon-user"></span>&nbsp;Iniciar sesión</a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
+{#
 <div class="menu-div">
-  <ul class=" menu">
+  <ul class="menu">
       
   <li class="active"><a href="{{path('wsun_homepage')}}">Home</a></li>
   <li ><a href="{{path('wsun_contactos')}}">Contactos</a></li>
-  <li ><a href="#">Messages</a></li>
+  <li ><a href="#">Productos</a></li>
   {% if(is_granted('ROLE_USER'))%}
   <li ><a href="{{path('pedido_index')}}">Pedidos</a></li>
   {% endif %}
@@ -49,7 +82,7 @@
   </li>
   </ul>
 </div>
-
+#}
 <div id="slider">
   
     {% block bloque1 %}
@@ -80,9 +113,9 @@
     {% endblock %}
     
 </div>
-</div>
+
  <div id="pie">
-     <h3>Isla Genovesa N. 42-118 y Tomás de Berlanga, Quito /226803 / 2920660 /2921385 </h3>
+     <h5>Isla Genovesa N. 42-118 y Tomás de Berlanga, Quito /226803 / 2920660 /2921385</h5>
                 
                 Todos los derechos reservados
 </div>
