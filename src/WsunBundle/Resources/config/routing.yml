@@ -37,7 +37,7 @@ login:
 login_check:
     path: /login_check
 logout:
-    path: /login
+    path: /logout
    
 login2:
     path:     /entrar
