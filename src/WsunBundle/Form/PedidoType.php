@@ -20,7 +20,7 @@ class PedidoType extends AbstractType
         $builder->add('codigoPedido',TextType::class,array('label'=>'Codigo:'),array('class'=>'form-control'));
         $builder->add('fechaCreacion', DateType::class,array('label'=>'Fecha registro:'));
                 //->add('idDepartamento')
-        if($rol == 'ROLE_SUPER_USUARIO' || $rol=='ROLE_ADMIN')
+        if($rol == 'ROLE_ADMIN')
         {
         $builder->add('estadoPedido',  CheckboxType::class ,array('label'=>'Activar:','required' => false));
         }
