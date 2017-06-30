@@ -45,7 +45,7 @@
                          <a href= "{{ path('detallepedido_show', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
                          <div class="col-md-3">
-                         <a   href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>
+{#                         <a   href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>#}
 {#                         <a  data-toggle="modal" data-target="#Edit" data-backdrop="static" href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>#}
                         </div>
                        
@@ -56,7 +56,7 @@
         <tr><td colspan="4">Subtotal</td><td> ${{total |number_format(2,'.',',')}}</td></tr>
   </tbody>
     <a href ="{{path('addpedido_index',{'idPedido':id,'id' :idEmpresa |default('empresa')})}}"><span>Seleccionar Productos</span></a>
-   <a  href="{{ path('detallepedido_new',{ 'id':id }) }}"> <span class="glyphicon glyphicon-file"> Nuevo </span></a>
+{#   <a  href="{{ path('detallepedido_new',{ 'id':id }) }}"> <span class="glyphicon glyphicon-file"> Nuevo </span></a>#}
    
         <br>
         <a href="{{ path('pedido_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a>
