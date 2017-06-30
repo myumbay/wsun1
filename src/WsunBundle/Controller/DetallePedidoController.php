@@ -248,14 +248,15 @@ class DetallePedidoController extends Controller
                     //$empPr->setCreated($hoy);
                     $em->persist($empPr);
 
-              
-              // $mensaje .= '<strong> DATOS GUARDADOS EMPRESA: </strong> ' . $empresa->getNombreEmp() . '<br>';
             }
             $em->flush();
             
                 $mensaje = 'Pedido Guardado';
                 $this->session->getFlashBag()->add("status",$mensaje);
-                return $this->redirectToRoute('detallepedido_index',array('id'=>$pedido->getId()));
+                $response = new Response(json_encode(array('error' => 0,'mensaje' => $mensaje)));
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+//                return $this->redirectToRoute('detallepedido_index',array('id'=>$pedido->getId()));
                 
         }
            
