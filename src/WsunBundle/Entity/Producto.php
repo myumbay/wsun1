@@ -1,7 +1,7 @@
 <?php
 
 namespace WsunBundle\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * Producto
@@ -65,6 +65,10 @@ class Producto
      * @ORM\Column(name="estado", type="string", length=1, nullable=true, options={"comment" = "Estado del registro 1 activo, 0 inactivo"})
      */
     protected $estado;
+    /**
+     * @ORM\OneToMany(targetEntity="Categoria", mappedBy="categoria")
+     */
+    public $child;
      /**
      * @var \WsunBundle\Entity\Categoria
      *
@@ -82,7 +86,7 @@ class Producto
     
     public function __construct() {
         $this->categoriasParaAgregar = new \Doctrine\Common\Collections\ArrayCollection();
-       
+        $this->child = new ArrayCollection();
     }
     /**
      * Get id

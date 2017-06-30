@@ -22,24 +22,15 @@
         {% for producto in productos %}
         <tr>
             <td class="text-center">
-                {% for key in prod|keys %}
-                
-                {% if (prod[key])==producto.producto.id %}
-                <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" checked/>
-                {%else%}
+
                 <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/>
-                {%endif%}
-            
 {#                <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/>#}
             </td>
             <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.producto.nombreProducto }} {{ (producto.producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
             <td>
-             {% if (prod[key])==producto.producto.id %}  
-                <input type="text" class="form-control input-sm cantidad" id="cantidad{{ producto.id }}" name="productos[{{ producto.id }}][cantidad]" value="{{c[key]}}"/></td>
-              {%else%}
+
                 <input type="text" class="form-control input-sm cantidad" id="cantidad{{ producto.id }}" name="productos[{{ producto.id }}][cantidad]" /></td>
-              {% endif%}
-                {% endfor %}
+
             <td style="vertical-align: middle;"> 
                 <input type="text" class="form-control input-sm preciounit" id="preciounit{{ producto.id }}" name="productos[{{ producto.id }}][preciounit]" value="{{ producto.producto.PrecioProducto }}" readonly/>
             </td>
