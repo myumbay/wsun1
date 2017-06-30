@@ -141,9 +141,9 @@ class Usuarios implements UserInterface
     /**
      * Add user_roles
      *
-     * @param Maycol\BlogBundle\Entity\Role $userRoles
+     * @param WsunBunudle\Entity\Role $userRoles
      */
-    public function addRole(\Maycol\BlogBundle\Entity\Role $userRoles)
+    public function addRole(\WsunBundle\Entity\Role $userRoles)
     {
         $this->user_roles[] = $userRoles;
     }

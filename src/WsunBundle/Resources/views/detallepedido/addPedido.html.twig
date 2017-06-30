@@ -5,6 +5,9 @@
 <div class="box">
      <div class="panel panel-azul">
 
+ {% for detalle in det %}
+     {{dump(detalle.idProducto.producto.id)}}
+ {% endfor %}
 <table class="table table-bordered table-hover table-striped head-fixed table-condensed2">
     <thead>
     <tr>
@@ -21,29 +24,52 @@
        
         {% for producto in productos %}
         <tr>
-            <td class="text-center">
-
-                <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/>
-{#                <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/>#}
+        {% set idp=0%}
+                {% set cantidad=''%}
+                {% set vu=''%}
+                {% set vt=''%}
+                {% set iv=''%}
+        {% for detalle in det %}
+            {% if(detalle.idProducto.producto.id== producto.producto.id)%}
+                {% set idp=1%}
+                {% set cantidad=detalle.cantidad%}
+                {% set iv=detalle.observaciones%}
+                {% set vt=detalle.valortotal%}
+              
+                  
+            {% endif %}
+        {% endfor %}
+        {%if (idp==1) %}
+            <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" checked/>
             </td>
+        {%else%}
+            <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/>
+            </td>
+        {% endif %}
             <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.producto.nombreProducto }} {{ (producto.producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
-            <td>
-
-                <input type="text" class="form-control input-sm cantidad" id="cantidad{{ producto.id }}" name="productos[{{ producto.id }}][cantidad]" /></td>
-
+            <td><input type="text" class="form-control input-sm cantidad" id="cantidad{{ producto.id }}" name="productos[{{ producto.id }}][cantidad]" value="{{cantidad}}"/></td>
             <td style="vertical-align: middle;"> 
-                <input type="text" class="form-control input-sm preciounit" id="preciounit{{ producto.id }}" name="productos[{{ producto.id }}][preciounit]" value="{{ producto.producto.PrecioProducto }}" readonly/>
+            <input type="text" class="form-control input-sm preciounit" id="preciounit{{ producto.id }}" name="productos[{{ producto.id }}][preciounit]" value="{{ producto.producto.PrecioProducto }}" readonly/>
             </td>
             <td>
                 <SELECT class="selProducto" id="iva{{ producto.id }}" name="productos[{{ producto.id }}][iva]" size=1 onChange="calc(this.value,{{ producto.id }});"> 
                     <OPTION value="">--</OPTION>
+                    {% if(iv=='')%}
                     <OPTION value="0">0%</OPTION>
-                <OPTION value="12">12</OPTION>
-                
+                    <OPTION value="12">12</OPTION>
+                    {%else%}
+                        {% if (iv==0)%}
+                        <OPTION value="0" selected:selected>0%</OPTION>
+                        {% else%}
+                        <OPTION value="12" selected:selected>12</OPTION>
+                        {% endif %}
+                    {% endif%}
+                    
                 </SELECT>
             </td>
-{#            <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][iva]" value=""/></td>#}
-            <td><input type="text" class="form-control input-sm preciounit" id="valortotal{{ producto.id }}" name="productos[{{ producto.id }}][valortotal]" readonly /></td>
+            <td><input type="text" class="form-control input-sm preciounit" id="valortotal{{ producto.id }}" name="productos[{{ producto.id }}][valortotal]" readonly value="{{vt}}" /></td>
+           
+              
         </tr>
         {% set contador = contador + 1 %}
     {% else %}

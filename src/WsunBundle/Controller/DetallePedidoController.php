@@ -157,6 +157,7 @@ class DetallePedidoController extends Controller
             ->where('dp.idPedido=:id')
             ->setParameter('id', $idPedido);
         $det=$in->getQuery()->getResult();
+        
         $idprod='';
         if(count($det)>0)
         {
@@ -166,26 +167,8 @@ class DetallePedidoController extends Controller
 
          }
         }
-         //var_dump($idprod);die;
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
-//        $qb = $em->createQueryBuilder();
-//        $qb->from('WsunBundle:EmpresaProducto', 'emp');
-//        
-//        $qb->select('emp');
-//
-//        if($id>0){
-//            $qb->andWhere($qb->expr()->In('emp.id',$idprod));
-//            $qb->andWhere('emp.empresa = :id');
-//             $qb->setParameter('id', $id);
-//        }
-//        $qb->andWhere('p.estado = :estado');
-//        $qb->setParameter('estado', '1');
-//        $qb->addOrderBy('p.nombreProducto', 'ASC');
-//        $p = $qb->getQuery()->getResult();
-       
-        //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
-     
-        return $this->render('WsunBundle:detallepedido:addPedido.html.twig',array('productos' => $pem,'idPedido'=>$idPedido,'prod'=>$idprod));
+
+        return $this->render('WsunBundle:detallepedido:addPedido.html.twig',array('productos' => $pem,'idPedido'=>$idPedido,'prod'=>$idprod,'det'=>$det));
     }
      public function DetalleGuardarAction(Request $request)
     {
@@ -228,7 +211,7 @@ class DetallePedidoController extends Controller
         $pedido=$em->getRepository('WsunBundle:Pedido')->find($pedido_id);
     
         if (is_array($idsProductos) && count($idsProductos) > 0) {
-            
+        
             for($i=0;$i<count($idsProductos);$i++)
             {
                 $detallePedido = $em->getRepository('WsunBundle:DetallePedido')->findBy(array('idProducto' => $idsProductos[$i],'idPedido' =>$pedido_id));
@@ -243,19 +226,20 @@ class DetallePedidoController extends Controller
                         return $response;
                     }else {
                         $em = $this->getDoctrine()->getManager();
-                        $entity = $em->getRepository('WsunBundle:DetallePedido')->findOneBy(array('idPedido' => $pedido->getId()));
+                        $entity = $em->getRepository('WsunBundle:DetallePedido')->findBy(array('idPedido' => $pedido->getId()));
 
-                        if ($entity != null){
-                            $em->remove($entity);
-                            $em->flush();
-                        }
+                        foreach ($entity as $enty) {
+                        $em->remove($enty);
+                            }
+                        $em->flush();
                     }
                 }
-                   // $hoy = new \DateTime("now");
+               
                     $prod= $em->getRepository('WsunBundle:EmpresaProducto')->find($idsProductos[$i]);
                     $empPr = new DetallePedido();
                     $empPr->setIdPedido($pedido);
                     $empPr->setIdProducto($prod);
+                    $empPr->setCodigo($prod->getProducto()->getCodigoProducto());
                     $empPr->setCantidad($capacidades[$i]);
                     $empPr->setValorUnitario($pu[$i]);
                     $empPr->setValorTotal($vt[$i]);
@@ -264,18 +248,21 @@ class DetallePedidoController extends Controller
                     //$empPr->setCreated($hoy);
                     $em->persist($empPr);
 
-               $em->flush();
-               $mensaje .= '<strong> DATOS GUARDADOS EMPRESA: </strong> ' . $empresa->getNombreEmp() . '<br>';
+              
+              // $mensaje .= '<strong> DATOS GUARDADOS EMPRESA: </strong> ' . $empresa->getNombreEmp() . '<br>';
             }
-
-            }
+            $em->flush();
+            
+                $mensaje = 'Pedido Guardado';
+                $this->session->getFlashBag()->add("status",$mensaje);
+                return $this->redirectToRoute('detallepedido_index',array('id'=>$pedido->getId()));
+                
+        }
            
          } catch (\Exception $e) {
             $mensaje = "Error al Guardar los datos.";
-            
         }    
-        
-         
+               
         $response = new Response(json_encode(array('error' => 1,'mensaje' => $mensaje)));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
