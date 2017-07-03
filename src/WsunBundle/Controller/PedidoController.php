@@ -18,6 +18,7 @@ class PedidoController extends Controller
      */
     public function indexAction()
     {
+        
         $em = $this->getDoctrine()->getManager();
         $pedidos = $em->getRepository('WsunBundle:Pedido')->findAll();
         return $this->render('WsunBundle:pedido:index.html.twig', array(
@@ -31,9 +32,11 @@ class PedidoController extends Controller
      */
     public function newAction(Request $request)
     {
+         $em = $this->getDoctrine()->getManager();
         $rol='';
         if($this->getUser())
             $rol=$this->getUser()->getRoles()[0]->getName();
+       
         $pedido = new Pedido();
         $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
         $form->handleRequest($request);
@@ -72,8 +75,14 @@ class PedidoController extends Controller
      */
     public function editAction(Request $request, Pedido $pedido)
     {
+        $rol='';
+       // var_dump($this->getUser()->getRoles()[0]->getName()   );die;
+        if($this->getUser()){
+                $rol=$this->getUser()->getRoles()[0]->getName();
+        }
+        
         $deleteForm = $this->createDeleteForm($pedido);
-        $editForm = $this->createForm('WsunBundle\Form\PedidoType', $pedido);
+        $editForm = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

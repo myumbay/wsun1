@@ -147,12 +147,14 @@ class EmpresaController extends Controller
     public function EmpresaGuardarAction(Request $request)
     {
        try{
+           if(!$_POST)
+           {
         $mensaje = "";
-        $empresa_id = $request->request->get('empresa_id');
-        $idsProductos = $request->request->get('ids_productos');
-        $capacidades = trim($request->request->get('capacidades'));
-        if ($capacidades == '' || $idsProductos == '') {
-                    $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'LOS DATOS PROPORCIONADOS SON INCORRECTOS')));
+       // $empresa_id = $request->request->get('empresa_id');
+       // $idsProductos = $request->request->get('ids_productos');
+        //$capacidades = trim($request->request->get('capacidades'));
+       // if ($idsProductos == '') {
+                    $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'DEBE SELECCIONAR PRODUCTOS')));
                     $response->headers->set('Content-Type', 'application/json');
                     return $response;
                 }
@@ -163,12 +165,12 @@ class EmpresaController extends Controller
                 return $response;
             }
         $idsProductos = explode(',', $idsProductos);
-        $capacidades = explode(',', $capacidades);
+      //  $capacidades = explode(',', $capacidades);
         $contador = 0;
-        foreach ($idsProductos as $ids) {
-                    $capacidadProducto[$ids] = $capacidades[$contador];
-                    $contador ++;
-                }
+//        foreach ($idsProductos as $ids) {
+//                    $capacidadProducto[$ids] = $capacidades[$contador];
+//                    $contador ++;
+//                }
         $proNoEncontrados = '';
         $productos = 0;
         $em = $this->getDoctrine()->getManager();
@@ -181,22 +183,22 @@ class EmpresaController extends Controller
                 
                 if($Emproductos)
                 {
-                    $Emproductos = $Emproductos[0];
-                    if($Emproductos->getCapacidad()>$capacidades[$i]){
-                        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'No guardados!! El valor '.$capacidades[$i].' no debe ser menor que'. $Emproductos->getCapacidad().'  debido a que el valor ya deben estar repartidos en los diferentes departamentos')));
+                    //$Emproductos = $Emproductos[0];
+                   // if($Emproductos->getCapacidad()>$capacidades[$i]){
+                        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'El producto ya esta seleccionado')));
                         $response->headers->set('Content-Type', 'application/json');
                         return $response;
-                    }else {
-                        $Emproductos->setCapacidad($capacidades[$i]);
-                        $em->persist($Emproductos);
-                    }
+//                    }else {
+//                        $Emproductos->setCapacidad($capacidades[$i]);
+//                        $em->persist($Emproductos);
+//                    }
                 }else{
                     $hoy = new \DateTime("now");
                     $prod= $em->getRepository('WsunBundle:Producto')->find($idsProductos[$i]);
                     $empPr = new EmpresaProducto();
                     $empPr->setEmpresa($empresa);
                     $empPr->setProducto($prod);
-                    $empPr->setCapacidad($capacidades[$i]);
+                    //$empPr->setCapacidad($capacidades[$i]);
                     $empPr->setCreated($hoy);
                     $em->persist($empPr);
                     }

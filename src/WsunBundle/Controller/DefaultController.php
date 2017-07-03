@@ -16,8 +16,9 @@ class DefaultController extends Controller
          
         return $this->render('WsunBundle:Default:contactos.html.twig');
     }
-    public function addProductsAction(Request $request,$id)
+    public function productsAction(Request $request)
     {
+        $id=$request->get('id');
         $em = $this->getDoctrine()->getManager();
         $in = $em->createQueryBuilder()
             ->select('ep')
@@ -33,17 +34,56 @@ class DefaultController extends Controller
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder();
         $qb->from('WsunBundle:Producto', 'p');
+        //$qb->innerJoin('p.categoria', 'c');
+        $qb->select('p')->distinct();
+        $qb->andWhere($qb->expr()->notIn('p.id',$idprod));
+        $qb->andWhere('p.estado = :estado');
+        $qb->setParameter('estado', '1');
+        $qb->addOrderBy('p.categoria', 'ASC');
+        $qb->addOrderBy('p.nombreProducto', 'ASC');
+        $p = $qb->getQuery()->getResult();
+        for($i=0;$i< count( $p);$i++)
+            {
+                $idcat[]=$p[$i]->getCategoria()->getId();
+            }
+        //$categoria=$em->getRepository('WsunBundle:Categoria')->findById($idcat); 
+        $categoria = $em->getRepository('WsunBundle:Categoria')
+          ->findBy(
+             array('id'=> $idcat), 
+             array('nombreCat' => 'ASC')
+           );
+        //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
+        return $this->render('WsunBundle:Default:products.html.twig',array('productos' => $p,'categoria'=>$categoria));
+    }
+    public function addProductsAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $in = $em->createQueryBuilder()
+            ->select('ep')
+            ->from('WsunBundle:EmpresaProducto','ep')
+            ->where('ep.empresa=:slug')
+            ->setParameter('slug', 1);
+        $pem=$in->getQuery()->getResult();
+
+        for($i=0;$i< count($pem);$i++)
+            {
+                $idprod[]=$pem[$i]->getProducto()->getId();
+            }
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $em->createQueryBuilder();
+        $qb->from('WsunBundle:Producto', 'p');
+        $qb->innerJoin('p.categoria', 'c');
         $qb->select('p')->distinct();
        
-        if($id>0){
-        $qb->andWhere($qb->expr()->notIn('p.id',$id));
-        }
+        //if($id>0){
+        $qb->andWhere($qb->expr()->notIn('p.id',$idprod));
+        //}
         $qb->andWhere('p.estado = :estado');
         $qb->setParameter('estado', '1');
         $qb->addOrderBy('p.nombreProducto', 'ASC');
         $p = $qb->getQuery()->getResult();
         //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
-        return $this->render('WsunBundle:Default:addProducts.html.twig',array('productos' => $p,));
+        return $this->render('WsunBundle:Default:addProducts.html.twig',array('productos' => $p));
     }
   
 }

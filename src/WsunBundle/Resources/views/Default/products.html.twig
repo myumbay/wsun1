@@ -1,0 +1,126 @@
+
+<table class="table-striped head-fixed " >
+            <thead><tr>
+                <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
+                <th>Producto</th>
+                
+                </tr>
+            </thead>    
+<tbody id="tablaProducts" >
+ 
+    
+<div class="col-md-3">    
+{% set contador = 1 %}
+
+
+
+
+<div class="container">
+    <div class="page-header">
+        <h1>Panels with nav tabs.<span class="pull-right label label-default">:)</span></h1>
+    </div>
+    <div class="row">
+    	<div class="col-md-6">
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading">
+                        <ul class="nav nav-tabs vertical-menu">
+                            <li class="active"><a href="#tab1default" data-toggle="tab">Default 1</a></li>
+                            <li><a href="#tab2default" data-toggle="tab">Default 2</a></li>
+                            <li><a href="#tab3default" data-toggle="tab">Default 3</a></li>
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#tab4default" data-toggle="tab">Default 4</a></li>
+                                    <li><a href="#tab5default" data-toggle="tab">Default 5</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab1default">Default 1</div>
+                        <div class="tab-pane fade" id="tab2default">Default 2 dd</div>
+                        <div class="tab-pane fade" id="tab3default">Default 3 dd</div>
+                        <div class="tab-pane fade" id="tab4default">Default 4 dd</div>
+                        <div class="tab-pane fade" id="tab5default">Default 5 dd/div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel with-nav-tabs panel-primary">
+                <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab1primary" data-toggle="tab">Primary 1</a></li>
+                            <li><a href="#tab2primary" data-toggle="tab">Primary 2</a></li>
+                            <li><a href="#tab3primary" data-toggle="tab">Primary 3</a></li>
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#tab4primary" data-toggle="tab">Primary 4</a></li>
+                                    <li><a href="#tab5primary" data-toggle="tab">Primary 5</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab1primary">Primary 1</div>
+                        <div class="tab-pane fade" id="tab2primary">Primary 2</div>
+                        <div class="tab-pane fade" id="tab3primary">Primary 3</div>
+                        <div class="tab-pane fade" id="tab4primary">Primary 4</div>
+                        <div class="tab-pane fade" id="tab5primary">Primary 5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+</div>
+<br/>
+
+
+
+
+
+<div class="col-md-3">
+<ul class="vertical-menu" >   
+    
+{% for cat in categoria %}
+    {% if (cat.padreId=='')%}
+{#     <div class="tab-pane active" id="{{cat.id}}">{{cat.nombreCat}}</div>   #}
+    <li ><a href="#cat{{cat.id}}" class="tab-pane" data-toggle="pill">{{cat.nombreCat}}</a></li>
+        {% for producto in productos %}
+            {% if (producto.categoria.padreId==cat.padreId)%}
+            <div class="tab-pane " id="cat{{cat.id}}}">{{producto.nombreProducto}}</div>
+                
+            {% endif %}
+        {% endfor %}
+    {% endif%}
+{% endfor %}
+</ul>
+</div>
+{% set i=0 %}
+{% for producto in productos %}
+    
+     
+            
+            
+        <tr>
+            <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/></td>
+            <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.nombreProducto }} {{ (producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
+{#            <td><input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ producto.id }}" name="productos[{{ producto.id }}][capacidad]" /></td>#}
+        </tr>
+        {% set contador = contador + 1 %}
+    {% else %}
+        <tr>
+            <td colspan="3">
+                No se encontraron resultados
+            </td>
+        </tr>
+    {% endfor %}
+   
+    </tbody>
+ </tbody>
+        </table>

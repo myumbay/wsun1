@@ -1,69 +1,73 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    
-<div class="box">
-     <div class="panel panel-azul">
-     <div class="row">
-                        <div class="col-xs-12">
-                            <h4>Empresa: </h4>
-                            <div class="form-group">
-                                <div class="col-xs-12" id="autocomplete_container_empresa">
-                                    <div class="input-group">
-                                        <input type="text" class="typeahead empresa form-control input-sm" id="ruc" placeholder="Buscar empresa">
-                                        
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-warning btn-sm" type="button" onclick="limpiarEmpresa();
-                                                    return false;"><span class="glyphicon glyphicon-refresh"></span> Limpiar</button>
-                                        </span>
-{#                                        <a href ="{{path('admin_productos_empresa_index',{'id' : '1'|default('1')})}}">Agregar Productos</a>#}
-                                        <span class="input-group-btn">
-                                            <button id="btnBuscarProductos" class="btn btn-primary btn-sm" type="button" onclick="aceptar_convenio();
-                                                    return false;">Buscar Productos</button>
-                                        </span>
-                                        <span class="input-group-btn">
-                                            <button id="btnGuardarEmpresa" class="btn btn-primary btn-sm" type="button" onclick="guardar();
-                                                    return false;">Guardar</button>
-                                        </span>
-                                       <input type="hidden" name="empresaId" id="empresaId" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="box"  >
+    <div class="panel panel-azul">
+    <div class="col-xs-12">
+            <h4>Empresa: </h4>
+            <div class="form-group">
+                <div class="col-xs-12" id="autocomplete_container_empresa">
+                    <div class="input-group">
+                        <input type="text" class="typeahead empresa form-control input-sm" id="ruc" placeholder="Buscar empresa">
 
-<table class="table table-bordered table-hover table-striped head-fixed table-condensed2">
-    <thead>
-    <tr>
-        <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
-        <th>Producto</th>
-        <th>Capacidad</th>
-    </tr>
-    </thead>
-    <tbody id="tablaProducts">
-        {% set contador = 1 %}
-        {% for producto in productos %}
-        <tr>
-            <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/></td>
-            <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.nombreProducto }} {{ (producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
-            <td><input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ producto.id }}" name="productos[{{ producto.id }}][capacidad]" /></td>
-        </tr>
-        {% set contador = contador + 1 %}
-    {% else %}
-        <tr>
-            <td colspan="3">
-                No se encontraron resultados
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-     <div id="respuesta" style="border:1px red  ">
-       
-     </div>    
-                        
-                    </tbody>
-     </div></div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" type="button" onclick="limpiarEmpresa();
+                                    return false;"><span class="glyphicon glyphicon-refresh"></span> Limpiar</button>
+                        </span>
+{#                                        <a href ="{{path('admin_productos_empresa_index',{'id' : '1'|default('1')})}}">Agregar Productos</a>#}
+                        <span class="input-group-btn">
+                            <button id="btnBuscarProductos" class="btn btn-primary btn-sm" type="button" onclick="aceptar();
+                                    return false;">Buscar Productos</button>
+                        </span>
+                        <span class="input-group-btn">
+                            <button id="btnGuardarEmpresa" class="btn btn-primary btn-sm" type="button" onclick="guardar();
+                                    return false;">Guardar</button>
+                        </span>
+                       <input type="text" name="empresaId" id="empresaId" />
+                    </div>
+                </div>
+            </div>
+        </div>	
+    
+    <div class="col-xs-12">
+    <form name="formulario" action="{{path('admin_guarda_producto_empresa')}}" method="POST">
+        
+    <div class="row" id="div_producto">
+   
+   
+        <table class="table-striped head-fixed " >
+            <thead><tr>
+                <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
+                <th>Producto</th>
+                
+                </tr>
+            </thead>
+            <tbody id="tablaProducts">
+                {#{% set contador = 1 %}
+                {% for producto in productos %}
+                    
+                <tr>
+                    <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/></td>
+                    <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.nombreProducto }} {{ (producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
+        {#            <td><input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ producto.id }}" name="productos[{{ producto.id }}][capacidad]" /></td>#}
+              {#  </tr>
+                {% set contador = contador + 1 %}
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-info">
+                        No se encontraron resultados
+                    </td>
+                </tr>
+            {% endfor %}#}
+            </tbody>
+        </table>
+    </div>
+    <div id="respuesta" style="border:1px red  ">
+    </div>    
+    <input type="submit" value="Enviar">
+    </form>
+    </div>
+</div> </div>
 {%endblock%}
 {% block javascripts %}
     {{ parent() }}
@@ -87,7 +91,7 @@
                         onSelect: function(suggestion) {
                              $id_convenio = suggestion.data;
                             $('#empresaId').val($id_convenio);
-                            //$("#div_producto").hide();
+                            $("#div_producto").hide();
                              $("#btnGuardarEmpresa").prop('disabled', false);
                         }
                         ,
@@ -99,22 +103,36 @@
             );
         });
        var limpiarEmpresa = function(){
+       
             $("#ruc").val('');
             $('#empresaId').val('');
             $("#ruc").prop('disabled',false);
             $("#btnBuscarEmpresa").prop('disabled', true);
 
         }
-        var aceptar_convenio = function() {
+        
+     
+            var aceptar = function() {
+                
             if ($('#empresaId').val() == ''){
                 alert("Por favor, seleccione una Empresa");
                 return false;
+            } else {
+                var $id_empresa =$('#empresaId').val() ;
+                $.ajax({
+                    method: 'POST',
+                    data: {'id': $id_empresa },
+                    url:"{{path('admin_productos_empresa_select')}}",
+                    context: document.body
+                }).done(function(data) {
+                    
+                    $('#div_producto').html(data);
+                    $("#div_producto").show();
+                });
+               
             }
-            var id_empresa = $('#empresaId').val();
-            document.location.href = "{{path('admin_productos_empresa_index',{'id' : id_empresa |default('1')})}}";
-    
         }
-        
+     
         var validarProductos = function () {
             var banCapacidadproductiva = true;
             if ($('#empresaId').val() =='' ){
@@ -127,7 +145,7 @@
                 return false;
             }
             
-            $('#tablaProducts input[type=checkbox]:checked').each(function () {
+         {#   $('#tablaProducts input[type=checkbox]:checked').each(function () {
                      
                     var idProducto = $(this).val();
                     if ($('#capacidad' + idProducto).val() == '') {
@@ -148,11 +166,11 @@
                         banCapacidadproductiva = false;
                         return false;
                     }
-                });
+                });#}
                 
-                if (!banCapacidadproductiva) {
+              {#  if (!banCapacidadproductiva) {
                     return false;
-                }
+                }#}
                 
             return true;
         };
@@ -163,16 +181,16 @@
             var empresa_id = $('#empresaId').val();
             
             var producto = '';
-            var capacidades= '';
+{#            var capacidades= '';#}
              $('#tablaProducts input[type=checkbox]:checked').each(function () {
                 var idProducto = $(this).val();
                 var capacidad = $('#capacidad' + idProducto).val();
                 
                 producto +=  idProducto+',';
-                capacidades+= (capacidad?capacidad:'--')+',';
+{#                capacidades+= (capacidad?capacidad:'--')+',';#}
             });
             producto = producto.slice(0,-1);
-            capacidades = capacidades.slice(0,-1);
+{#            capacidades = capacidades.slice(0,-1);#}
             var contador = 1;
             var errores=0;
             $.ajax({
@@ -185,7 +203,8 @@
                     },
                    
                     method: 'POST',
-                    data: { 'ids_productos':producto,  'empresa_id':empresa_id, 'capacidades':capacidades },
+{#                    data: { 'ids_productos':producto,  'empresa_id':empresa_id, 'capacidades':capacidades },#}
+                    data: { 'ids_productos':producto,  'empresa_id':empresa_id },
                     url: "{{ path('admin_guarda_producto_empresa')}}",
                     context: document.body
                 }).done(function(dataJson) {
