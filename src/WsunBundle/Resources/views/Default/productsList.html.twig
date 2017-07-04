@@ -1,6 +1,6 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
 
-
- 
+{% block bloque1 %}
 <div class="panel panel-azul"    >
 <div class="col-xs-12">    
 {% set contador = 1 %}
@@ -23,23 +23,19 @@
     
         {% for acat in array_cat %}
         <div class="tab-pane fade " id="cat{{acat}}"> 
-            
-            <table border="1" table-striped head-fixed>
-            <thead><tr>
-                 <th  class="center"><input class="selProducto" type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
-                 <th>Producto</th>
-
-                 </tr>
-             </thead>
+           
+            <table border="1" table-striped head-fixed width="400"> <tr>
             {% for producto in productos %}
                  {% if(acat==producto.categoria.padreId)%}
-                     <tr>
-                         <td class="text-center" width="200">
-                             <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"></td><td width="400" class="lbl1">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</td>
-                     </tr>   
+                     
+                         <td class="text-center " width="200">
+                             <img width="80" height="80" src="{{ asset('../Documentos/Productos/' ~  producto.id ~ '.' ~producto.imagen ) }}"/>
+                             <a href="{{path('admin_producto_show',{'id':producto.id})}}">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</a>
                  
                  {% endif %}
             {% endfor %} 
+            </tr>   
+
              </table>
         </div>
         {% endfor %}
@@ -57,3 +53,4 @@
         });
     });
 </script>
+{%endblock%}

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use WsunBundle\Entity\EmpresaProducto;
+use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * Empresa controller.
  *
@@ -17,6 +18,10 @@ class EmpresaController extends Controller
      * Lists all empresa entities.
      *
      */
+    private $session;
+    public function __construct() {
+        $this->session=new Session();
+    }
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -146,78 +151,43 @@ class EmpresaController extends Controller
     }
     public function EmpresaGuardarAction(Request $request)
     {
-       try{
-           if(!$_POST)
-           {
-        $mensaje = "";
-       // $empresa_id = $request->request->get('empresa_id');
-       // $idsProductos = $request->request->get('ids_productos');
-        //$capacidades = trim($request->request->get('capacidades'));
-       // if ($idsProductos == '') {
-                    $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'DEBE SELECCIONAR PRODUCTOS')));
-                    $response->headers->set('Content-Type', 'application/json');
-                    return $response;
-                }
-        
-         if ($empresa_id == '') {
-                $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'NO EXISTE UNA EMPRESA SELECCIONADA')));
-                $response->headers->set('Content-Type', 'application/json');
-                return $response;
-            }
-        $idsProductos = explode(',', $idsProductos);
-      //  $capacidades = explode(',', $capacidades);
-        $contador = 0;
-//        foreach ($idsProductos as $ids) {
-//                    $capacidadProducto[$ids] = $capacidades[$contador];
-//                    $contador ++;
-//                }
-        $proNoEncontrados = '';
-        $productos = 0;
-        $em = $this->getDoctrine()->getManager();
-        $empresa=$em->getRepository('WsunBundle:Empresa')->find($empresa_id);
-     
-        if (is_array($idsProductos) && count($idsProductos) > 0) {
-            for($i=0;$i<count($idsProductos);$i++)
-            {
-                $Emproductos = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('producto' => $idsProductos[$i],'empresa' =>$empresa_id));
-                
-                if($Emproductos)
-                {
-                    //$Emproductos = $Emproductos[0];
-                   // if($Emproductos->getCapacidad()>$capacidades[$i]){
-                        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'El producto ya esta seleccionado')));
-                        $response->headers->set('Content-Type', 'application/json');
-                        return $response;
-//                    }else {
-//                        $Emproductos->setCapacidad($capacidades[$i]);
-//                        $em->persist($Emproductos);
-//                    }
-                }else{
-                    $hoy = new \DateTime("now");
-                    $prod= $em->getRepository('WsunBundle:Producto')->find($idsProductos[$i]);
-                    $empPr = new EmpresaProducto();
-                    $empPr->setEmpresa($empresa);
-                    $empPr->setProducto($prod);
-                    //$empPr->setCapacidad($capacidades[$i]);
-                    $empPr->setCreated($hoy);
-                    $em->persist($empPr);
-                    }
-               $em->flush();
-               $mensaje .= '<strong> DATOS GUARDADOS EMPRESA: </strong> ' . $empresa->getNombreEmp() . '<br>';
-            }
+       //var_dump($_POST,$request->get('productos'));die;
+       $idempresa=$request->get('empresaId');
+        try{
+            if($empresa='' )
+                {      
+                $mensaje = 'No existe la empresa seleccionada';
+                $this->session->getFlashBag()->add("status",$mensaje);
+                return $this->redirectToRoute('admin_productos_empresa_index');
 
-            }
+                }else{
+                    
+                    
+                }
+      
+        $em = $this->getDoctrine()->getManager();
+        $empresa=$em->getRepository('WsunBundle:Empresa')->find($idempresa);
+        foreach ($request->get('productos') as $key => $valor){
            
-         } catch (\Exception $e) {
+                $hoy = new \DateTime("now");
+                $prod= $em->getRepository('WsunBundle:Producto')->find($valor);
+                $empPr = new EmpresaProducto();
+                $empPr->setEmpresa($empresa);
+                $empPr->setProducto($prod);
+                //$empPr->setCapacidad($capacidades[$i]);
+                $empPr->setCreated($hoy);
+                $em->persist($empPr);
+           
+        }
+        $em->flush();
+        $mensaje = 'Datos Guardados';
+        $this->session->getFlashBag()->add("status",$mensaje);
+        return $this->redirectToRoute('admin_productos_empresa_index');
+    } catch (\Exception $e) {
             $mensaje = "Error al Guardar los datos.";
-            
-        }    
-        
-         
-        $response = new Response(json_encode(array('error' => 1,'mensaje' => $mensaje)));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
+    }    
+       
+}
     
     public function showProductosAction(Request $request)
     {

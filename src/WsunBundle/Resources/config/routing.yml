@@ -3,9 +3,15 @@ admin_productos_empresa_index:
     defaults: { _controller: WsunBundle:Default:addProducts }
     requirements:
         _method:  GET|POST
+
 admin_productos_empresa_select:
-    path:  /addproducts1/  
+    path:  /products/  
     defaults: { _controller: WsunBundle:Default:products }
+    
+productos_lista:
+    path:  /productslista  
+    defaults: { _controller: WsunBundle:Default:productsList }
+    
     
 addpedido_index:
     path:  /addpedido/{id}

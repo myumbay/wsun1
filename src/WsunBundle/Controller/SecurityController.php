@@ -18,11 +18,12 @@ class SecurityController extends Controller
         $autenticationUtils = $this->get("security.authentication_utils");
         $lastUsername = $autenticationUtils->getLastUsername();
         $error = $autenticationUtils->getLastAuthenticationError();
-        
+       
         return $this->render('WsunBundle:Security:login.html.twig', array(
             'last_username' => $lastUsername,
             'error'         => $error,
         ));
+       
     }
 //    public function checkAction(Request $request) {
 //        $session = $request->getSession();

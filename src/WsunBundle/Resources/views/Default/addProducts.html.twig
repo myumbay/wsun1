@@ -2,7 +2,14 @@
 
 {% block bloque1 %}
 <div class="box"  >
+    {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+    {% endfor%}
     <div class="panel panel-azul">
+    <div class="col-xs-12">
+    <form name="formulario" action="{{path('admin_guarda_producto_empresa')}}" method="POST">
     <div class="col-xs-12">
             <h4>Empresa: </h4>
             <div class="form-group">
@@ -19,30 +26,27 @@
                             <button id="btnBuscarProductos" class="btn btn-primary btn-sm" type="button" onclick="aceptar();
                                     return false;">Buscar Productos</button>
                         </span>
-                        <span class="input-group-btn">
+                        {#<span class="input-group-btn">
                             <button id="btnGuardarEmpresa" class="btn btn-primary btn-sm" type="button" onclick="guardar();
                                     return false;">Guardar</button>
-                        </span>
-                       <input type="text" name="empresaId" id="empresaId" />
+                        </span>#}
+                        <input class="btn btn-primary btn-sm" type="submit" value="Enviar">
+                       <input type="hidden" name="empresaId" id="empresaId" />
                     </div>
                 </div>
             </div>
         </div>	
     
-    <div class="col-xs-12">
-    <form name="formulario" action="{{path('admin_guarda_producto_empresa')}}" method="POST">
-        
     <div class="row" id="div_producto">
    
-   
-        <table class="table-striped head-fixed " >
+        {#<table class="table-striped head-fixed " >
             <thead><tr>
                 <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
                 <th>Producto</th>
                 
                 </tr>
             </thead>
-            <tbody id="tablaProducts">
+            <tbody id="tablaProducts">#}
                 {#{% set contador = 1 %}
                 {% for producto in productos %}
                     
@@ -59,15 +63,15 @@
                     </td>
                 </tr>
             {% endfor %}#}
-            </tbody>
+            {#</tbody>
         </table>
-    </div>
+    </div>#}
     <div id="respuesta" style="border:1px red  ">
     </div>    
-    <input type="submit" value="Enviar">
+    
     </form>
     </div>
-</div> </div>
+    </div> </div></div>
 {%endblock%}
 {% block javascripts %}
     {{ parent() }}
