@@ -22,7 +22,11 @@ class Role implements RoleInterface
      * @ORM\Column(name="nombre", type="string", length=255)
      */
     protected $name;
-
+    
+    /**
+     * @ORM\Column(name="detalle", type="string", length=255)
+     */
+    protected $detalle;
     /**
      * Get id
      *
@@ -51,6 +55,25 @@ class Role implements RoleInterface
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Set detalle
+     *
+     * @param string $detalle
+     */
+    public function setDetalle($detalle)
+    {
+        $this->detalle = $detalle;
+    }
+
+    /**
+     * Get detalle
+     *
+     * @return string
+     */
+    public function getDetalle()
+    {
+        return $this->detalle;
     }
 
     public function getRole() {

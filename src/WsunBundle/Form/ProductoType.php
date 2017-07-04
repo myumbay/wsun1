@@ -51,6 +51,8 @@ class ProductoType extends AbstractType
 
         ->add('categoria',EntityType::class, array(
         'class' => 'WsunBundle:Categoria',
+        'attr'  =>  array('class' => 'form-group',
+        'style' => 'margin:5px 0;'),
         'choice_value'=>'nombreCat',
 
         'group_by' => 'padreId',

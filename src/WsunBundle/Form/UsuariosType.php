@@ -29,11 +29,13 @@ class UsuariosType extends AbstractType
                             ->orderBy('c.nombreDep', 'ASC');
                     },
                 ))
+                 ->add('user_roles', EntityType::class, array(
+                'class'=> 'WsunBundle:Role',
+                'multiple' => true, // Allow multiple selection
+                'choice_label'=>'detalle')
+                    );             
                 
-                
-                
-                
-                ->add('user_roles');
+               // ->add('user_roles');
     }
     
     /**
