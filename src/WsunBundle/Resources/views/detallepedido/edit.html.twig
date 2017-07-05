@@ -1,7 +1,7 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    
+      <div class="box">
     <fieldest>
      <legend class="text-center header">Edición de Detalle Pedido</legend>
      {#{dump(edit_form)}#}
@@ -55,11 +55,8 @@
                 <input  class="btn btn-info" type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </div>
-    </div>
+    </div></div>
     
-    
-  
-
     <script type="text/javascript">
       {{ parent() }}  
    {# function Calc(){

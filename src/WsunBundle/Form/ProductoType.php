@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 class ProductoType extends AbstractType
 {
     /**
@@ -45,7 +46,7 @@ class ProductoType extends AbstractType
                             "class" => "col-lg-8",                            
                         )))
                 ->add('codigoProducto', TextType::class,array('label'=>'Código Producto:')) 
-                ->add('precioProducto',TextType::class,array('label'=>'Precio:'))
+                ->add('precioProducto',  NumberType::class,array('label'=>'Precio:'))
                 ->add('observacion', TextareaType::class,array('label'=>'Descripcion:'))
                 ->add('estado',  CheckboxType::class,array('label'=>'Estado:','required' => false))
 

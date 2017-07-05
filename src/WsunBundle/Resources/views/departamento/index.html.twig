@@ -1,6 +1,7 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
+    <div class="box">
     <div class="table-responsive">
      <div class="panel-heading">
                 <strong><span>Lista</span> de Departamentos</strong>
@@ -39,5 +40,6 @@
         </tbody>
     </table>
     <a href="{{ path('admin_departamento_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
-    </div>         
+    </div> </div>
+    
 {% endblock %}

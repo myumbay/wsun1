@@ -1,12 +1,17 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-<div class="panel panel-azul"    >
-<div class="col-xs-12">    
-{% set contador = 1 %}
 
-<div id="categoria" class="col-xs-4">
-    <ul class="vertical-menu">
+<div class="panel panel-azul">
+<div id="categoria" class="col-sm-4">
+    
+  
+<div class="panel panel-cuerpo-gris-oscuro categorias-home">
+<div class="panel-heading">
+<strong>Categorías</strong>
+</div>
+<div class="panel-body">
+<ul class="vertical-menu">
         {% set array_cat =[] %}
                             {% for cat in categoria %}
                                 {% if (cat.padreId=='')%}
@@ -17,10 +22,13 @@
                             {% endfor %}
                             
                         </ul>
-    
+</div>
+</div>  
+   
 </div>
 <div id="producto" class="col-xs-8">  
-    
+    <div class="panel-body">
+        
         {% for acat in array_cat %}
         <div class="tab-pane fade " id="cat{{acat}}"> 
            
@@ -29,9 +37,9 @@
                  {% if(acat==producto.categoria.padreId)%}
                      
                          <td class="text-center " width="200">
-                             <img width="80" height="80" src="{{ asset('../Documentos/Productos/' ~  producto.id ~ '.' ~producto.imagen ) }}"/>
+                             <div class="crsl-wrap"><img width="80" height="80" src="{{ asset('../Documentos/Productos/' ~  producto.id ~ '.' ~producto.imagen ) }}"/>
                              <a href="{{path('admin_producto_show',{'id':producto.id})}}">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</a>
-                 
+                             </div>
                  {% endif %}
             {% endfor %} 
             </tr>   
@@ -40,8 +48,8 @@
         </div>
         {% endfor %}
  
-</div>
-</div>  </div>      
+    </div>
+</div>  </div>   
 <script>
     $(window).ready(function() {
         $("#seleccionarTodos").click(function() {

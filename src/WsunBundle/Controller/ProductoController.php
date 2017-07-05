@@ -233,4 +233,58 @@ public function redimensionar($src, $ancho_forzado){
         //$path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
       return $this->render('WsunBundle:producto:lista.html.twig', array('buscar' => $valorOrig, 'producto'=> $productos, 'listas' => array()));
     }
+    
+    public function carruselAction($tipo, $id = 0) {
+        switch ($tipo) {
+            case 1: // Mas visto
+                /* @var $qb \Doctrine\ORM\QueryBuilder */
+                $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+                $qb->from('SercopComunBundle:Producto', 'p');
+                $qb->select("p.nombreProducto, p.id");
+                $qb->leftJoin('p.categoria', 'c');
+//                if ($id) {
+//                    $qb
+//                            ->leftJoin('c.padreId', 'padre1')
+//                            ->leftJoin('padre1.padre', 'padre2')
+//                            ->leftJoin('padre2.padre', 'padre3');
+//                    $qb->andWhere('((c.id = :id) or (padre1.id = :id) or (padre2.id = :id) or (padre3.id = :id))');
+//                    $qb->setParameter('id', $id);
+//                }
+                
+                $qb->andwhere('p.estado = :estado');
+                $qb->setParameter('estado', '1');
+                $productos = $qb->getQuery()->execute();           
+                //GUARDANDO cache
+//                $cacheDriver = new \Doctrine\Common\Cache\ApcCache();                                
+//                if ($cacheDriver->contains('mas_visto'.$id.$cobertura)) {           
+//                    //$deleted = $cacheDriver->deleteAll();die;
+//                    $productos = $cacheDriver->fetch('mas_visto'.$id.$cobertura);                                       
+//                } else {
+//                    $productos = $qb->getQuery()->execute();
+//                    $cacheDriver->save('mas_visto'.$id.$cobertura, $productos, 86400);                    
+//                }
+                                              
+                $ids = array();
+                foreach ($productos as $producto) {
+                    $ids[] = $producto['id'];
+                }                
+                $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+                
+                //$imagenes = $this->buscarImagenes($ids);
+                
+                return $this->render('WsunBundle:Producto:carousel.html.twig', array('titulo' => '<span>Productos</span> ',
+                            'numero_objetos' => 6,
+                            'numero_visibles' => 3,
+                            'id' => 1,
+                            'automatico' => true,
+                            'clases' => "panel-verde-oscuro mas-vistos",
+                            'productos' => $productos,
+                            //'imagenes' => $imagenes,
+                            //'atts' => $atts,
+                                )
+                );
+              
+                break;
+        }
+    }
 }
