@@ -16,14 +16,23 @@ class CategoriaController extends Controller
      * Lists all categorium entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $categorias = $em->getRepository('WsunBundle:Categoria')->findAll();
-        return $this->render('WsunBundle:categoria:index.html.twig', array(
-            'categorias' => $categorias,
-        ));
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $categorias, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+ 
+        return $this->render('WsunBundle:categoria:index.html.twig', 
+            array('pagination' => $pagination));
     }
+
+   
 
     /**
      * Creates a new categorium entity.

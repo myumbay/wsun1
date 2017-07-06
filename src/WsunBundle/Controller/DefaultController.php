@@ -16,6 +16,21 @@ class DefaultController extends Controller
          
         return $this->render('WsunBundle:Default:contactos.html.twig');
     }
+    public function entradasAction(Request $request) {
+        $em = $this->getDoctrine()->getEntityManager();
+        $dql = "SELECT e FROM WsunBundle:Producto e";
+        $query = $em->createQuery($dql);
+ 
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $query, 
+                $request->query->getInt('page', 1),
+                5
+        );
+ 
+        return $this->render('WsunBundle:Default:listado.html.twig',
+                array('pagination' => $pagination));
+    }
     public function productsAction(Request $request)
     {
         $id=$request->get('id');

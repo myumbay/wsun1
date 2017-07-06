@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container">
+  
+   <div class="container-fluid">
+    <h1>Paginación con KnpPaginator</h1>
+ 
+    {# total items count #}
+    <div class="count">
+        <span class="label label-primary">
+            Entradas en total: {{ pagination.getTotalItemCount }}
+        </span>
+    </div>
+    <br/>
+    <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'ID', 'e.id') }}</th>
+            <th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'TITULO', 'e.nombreProducto') }}
+            </th>
+        </tr>
+ 
+        {# table body #}
+        {% for entry in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ entry.id }}</td>
+                <td>{{ entry.nombreProducto }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+</div>
+    
+{% endblock %}
+

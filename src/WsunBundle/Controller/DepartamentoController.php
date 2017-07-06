@@ -20,15 +20,20 @@ class DepartamentoController extends Controller
     public function __construct() {
         $this->session=new Session();
     }
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
         $departamentos = $em->getRepository('WsunBundle:Departamento')->findAll();
-
-        return $this->render('WsunBundle:departamento:index.html.twig', array(
-            'departamentos' => $departamentos,
-        ));
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $departamentos, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+ 
+        return $this->render('WsunBundle:departamento:index.html.twig', 
+            array('pagination' => $pagination));
     }
 
     /**

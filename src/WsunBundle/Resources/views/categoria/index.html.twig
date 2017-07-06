@@ -2,47 +2,49 @@
 
 {% block bloque1 %}
 <div class="box">
-
-    <fieldset>
-
-        <legend class="text-center header"><strong><span>Lista</span> de Categorias</strong></legend>
-        <table class="table table-condensed table-striped">
-            <thead>
-            <tr>
-                <th class="col-sm-2">Nombre Categoria</th>
-                <th class="col-sm-1">Tipo</th>
-                <th class="col-sm-5">Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-
-        {% for categorium in categorias %}
-            <tr>
+    <div class="panel panel-azul">
+        <fieldset>
+            <legend class="text-center header">LISTA DE CATEGORIAS</legend>
+             <div class="count">
+                <span class="label label-primary">
+                Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+        <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'NOMBRE CATEGORIA', '') }}</th>
+           {# <th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}</th>#}
+            <th>{{ knp_pagination_sortable(pagination, 'TIPO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+        </tr> 
+        {% set contador= 1%}
+        {% for categorium in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>
                 <td><a href="{{ path('admin_categoria_show', { 'id': categorium.id }) }}">{{ categorium.nombreCat }}</a></td>
-                
                 <td>{% if(categorium.estado=='1')%}
                     Sub-Categoria
                         {% else %}
                         Categoria Principal
                     {% endif %}
                    </td>
-                
                 <td>
                     <div class="row">
-                        <div class="col-md-2">
-                            <a href= "{{ path('admin_categoria_show', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">Ver</a>
+                        <div class="col-md-3">
+                         <a href= "{{ path('admin_categoria_show', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
-                        <div class="col-md-2">
-                            <a href= "{{ path('admin_categoria_edit', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">Editar</a>
+                         <div class="col-md-2">
+                         <a href= "{{ path('admin_categoria_edit', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
-
                     </div>
-
                 </td>
-            </tr>
+           </tr>
+            {% set contador= contador+1%}
         {% endfor %}
-        </tbody>
     </table>
 <a href="{{ path('admin_categoria_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
- </div>    
+                    </div></div>    
 {% endblock %}

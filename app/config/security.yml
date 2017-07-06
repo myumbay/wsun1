@@ -22,6 +22,8 @@ security:
             entity: { class: WsunBundle\Entity\Usuarios, property: username }
 
     firewalls:
+        
+        
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false

@@ -2,28 +2,33 @@
 
 {% block bloque1 %}
 <div class="box">
-    
+    <div class="panel panel-azul">
         <fieldset>
-            
-            <table class="table table-condensed table-striped">
-    <thead>
-    <tr>
-            <th class="col-sm-2">Código</th>
-            <th class="col-sm-1">Estado</th>
-            <th class="col-sm-2">Total Pedido</th>
-            <th class="col-sm-5">Acciones</th>
-        </tr>   
-  </thead>
-  <tbody>
-    {% for pedido in pedidos %}
+            <legend class="text-center header">LISTA DE PEDIDOS</legend>
+             <div class="count">
+                <span class="label label-primary">
+                Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+        <table class="table table-bordered">
             <tr>
-               
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ESTADO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'TOTAL DE PEDIDO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+        </tr> 
+         {% set contador= 1%}
+        {% for pedido in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>
                 <td>{{ pedido.codigoPedido }}</td>
                 <td>{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</td>
                 <td>{{ pedido.totalPedido }}</td>
                 <td>
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                          <a href= "{{ path('pedido_show', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
                          <div class="col-md-2">
@@ -33,14 +38,14 @@
                          <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idUsuario.departamento.idEmpresa.id }) }}" class="btn btn-primary btn-sm">products</a>
                         </div>
                     </div>
-                    </td>
+                </td>
             </tr>
+            {% set contador= contador+1%}
         {% endfor %}
-  </tbody>
-  <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
-</table>
+    </table>    
 </fieldset>
-</div>
+  <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+</div></div> 
 <script type="text/javascript" id="scriptPedido">
       console.log('hola');      
     </script>  

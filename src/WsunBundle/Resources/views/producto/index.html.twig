@@ -4,47 +4,53 @@
     <div class="panel panel-azul">
         <fieldset>
             <legend class="text-center header">LISTA DE PRODUCTOS</legend>
-            <table class="table table-condensed table-striped">
-    <thead>
-    <tr>
-            <th class="col-sm-2">Nombre Producto</th>
-            <th class="col-sm-2">Código Producto</th>
-            <th class="col-sm-2">Estado</th>
-            <th class="col-sm-2">Precio</th>
-            <th class="col-sm-5">Acciones</th>
-        </tr>   
-  </thead>
-    <tbody>
-        {% for producto in productos %}
-            <tr>
-{#                <td><a href="{{ path('admin_producto_show', { 'id': producto.id }) }}">{{ producto.id }}</a></td>#}
-                <td>{{ producto.nombreProducto }}</td>
-                <td>{{ producto.codigoProducto }}</td>
-                <td>{% if (producto.Estado=='1') %}
+             <div class="count">
+                <span class="label label-primary">
+                Entradas en total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+     <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'ID', 'e.id') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CODIGO', 'e.codigoProducto') }}</th>
+            <th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}
+            </th>
+            <th>{{ knp_pagination_sortable(pagination, 'ESTADO', 'e.Estado') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'PRECIO', 'e.precioProducto') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+ 
+        </tr> 
+        {% set contador= 1%}
+        {% for entry in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>
+                <td>{{ entry.codigoProducto }}</td>
+                <td>{{ entry.nombreProducto }}</td>
+                <td>{% if (entry.Estado=='1') %}
                         <span class="text-success" > Habilidado</span>
                         {% else %}
                         <span class="text-danger" > No Habilidado</span>
                     {% endif %}
                 </td> 
-                <td>{{ producto.precioProducto }}</td>
-                <td>
+                <td>{{ entry.precioProducto }}</td>
+                 <td>
                     <div class="row">
                         <div class="col-md-3">
-                         <a href= "{{ path('admin_producto_show', { 'id': producto.id }) }}" class="btn btn-primary btn-sm">show</a>
+                         <a href= "{{ path('admin_producto_show', { 'id': entry.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
                          <div class="col-md-2">
-                         <a href= "{{ path('admin_producto_edit', { 'id': producto.id }) }}" class="btn btn-primary btn-sm">edit</a>
+                         <a href= "{{ path('admin_producto_edit', { 'id': entry.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
                         
-                    </div>
-                                       
-                   
-                </td>
+                    </div></td>
             </tr>
+            {% set contador= contador+1%}
         {% endfor %}
-        </tbody>
+        
     </table>
-
+</fieldset>
             <a href="{{ path('admin_producto_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
                     </div></div>
 {% endblock %}

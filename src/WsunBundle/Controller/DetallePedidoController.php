@@ -24,10 +24,22 @@ class DetallePedidoController extends Controller
         $idEmpresa=$request->get('idEmpresa');
         $em = $this->getDoctrine()->getManager();
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($id);
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $pedidosDet, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+// 
+//        return $this->render('WsunBundle:pedido:index.html.twig', 
+//            array('pagination' => $pagination));
+//        
+//        
         return $this->render('WsunBundle:detallepedido:index.html.twig', array(
            'id'=>$id,
            'idEmpresa'=>$idEmpresa,
-           'pedidosDet' => $pedidosDet,
+           'pagination' => $pagination,
         ));
     }
 
@@ -143,6 +155,9 @@ class DetallePedidoController extends Controller
     {
         $idPedido=$request->get('idPedido');
         $em = $this->getDoctrine()->getManager();
+        $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
+        $ivaValor=$iva->getValor();
+        
         $in = $em->createQueryBuilder()
             ->select('ep')
             ->from('WsunBundle:EmpresaProducto','ep')
@@ -168,7 +183,7 @@ class DetallePedidoController extends Controller
          }
         }
 
-        return $this->render('WsunBundle:detallepedido:addPedido.html.twig',array('productos' => $pem,'idPedido'=>$idPedido,'prod'=>$idprod,'det'=>$det));
+        return $this->render('WsunBundle:detallepedido:addPedido.html.twig',array('productos' => $pem,'idPedido'=>$idPedido,'prod'=>$idprod,'det'=>$det,'ivaValor'=>$ivaValor));
     }
      public function DetalleGuardarAction(Request $request)
     {

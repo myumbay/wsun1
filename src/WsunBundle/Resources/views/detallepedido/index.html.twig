@@ -1,70 +1,78 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <div class="panel panel-azul">
-   {% for message in app.session.flashbag().get('status')%}
-        <div class="alert alert-danger">
-            {{message}}
-        </div>
-    {% endfor%}        
-      <div class="modal" id="Edit">
-        <div class="modal-dialog">
+    <div class="box">
+         <div class="modal" id="Edit">
+            <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="text-center"><img height="50" width="50" src="{{asset('img/loading.gif')}}"/><br/>Cargando...</div>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <legend class="text-center header">LISTA DE DETALLE DEL PEDIDO</legend>
-<table>
-  <thead class="thead-inverse">
-    <tr>
-      
-    <th scope="row">Código</th>
-    <th scope="row">Descripción</th>
-    <th scope="row">Cantidad</th>
-    <th scope="row">Valor Unitario</th> 
-    <th scope="row">Valor Total</th>
-    <th scope="row">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-   {% set total= 0 %}
-    {% for pd in pedidosDet %}
-            <tr>
-{#                <td><a href="{{ path('pedido_show', { 'id': pedido.id }) }}">{{ pedido.id }}</a></td>#}
+        </div><!-- /.modal -->
+    {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-danger">
+            {{message}}
+        </div>
+    {% endfor%}
+    <div class="panel panel-azul">
+        <fieldset>
+            <legend class="text-center header">DETALLE DE PEDIDO</legend>
+             <div class="count">
+                <span class="label label-primary">
+                Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+    <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'DESCRIPCIÓN', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CANTIDAD', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'VAL. UNIT', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'VAL. TOTAL', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+        </tr> 
+        {% set contador= 1%}
+        {% set total= 0 %}
+        {% for pd in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>    
                 <td>{{ pd.codigo }}</td>
                 <td>{{ pd.idProducto }}</td>
                 <td>{{ pd.cantidad }}</td>
                 <td>${{pd.valorUnitario|number_format(2,'.',',')}}</td>
                 <td>${{pd.valorTotal|number_format(2,'.',',')}}</td>
                 {% set total= total+ pd.valorTotal%}
-                <td>
+                 <td>
                     <div class="row">
                         <div class="col-md-3">
                          <a href= "{{ path('detallepedido_show', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
-                         <div class="col-md-3">
+   {#                      <div class="col-md-3">
 {#                         <a   href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>#}
 {#                         <a  data-toggle="modal" data-target="#Edit" data-backdrop="static" href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>#}
-                        </div>
+                       {# </div>#}
                        
                     </div>
-                    </td>
+                </td>
             </tr>
+            {% set contador= contador+1%}
         {% endfor %}
-        <tr><td colspan="4">Subtotal</td><td> ${{total |number_format(2,'.',',')}}</td></tr>
+    </table>    
+  </fieldset>  
+    <tr><td colspan="4">Subtotal</td><td> ${{total |number_format(2,'.',',')}}</td></tr>
   </tbody>
     <a href ="{{path('addpedido_index',{'idPedido':id,'id' :idEmpresa |default('empresa')})}}"><span>Seleccionar Productos</span></a>
 {#   <a  href="{{ path('detallepedido_new',{ 'id':id }) }}"> <span class="glyphicon glyphicon-file"> Nuevo </span></a>#}
    
         <br>
         <a href="{{ path('pedido_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a>
-</table>
-    </div>
+    </div></div> 
     <script type="text/javascript">
-      {{ parent() }}  
+      
 
 
     </script>

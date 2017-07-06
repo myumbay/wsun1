@@ -2,44 +2,49 @@
 
 {% block bloque1 %}
 <div class="box">
-    
+    <div class="panel panel-azul">
         <fieldset>
              <div class="panel-heading">
                 <strong><span>Lista</span> de Empresas</strong>
             </div> 
-            
-            
+            <div class="count">
+                <span class="label label-primary">
+               Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
 
-<div class="table-responsive">
-<table class="table table-hover">
-    <thead>
+    <table class="table table-bordered">
         <tr>
-            <th>Id</th>
-            <th>Ruc</th>
-            <th>Nombre Empresa</th>
-            <th>Tel&#233;fono</th>
-            <th>Direcci&#243;n</th>
-            <th>Email</th>
-            <th>Actions</th>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'RUC', '') }}</th>
+            {#<th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}#}
+            </th>
+            <th>{{ knp_pagination_sortable(pagination, 'NOMBRE EMPRESA', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'TELÉFONO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'DIRECCIÓN', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CORREO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
         </tr>
-    </thead>
-    <tbody>
-       {% for empresa in empresas %}
-            <tr>
-                <td><a href="{{ path('empresa_show', { 'id': empresa.id }) }}">{{ empresa.id }}</a></td>
+           
+        {% set contador= 1%}
+        {% for empresa in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>
+{#                <td><a href="{{ path('empresa_show', { 'id': empresa.id }) }}">{{ empresa.id }}</a></td>#}
                 <td>{{ empresa.ruc }}</td>
                 <td>{{ empresa.nombreEmp }}</td>
                 <td>{{ empresa.telefonoEmp }}</td>
                 <td>{{ empresa.direccionEmp }}</td>
                 <td>{{ empresa.email }}</td>
                 
-                <td>
                    <td>
                     <div class="row">
                         <div class="col-md-3">
                          <a href= "{{ path('empresa_show', { 'id': empresa.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
-                         <div class="col-md-3">
+                         <div class="col-sm-3">
                          <a href= "{{ path('empresa_edit', { 'id': empresa.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
                         <div class="col-md-3">
@@ -50,13 +55,14 @@
                                         
                 </td>
             </tr>
-        {% endfor %}
-    </tbody>
+            {% set contador= contador+1%}
+        {% endfor %}        
+  
 </table>
-</div>
+
 
             <a href="{{ path('empresa_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
-    </div>        
+    </div> </div>       
 {% endblock %}
 {% block javascripts %}
    

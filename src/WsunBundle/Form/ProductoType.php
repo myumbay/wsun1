@@ -49,6 +49,7 @@ class ProductoType extends AbstractType
                 ->add('precioProducto',  NumberType::class,array('label'=>'Precio:'))
                 ->add('observacion', TextareaType::class,array('label'=>'Descripcion:'))
                 ->add('estado',  CheckboxType::class,array('label'=>'Estado:','required' => false))
+                ->add('iva',  CheckboxType::class,array('label'=>'Graba iva:','required' => false))
 
         ->add('categoria',EntityType::class, array(
         'class' => 'WsunBundle:Categoria',

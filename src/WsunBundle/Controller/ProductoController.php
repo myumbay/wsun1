@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Liip\ImagineBundle\Imagine\Filter\Loader\ResizeFilterLoader;
 use WsunBundle\Form\ProductoType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use WsunBundle\Entity\Parametro;
 /**
  * Producto controller.
  *
@@ -23,14 +24,29 @@ class ProductoController extends Controller
      * Lists all producto entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getEntityManager();
+        //$dql = "SELECT e FROM WsunBundle:Producto e";
+        //$query = $em->createQuery($dql);
+        $productos = $em->getRepository('WsunBundle:Producto')->findAll(array('nombreProducto' => 'ASC')); 
+        $limite = $this->container->getParameter('limitePaginacion');
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $productos, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+ 
+        return $this->render('WsunBundle:producto:index.html.twig',
+                array('pagination' => $pagination));
+        
+        ///$em = $this->getDoctrine()->getManager();
         //$productos = $em->getRepository('WsunBundle:Producto')->findBy( array('estado' => '1'), array('nombreProducto' => 'ASC'));
-        $productos = $em->getRepository('WsunBundle:Producto')->findAll(array('nombreProducto' => 'ASC'));        
-        return $this->render('WsunBundle:producto:index.html.twig', array(
-            'productos' => $productos,
-        ));
+       // $productos = $em->getRepository('WsunBundle:Producto')->findAll(array('nombreProducto' => 'ASC'));        
+        //return $this->render('WsunBundle:producto:index.html.twig', array(
+        //    'productos' => $productos,
+        //));
     }
 
     /**
@@ -42,9 +58,11 @@ class ProductoController extends Controller
         $producto = new Producto();
         $form = $this->createForm('WsunBundle\Form\ProductoType', $producto);
         $form->handleRequest($request);
-
+        $em = $this->getDoctrine()->getManager();
+        $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
+        $iva=$iva->getValor();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
                 if(!$em->getRepository('WsunBundle:Producto')->findByNombreProducto(trim($producto->getNombreProducto())))
                 {
@@ -72,7 +90,7 @@ class ProductoController extends Controller
         }
 
         return $this->render('WsunBundle:producto:new.html.twig', array(
-            'producto' => $producto,
+            'producto' => $producto,'iva'=>$iva,
             'form' => $form->createView(),
         ));
     }
@@ -87,6 +105,9 @@ class ProductoController extends Controller
         $img= $producto->getId().'.'.$producto->getImagen();  
         $root = $this->get('kernel')->getRootDir();
         $url= '../Documentos/Productos/'.$img;
+        $em = $this->getDoctrine()->getManager();
+        $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
+        $iva=$iva->getValor();
         //$medidas=array();
         //$size=$this->getParameter('dimension_imagen1');
        // $medidas=$this->redimensionar($url,$size);
@@ -95,7 +116,7 @@ class ProductoController extends Controller
         return $this->render('WsunBundle:producto:show.html.twig', array(
             'url'=>$url,
             //'medidas'=>$medidas,
-            'producto' => $producto,
+            'producto' => $producto,'iva'=>$iva,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -128,10 +149,12 @@ public function redimensionar($src, $ancho_forzado){
         $editForm->handleRequest($request);
         $img = $producto->getId().'.'.$producto->getImagen();
         $url= '../Documentos/Productos/'.$img;
-    
+        $em = $this->getDoctrine()->getManager();
+        $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
+        $iva=$iva->getValor();
         if ($editForm->isSubmitted()) {
             
-            $em = $this->getDoctrine()->getManager();
+            
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
                     $file = $producto->getImagen(); 
                     if($file){
@@ -156,7 +179,7 @@ public function redimensionar($src, $ancho_forzado){
 
         return $this->render('WsunBundle:producto:edit.html.twig', array(
         'url'=>$url,
-            'producto' => $producto,
+            'producto' => $producto,'iva'=>$iva,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));

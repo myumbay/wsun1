@@ -16,14 +16,22 @@ class PedidoController extends Controller
      * Lists all pedido entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         
         $em = $this->getDoctrine()->getManager();
         $pedidos = $em->getRepository('WsunBundle:Pedido')->findAll();
-        return $this->render('WsunBundle:pedido:index.html.twig', array(
-            'pedidos' => $pedidos,
-        ));
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $pedidos, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+ 
+        return $this->render('WsunBundle:pedido:index.html.twig', 
+            array('pagination' => $pagination));
+
     }
 
     /**

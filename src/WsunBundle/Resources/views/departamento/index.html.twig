@@ -2,44 +2,52 @@
 
 {% block bloque1 %}
     <div class="box">
-    <div class="table-responsive">
-     <div class="panel-heading">
-                <strong><span>Lista</span> de Departamentos</strong>
-            </div> 
-    <table class="table table-hover">
-          <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre Departamento</th>
-                <th>Responsable</th>
-                <th>Telefono</th>
-                <th>Valor</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for departamento in departamentos %}
-            <tr>
-                <td><a href="{{ path('admin_departamento_show', { 'id': departamento.id }) }}">{{ departamento.id }}</a></td>
-                <td>{{ departamento.nombreDep }}</td>
+    <div class="panel panel-azul">
+        <fieldset>
+                <legend class="text-center header">LISTA DE DEPARTAMENTOS</legend>
+             <div class="count">
+                <span class="label label-primary">
+                Entradas en total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+        <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'NOMBRE DEPARTAMENTO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'RESPONSABLE', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'TELÉFONO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'V. ASIGNADO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+ 
+        </tr> 
+        {% set contador= 1%}
+        {% for departamento in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>  
+            <td>{{ contador }}</td>
+            <td>{{ departamento.nombreDep }}</td>
                 <td>{{ departamento.responsable }}</td>
                 <td>{{ departamento.telefono }}</td>
                 <td>{{ departamento.valor }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('admin_departamento_show', { 'id': departamento.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_departamento_edit', { 'id': departamento.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-md-3">
+                         <a href= "{{ path('admin_departamento_show', { 'id': departamento.id }) }}" class="btn btn-primary btn-sm">show</a>
+                        </div>
+                         <div class="col-md-2">
+                         <a href= "{{ path('admin_departamento_edit', { 'id': departamento.id }) }}" class="btn btn-primary btn-sm">edit</a>
+                        </div>
+                        
+                    </div>
+                    
                 </td>
             </tr>
+             {% set contador= contador+1%}
         {% endfor %}
-        </tbody>
+     
     </table>
     <a href="{{ path('admin_departamento_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+    </fieldset>
     </div> </div>
     
 {% endblock %}

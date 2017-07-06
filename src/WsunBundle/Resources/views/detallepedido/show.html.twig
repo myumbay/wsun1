@@ -2,51 +2,46 @@
 
 {% block bloque1 %}
   <div class="box">
+      <div class="panel panel-azul">
     <fieldest>
      <legend class="text-center header">Detalle Pedido</legend>
-
-    <table  width="50%" cellpadding="10"  > 
-        <tbody>
-            {#<tr>
-                <th>Id: </th>
-                <td>{{ detallePedido.id }}</td>
-            </tr>#}
-            <tr>
-                
-                <th class=" align right">Código:</th>
-                <td>{{ detallePedido.codigo }}</td>
-            </tr>
-            <tr>
-                <th>Cantidad: </th>
-                <td>{{ detallePedido.cantidad }}</td>
-            </tr>
-            <tr>
-                <th>Valor Unitario:</th>
-                <td>{{ detallePedido.valorUnitario }}</td>
-            </tr>
-            <tr>
-                <th>Valor total:</th>
-                <td>{{ detallePedido.valorTotal }}</td>
-            </tr>
-            <tr>
-                <th>Observaciones</th>
-                <td>{{ detallePedido.observaciones }}</td>
-            </tr>
-        </tbody>
-    </table>
-            </fieldest>
-    <ul>
-        <li>
-            <a href="{{ path('detallepedido_index',{ 'id': id }) }}">Regresar</a>
-        </li>
-        <li>
-            <a href="{{ path('detallepedido_edit', { 'id': detallePedido.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+<div class="container-fluid">
+        <div class="row">
+          <div class="col-md-4">Código:</div>
+          <div class="col-md-4">{{ detallePedido.codigo }}</div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Cantidad:</div>
+          <div class="col-md-4">{{ detallePedido.cantidad }}</div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Valor Unitario:</div>
+          <div class="col-md-4">{{ detallePedido.valorUnitario }}</div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Valor total:</div>
+          <div class="col-md-4">{{ detallePedido.valorTotal }}</div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">Observaciones:</div>
+          <div class="col-md-4">{{ detallePedido.observaciones }}</div>
+          <div class="col-md-4"></div>
+        </div> 
+          <div class="row">
+          <div class="col-md-4"><a href="{{ path('detallepedido_index',{ 'id': id }) }}" class="icon-backward">Back</a></div>
+          <div class="col-md-4"><a href="{{ path('detallepedido_edit', { 'id': detallePedido.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
+          <div class="col-md-4">
+               {{ form_start(delete_form) }}
+                <input type="submit" value="Delete" class="btn btn-primary btn-sm">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
-    </div>
+          </div>
+        </div> 
+         </div>
+        </fieldest>
+    
+      </div> </div>
 {% endblock %}

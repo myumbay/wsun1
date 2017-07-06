@@ -22,15 +22,24 @@ class EmpresaController extends Controller
     public function __construct() {
         $this->session=new Session();
     }
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         $empresas = $em->getRepository('WsunBundle:Empresa')->findAll();
-
-        return $this->render('WsunBundle:empresa:index.html.twig', array(
-            'empresas' => $empresas,
-        ));
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $empresas, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+ 
+        return $this->render('WsunBundle:empresa:index.html.twig',
+                array('pagination' => $pagination));
+//        return $this->render('WsunBundle:empresa:index.html.twig', array(
+//            'empresas' => $empresas,
+//        ));
     }
 
     /**

@@ -6,7 +6,7 @@
      <div class="panel panel-azul">
 
  {% for detalle in det %}
-     {{dump(detalle.idProducto.producto.id)}}
+     
  {% endfor %}
 <table class="table table-bordered table-hover table-striped head-fixed table-condensed2">
     <thead>
@@ -35,10 +35,19 @@
                 {% set cantidad=detalle.cantidad%}
                 {% set iv=detalle.observaciones%}
                 {% set vt=detalle.valortotal%}
-              
+                
                   
             {% endif %}
         {% endfor %}
+        {% if (producto.producto.iva==true )%}
+                    
+                    {% set iv=ivaValor %}
+                 {% else %}
+                     
+                     {% set iv=0 %}
+                {%endif%}
+        
+        
         {%if (idp==1) %}
             <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" checked/>
             </td>
@@ -47,12 +56,14 @@
             </td>
         {% endif %}
             <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.producto.nombreProducto }} {{ (producto.producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
-            <td><input type="text" class="form-control input-sm cantidad" id="cantidad{{ producto.id }}" name="productos[{{ producto.id }}][cantidad]" value="{{cantidad}}"/></td>
+            <td><input type="text" class="form-control input-sm cantidad" id="cantidad{{ producto.id }}" name="productos[{{ producto.id }}][cantidad]" value="{{cantidad}}" onkeyup="calc({{iv}},{{ producto.id }});"/></td>
             <td style="vertical-align: middle;"> 
             <input type="text" class="form-control input-sm preciounit" id="preciounit{{ producto.id }}" name="productos[{{ producto.id }}][preciounit]" value="{{ producto.producto.PrecioProducto }}" readonly/>
             </td>
             <td>
-                <SELECT class="selProducto" id="iva{{ producto.id }}" name="productos[{{ producto.id }}][iva]" size=1 onChange="calc(this.value,{{ producto.id }});"> 
+                
+                <input type="text" class="form-control input-sm preciounit" id="iva{{ producto.id }}" name="productos[{{ producto.id }}][iva]" value="{{ iv }}" readonly />%
+                {#<SELECT class="selProducto" id="iva{{ producto.id }}" name="productos[{{ producto.id }}][iva]" size=1 onChange="calc(this.value,{{ producto.id }});"> 
                     <OPTION value="">--</OPTION>
                     {% if(iv=='')%}
                     <OPTION value="0">0%</OPTION>
@@ -65,7 +76,7 @@
                         {% endif %}
                     {% endif%}
                     
-                </SELECT>
+                </SELECT>#}
             </td>
             <td><input type="text" class="form-control input-sm preciounit" id="valortotal{{ producto.id }}" name="productos[{{ producto.id }}][valortotal]" readonly value="{{vt}}" /></td>
            
@@ -109,40 +120,9 @@
                 $(".selProducto").prop("checked", false);
             }
         });
-            {#$('.typeahead.empresa').autocomplete(
-                    {
-                        minChars: 3,
-                        serviceUrl: '{{ path('wsun_empresa_autocomplete') }}',
-                        onSelect: function(suggestion) {
-                             $id_convenio = suggestion.data;
-                            $('#empresaId').val($id_convenio);
-                            //$("#div_producto").hide();
-                             $("#btnGuardarEmpresa").prop('disabled', false);
-                        }
-                        ,
-                        autoSelect: true,
-                       
-                        autoFocus: true,
-                        appendTo: '#autocomplete_container_empresa'
-                    }
-            );#}
-        });
-{#       var limpiarEmpresa = function(){
-            $("#ruc").val('');
-            $('#empresaId').val('');
-            $("#ruc").prop('disabled',false);
-            $("#btnBuscarEmpresa").prop('disabled', true);
 
-        }
-        var aceptar_convenio = function() {
-            if ($('#empresaId').val() == ''){
-                alert("Por favor, seleccione una Empresa");
-                return false;
-            }
-            var id_empresa = $('#empresaId').val();
-            document.location.href = "{{path('admin_productos_empresa_index',{'id' : id_empresa |default('1')})}}";
-    
-        }#}
+        });
+
         
         var validarProductos = function () {
             var banCapacidadproductiva = true;
@@ -190,8 +170,8 @@
             return true;
         };
         function calc(iva,id){
-            if(iva!= '')
-            {
+           // if(iva!= '')
+            //{
                 var iva=$('#iva'+id).val();
                 var cantidad=$('#cantidad'+id).val();
                 var precio=$('#preciounit'+id).val();
@@ -199,8 +179,8 @@
                 var total= cantidad*precio+((cantidad*precio)*iva/100);
                  
                 $('#valortotal'+id).val(total);
-            }
-          else alert('Seleccione un valor valido');
+           // }
+          //else alert('Seleccione un valor valido');
         }
         var guardar = function () {
             if (!validarProductos()){

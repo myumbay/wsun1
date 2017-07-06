@@ -66,6 +66,12 @@ class Producto
      */
     protected $estado;
     /**
+     * @var string
+     *
+     * @ORM\Column(name="iva", type="string", length=1, nullable=true, options={"comment" = "Graba Iva  1 SI, 0 No"})
+     */
+    protected $iva;
+    /**
      * @ORM\OneToMany(targetEntity="Categoria", mappedBy="categoria")
      */
     public $child;
@@ -237,11 +243,32 @@ class Producto
 
     public function getEstado() {
         return (boolean)$this->estado;
-//    if ($this->estado===1) {
-//        return TRUE;
-//    }
-//    return FALSE;
+
     }
+    
+    /**
+     * Set iva
+     *
+     * @param string $iva
+     * @return Producto
+     */
+    public function setIva($iva) {
+        $this->iva = $iva;
+
+        return $this;
+    }
+  
+    /**
+     * Get iva
+     *
+     * @return string 
+     */
+
+    public function getIva() {
+        return (boolean)$this->iva;
+
+    }
+    
     
     /**
      * Set categoria

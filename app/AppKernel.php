@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new WsunBundle\WsunBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             //new FOS\UserBundle\FOSUserBundle(),
             //new Ali\DatatableBundle\AliDatatableBundle(),
             

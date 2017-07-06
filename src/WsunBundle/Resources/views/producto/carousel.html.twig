@@ -1,0 +1,47 @@
+{% import "SercopComunBundle:Macros:Carousel.html.twig" as carousel %}
+{% if productos | length > 0%}
+<div class="{{clases}}">
+    <div class="panel-heading"><strong>{{ titulo | raw }}</strong>
+    </div>
+    <div class="panel-body">
+        <div id="carousel{{ id }}" class="crsl-items"  data-navigation="NAV-{{ id }}">
+            <div id="NAV-{{ id }}" class="crsl-nav">
+                <a href="#" class="previous carousel-control left">‹</a>
+                <a href="#" class="next carousel-control right">›</a>
+            </div>
+            <div class="crsl-wrap">
+                {% if productos is defined %}
+                    
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('#carousel{{ id }}').carousel({
+            visible:{{ numero_visibles }},
+                    overflow: false,
+            speed: 500,
+            itemMinWidth: 160,
+            itemMargin: 50,            {% if automatico %}
+                        autoRotate: 8000,            {% endif %}
+                                });
+                            });
+                            $('#carousel{{ id }}').on('initCarousel', function(event, defaults, obj) {
+                                // Hide controls
+                                $('#' + defaults.navigation).find('.previous, .next').css({opacity: 0});
+                                // Show controls on gallery hover
+                                // #gallery-07 wraps .crsl-items and .crls-nav
+                                // .stop() prevent queue
+                                $('#carousel{{ id }}').hover(function() {
+                                    $(this).find('.previous').css({left: 0}).stop(true, true).animate({left: '20px', opacity: 1});
+                                    $(this).find('.next').css({right: 0}).stop(true, true).animate({right: '20px', opacity: 1});
+                                }, function() {
+                                    $(this).find('.previous').animate({left: 0, opacity: 0});
+                                    $(this).find('.next').animate({right: 0, opacity: 0});
+                                });
+                            });
+</script>
+{% endif %}

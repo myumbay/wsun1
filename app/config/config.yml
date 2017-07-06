@@ -11,6 +11,7 @@ parameters:
     locale: en
     imagesize1: 150
     imagesize2: 300
+    limitePaginacion: 50
     #your_root_path_parameter: /var/www/html/wsun/Documentos/Productos/
 framework:
     #esi: ~
@@ -30,6 +31,12 @@ framework:
     trusted_hosts: ~
     trusted_proxies: ~
     session:
+    
+        # handler_id set to null will use default session handler from php.ini nuevo para salir de sesion
+        handler_id:  ~
+        cookie_lifetime: 3600
+        gc_maxlifetime: 3600
+        
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
         save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
@@ -144,3 +151,14 @@ liip_imagine :
                 # create a 2px black border: center the thumbnail on a black background
                 # 4px larger to create a 2px border around the final image
                 background : { size : [124, 94], position : center, color : '#000000' }
+ 
+knp_paginator:
+    page_range: 10                      # rango por defecto de paginas en los controles del paginador
+    default_options:
+        page_name: page                # nombre del parámetro de la URL para la página
+        sort_field_name: sort          # nombre del parámetro de la URL para la ordenación
+        sort_direction_name: direction # nombre del parámetro de la URL para la dirección(ASC o DESC)
+        distinct: true                 # Garantizar resultados distintos
+    template:
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig  # plantilla controles
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # 
