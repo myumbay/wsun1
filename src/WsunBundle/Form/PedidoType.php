@@ -16,7 +16,15 @@ class PedidoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $rol=$options[0];       
+        $rol=$options[0];
+        /*$pedidoCodigo = $em->getRepository('WsunBundle:Pedido')
+            ->findOneBy(
+                array(),
+                array('id' => 'DESC')
+            );
+        $codigo=$pedidoCodigo->getCodigoPedido();
+        $codigo=$codigo+1;*/
+
         $builder->add('codigoPedido',TextType::class,array('label'=>'Codigo:'),array('class'=>'form-control'));
         $builder->add('fechaCreacion', DateType::class,array('label'=>'Fecha registro:'));
                 //->add('idDepartamento')

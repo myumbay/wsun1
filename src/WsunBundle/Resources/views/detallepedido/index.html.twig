@@ -1,6 +1,7 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
+    <div class="panel panel-azul">
    {% for message in app.session.flashbag().get('status')%}
         <div class="alert alert-danger">
             {{message}}
@@ -16,7 +17,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <legend class="text-center header">LISTA DE DETALLE DEL PEDIDO</legend>
-<table id="example" class="table display" cellspacing="0" width="100%">
+<table>
   <thead class="thead-inverse">
     <tr>
       
@@ -61,7 +62,7 @@
         <br>
         <a href="{{ path('pedido_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a>
 </table>
-       
+    </div>
     <script type="text/javascript">
       {{ parent() }}  
 

@@ -2,7 +2,7 @@
 {% block bloque1 %}
     
     <div class="box">
-    <div class="panel panel-azul" style="height: 400px;">    
+    <div class="panel panel-azul" style="height: 400px;">
     <fieldset>
     <legend class="text-center header">PRODUCTO</legend>
             
@@ -46,12 +46,14 @@
     <br>
      <div class="row">
         <div class="col-md-2"> <a href="{{ path('admin_producto_index') }}" class="btn btn-primary btn-sm">Atras</a></div>
+         {% if is_granted('ROLE_ADMIN')%}
         <div class="col-md-2"> <a href="{{ path('admin_producto_edit', { 'id': producto.id }) }}" class="btn btn-primary btn-sm">Editar</a></div>
         <div class="col-md-2">
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete" class="btn btn-primary btn-sm">
             {{ form_end(delete_form) }}
         </div>
+         {% endif %}
     </div>
     </fieldset>
     </div>

@@ -35,8 +35,7 @@
                                 </div>
                         </div>
                             <div class="row ">
-                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_USUARIO')%}
-                                
+                            {% if is_granted('ROLE_ACEPTAR_PEDIDO')%}
                                    <div class="col-md-4">
                                     <span class="help-block text-muted small-font" > Estado</span>
                                     {{ form_widget(form.estadoPedido) }}
