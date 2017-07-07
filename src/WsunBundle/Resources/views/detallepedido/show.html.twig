@@ -1,40 +1,48 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-  <div class="box">
-      <div class="panel panel-azul">
+<div class="box">
+    <div class="panel panel-azul">
     <fieldest>
-     <legend class="text-center header">Detalle Pedido</legend>
-<div class="container-fluid">
-        <div class="row">
-          <div class="col-md-4">Código:</div>
-          <div class="col-md-4">{{ detallePedido.codigo }}</div>
-          <div class="col-md-4"></div>
+    <legend class="text-center header">Detalle Pedido</legend>
+        <div class="container-fluid">
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 b"><b>Código:</b></div>
+          <div class="col-md-4 right" >{{ detallePedido.codigo }}</div>
+          <div class="col-md-2"></div>
+        </div>    
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 b"><b>Cantidad:</b></div>
+          <div class="col-md-4 right" >{{ detallePedido.cantidad }}</div>
+          <div class="col-md-2"></div>
         </div>
-        <div class="row">
-          <div class="col-md-4">Cantidad:</div>
-          <div class="col-md-4">{{ detallePedido.cantidad }}</div>
-          <div class="col-md-4"></div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">Valor Unitario:</div>
-          <div class="col-md-4">{{ detallePedido.valorUnitario }}</div>
-          <div class="col-md-4"></div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">Valor total:</div>
-          <div class="col-md-4">{{ detallePedido.valorTotal }}</div>
-          <div class="col-md-4"></div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">Observaciones:</div>
-          <div class="col-md-4">{{ detallePedido.observaciones }}</div>
-          <div class="col-md-4"></div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 b"><b>Valor Unitario:</b></div>
+          <div class="col-md-4 right" >{{ detallePedido.valorUnitario }}</div>
+          <div class="col-md-2"></div>
         </div> 
-          <div class="row">
-          <div class="col-md-4"><a href="{{ path('detallepedido_index',{ 'id': id }) }}" class="icon-backward">Back</a></div>
-          <div class="col-md-4"><a href="{{ path('detallepedido_edit', { 'id': detallePedido.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
-          <div class="col-md-4">
+        
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 b"><b>Iva:</b></div>
+          <div class="col-md-4 right" >{{ detallePedido.observaciones }}%</div>
+          <div class="col-md-2"></div>
+        </div>
+        <legend ></legend> 
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 b"><b>Valor total:</b></div>
+          <div class="col-md-4 right" >{{ detallePedido.valorTotal }}</div>
+          <div class="col-md-2"></div>
+        </div>  
+          <br>
+        <div class="row">
+        <div class="col-md-4"><a href="{{ path('detallepedido_index',{ 'id': id }) }}" class="icon-backward btn btn-primary btn-sm">Back</a></div>
+        <div class="col-md-4"><a href="{{ path('detallepedido_edit', { 'id': detallePedido.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
+        <div class="col-md-4">
                {{ form_start(delete_form) }}
                 <input type="submit" value="Delete" class="btn btn-primary btn-sm">
             {{ form_end(delete_form) }}

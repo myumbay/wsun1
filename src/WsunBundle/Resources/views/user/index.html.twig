@@ -1,22 +1,32 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-<legend class="text-center header">LISTA DE USUARIOS</legend>    
- <table id="example" class="table display" cellspacing="0" width="100%">
-  <thead class="thead-inverse">
-    <tr>
-      
-    <th scope="row">Id</th>
-    <th scope="row">Username</th>
-    <th scope="row">Ruc</th>
-    <th scope="row">Correo</th> 
-    <th scope="row">Acciones</th>
-    </tr>
+<div class="box">
+    <div class="panel panel-azul">
+        <fieldset>
+            <legend class="text-center header">LISTA DE USUARIOS</legend>
+             <div class="count">
+                <span class="label label-primary">
+                Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+     <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'USUARIO', '') }}</th>
+           {# <th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}
+            </th>#}
+            <th>{{ knp_pagination_sortable(pagination, 'RUC', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CORREO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
  
-  </thead>
-  <tbody>
-        {% for user in users %}
-            <tr>
+        </tr>    
+        {% set contador= 1%}
+        {% for user in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>
                 <td><a href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.ruc }}</td>
@@ -24,24 +34,20 @@
                 <td>
                     <div class="row">
                         <div class="col-md-3">
-                         <a href= "{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-primary btn-sm">Ver</a>
+                         <a href= "{{ path('admin_user_show', { 'id': user.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
-                         <div class="col-md-3">
-                         <a   href= "{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary btn-sm">Editar</a>
+                         <div class="col-md-2">
+                         <a href= "{{ path('admin_user_edit', { 'id': user.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
-                       
-                    </div>
-                                      
-                </td>
+                        
+                    </div></td>
             </tr>
+            {% set contador= contador+1%}
         {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_user_new') }}">Nuevo Usuario</a>
-        </li>
-    </ul>
-</div>
+          </table>
+        </fieldset>
+            <a href="{{ path('admin_user_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+                    </div></div>      
+               
+        
 {% endblock %}

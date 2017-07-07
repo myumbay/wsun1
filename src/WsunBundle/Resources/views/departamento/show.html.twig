@@ -1,43 +1,55 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    
     <div class="box">
-    <div class="panel-body">
-    <div class="panel2">
-          
-    <h3>Departamento</h3>
-     <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Nombre Departamento  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ departamento.nombreDep }}</div>
-    </div>
+    <div class="panel panel-azul">
+    <fieldest>
+    <legend class="text-center header">Departamento</legend>
+        <div class="container-fluid">
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 b"><b>Nombre Departamento:</b></div>
+          <div class="col-md-4 right" >{{ departamento.nombreDep }}</div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4"><b>Responsable Departamento:</b></div>
+          <div class="col-md-4">{{ departamento.responsable }}</div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 "><b>Teléfono:</b></div>
+          <div class="col-md-4">{{ departamento.telefono }}</div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4"><b>Valor:</b></div>
+          <div class="col-md-4">{{ departamento.valor }}</div>
+          <div class="col-md-2"></div>
+        </div>
+         <div class="row text-justify">
+          <div class="col-md-2"></div>   
+          <div class="col-md-4"><b>Empresa:</b></div>
+          <div class="col-md-4">{{ departamento.idEmpresa }}</div>
+          <div class="col-md-2"></div>
+        </div>
+     <br>
     <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Responsable Departamento  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{departamento.responsable}}</div>
-    </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Teléfono  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ departamento.telefono}}</div>
-      </div>
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Valor:  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ departamento.valor}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Empresa   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ departamento.idEmpresa}}</div>
-      </div>
- 
-<table>
-    <tr><td> <a href="{{ path('admin_departamento_index') }}"><span class="glyphicon glyphicon-arrow-left"> volver</span></a></td></tr>
-    <tr><td><a href="{{ path('admin_departamento_edit', { 'id': departamento.id }) }}"><span class="glyphicon glyphicon-arrow-left"> Editar</span></a></td></tr>
-            <tr><td>
-            {{ form_start(delete_form) }}
-                <input  class="glyphicon glyphicon-arrow-left" type="submit" value="Delete">
+          <div class="col-md-4"><a href="{{ path('admin_departamento_index') }}" class="icon-backward btn btn-primary btn-sm">Back</a></div>
+          <div class="col-md-4"><a href="{{ path('admin_departamento_edit', { 'id': departamento.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
+          <div class="col-md-4">
+               {{ form_start(delete_form) }}
+                <input type="submit" value="Delete" class="btn btn-primary btn-sm">
             {{ form_end(delete_form) }}
-                    
-        </td></tr>
-</table>       
- </div> </div> 
+          </div>
+        </div> 
+         </div>
+        </fieldest>
+    
+      </div> </div>
+
    
 {% endblock %}

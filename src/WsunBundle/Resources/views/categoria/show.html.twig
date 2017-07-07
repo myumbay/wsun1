@@ -1,45 +1,38 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    
     <div class="box">
-    <div class="panel-body">
-    <div class="panel2">
-          
-    <h3>Categoria</h3>
-
-    <table>
-        <tbody>
-            <tr>
-                <th>Nombrecat</th>
-                <td>{{ categorium.nombreCat }}</td>
-            </tr>
-            <tr>
-                <th>Padreid</th>
-                <td>{{ categorium.padreId }}</td>
-            </tr>
-            <tr>
-                <th>Estado</th>
-                <td>{{ categorium.estado }}</td>
-            </tr>
-            <tr>
-                <th>Id</th>
-                <td>{{ categorium.id }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('admin_categoria_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('admin_categoria_edit', { 'id': categorium.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+    <div class="panel panel-azul">
+    <fieldest>
+    <legend class="text-center header">Categoria</legend>
+        <div class="container-fluid">
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">Nombre Categoria:</div>
+          <div class="col-md-4">{{ categorium.nombreCat }}</div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">Categoria Principal:</div>
+          <div class="col-md-4"> {{ cat }}</div>
+          <div class="col-md-2"></div>
+        </div>
+      
+          <br>
+    <div class="row">
+          <div class="col-md-4"><a href="{{ path('admin_categoria_index') }}" class="icon-backward btn btn-primary btn-sm">Back</a></div>
+          <div class="col-md-4"><a href="{{ path('admin_categoria_edit', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
+          <div class="col-md-4">
+               {{ form_start(delete_form) }}
+                <input type="submit" value="Delete" class="btn btn-primary btn-sm">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+          </div>
+        </div> 
+         </div>
+        </fieldest>
+    
+      </div> </div>
+    
+    
 {% endblock %}

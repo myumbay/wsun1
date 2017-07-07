@@ -16,15 +16,21 @@ class UserController extends Controller
      * Lists all user entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
         $users = $em->getRepository('WsunBundle:Usuarios')->findAll();
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $users, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+ 
+        return $this->render('WsunBundle:user:index.html.twig', 
+            array('pagination' => $pagination));
 
-        return $this->render('WsunBundle:user:index.html.twig', array(
-            'users' => $users,
-        ));
     }
 
     /**
