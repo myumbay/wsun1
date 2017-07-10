@@ -31,10 +31,17 @@
                  </tr>
              </thead>
             {% for producto in productos %}
+                 {% set valor ='' %}
+                 {% for prod in idprod %}
+                     {% if(producto.id==prod) %}
+                         {% set valor ='checked' %}
+                     {% endif %}
+                 {% endfor %} 
+{#                {{dump(producto.id,idprod)}}#}
                  {% if(acat==producto.categoria.padreId)%}
                      <tr>
                          <td class="text-center" width="200">
-                             <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"></td><td width="400" class="lbl1">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</td>
+                             <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" {{valor}}></td><td width="400" class="lbl1">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</td>
                      </tr>   
                  
                  {% endif %}

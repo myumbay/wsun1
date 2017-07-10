@@ -51,7 +51,7 @@ class DefaultController extends Controller
         $qb->from('WsunBundle:Producto', 'p');
         //$qb->innerJoin('p.categoria', 'c');
         $qb->select('p')->distinct();
-        $qb->andWhere($qb->expr()->notIn('p.id',$idprod));
+        //$qb->andWhere($qb->expr()->notIn('p.id',$idprod));
         $qb->andWhere('p.estado = :estado');
         $qb->setParameter('estado', '1');
         $qb->addOrderBy('p.categoria', 'ASC');
@@ -68,7 +68,7 @@ class DefaultController extends Controller
              array('nombreCat' => 'ASC')
            );
         //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
-        return $this->render('WsunBundle:Default:products.html.twig',array('productos' => $p,'categoria'=>$categoria));
+        return $this->render('WsunBundle:Default:products.html.twig',array('productos' => $p,'categoria'=>$categoria,'idprod'=>$idprod));
     }
     public function addProductsAction(Request $request)
     {

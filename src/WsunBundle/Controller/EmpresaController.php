@@ -173,11 +173,12 @@ class EmpresaController extends Controller
                     
                     
                 }
-      
         $em = $this->getDoctrine()->getManager();
         $empresa=$em->getRepository('WsunBundle:Empresa')->find($idempresa);
+        //$empresaProducto=$em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('empresa'=>$idempresa));
         foreach ($request->get('productos') as $key => $valor){
-           
+             $prod=0;   
+            //var_dump($empresaProducto);die;
                 $hoy = new \DateTime("now");
                 $prod= $em->getRepository('WsunBundle:Producto')->find($valor);
                 $empPr = new EmpresaProducto();
