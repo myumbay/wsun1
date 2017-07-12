@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AdminController extends Controller
 {
@@ -17,12 +17,15 @@ class AdminController extends Controller
     public function __construct() {
         $this->session=new Session();
     }
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function ReportesAction(Request $request) {
         return $this->render('WsunBundle:Admin:reportes.html.twig');
     }
-//    public function EmpresaAction(Request $request) {
-//        return $this->render('WsunBundle:Admin:reportes.html.twig');
-//    }
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function EmpresaAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $provinciasTmp = $em->getRepository('WsunBundle:Ubicacion')->findAll();
@@ -76,43 +79,7 @@ class AdminController extends Controller
             $qb->andWhere('dpt.idEmpresa = :empresa');
             $qb->setParameter('empresa', $Empresa->getId());
             $ordenes=$qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);; 
-           //var_dump($ordenes);die;
-            //$qb->innerJoin('dto.Empresa', 'e');
-            //$qb->innerJoin('u.Pedido', 'p');
-//            if ($filtros['provincia']) {
-//                $qb->andWhere($qb->expr()->upper('e.idUbicacion') . ' = ' . $qb->expr()->upper(':provincia'));
-//                $qb->setParameter('provincia', $filtros['provincia']);
-//            }
-//            if ($filtros['desde']) {
-//                $qb->andWhere('oC.fechaEmision >= :desde');
-//                $qb->setParameter('desde', $filtros['desde']);
-//            }
-//            if ($filtros['hasta']) {
-//                $qb->andWhere('oC.fechaEmision <= :hasta');
-//                $qb->setParameter('hasta', $filtros['hasta']);
-//            }
-
-//            $qb->addGroupBy('oC.id,dO.cantidad,dO.subtotal, dO.descuento, dO.iva ,oC.entNombre, oC.entRuc, oC.entregaProvincia, oC.entregaCanton, oC.entregaParroquia, oC.ordenCompraCod, oC.fechaEmision, oC.estado, oC.fechaAceptacion, oC.multa, oC.tieneMulta, oC.updatedAt,dO.plazoServicio,dO.tipoPlazo');
-//            $qb->orderBy('oC.fechaEmision', 'Desc');
-//            $qb->setFirstResult($arrayPage[1]);
-//            $qb->setMaxResults($porpagina); 
-           // $ordenes=$qb->getQuery()->getArrayResult(); 
-           // var_dump($ordenes);die;
-            //$ordenes = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-            
-//            if ($request->get('exportar') == 'csv') {
-//                $response = new Response();
-//                $response->headers->set('Content-Type', "text/csv");
-//                $response->headers->set('Content-Disposition', 'attachment; filename="Reporte_entidad.csv"');
-//                $response->headers->set('Pragma', "no-cache");
-//                $response->headers->set('Expires', "0");
-//                $response->headers->set('Content-Transfer-Encoding', "binary");
-//                $response->prepare($request);
-//                $response->sendHeaders();
-//                return $this->render('SercopSercopBundle:Reportes:entidades.csv.twig', array('ordenes' => $ordenes, 'form' => $form->createView(),'num_decimales'=>$num_decimales));
-//            }
-//            return $this->render('SercopSercopBundle:Reportes:entidades.html.twig', array('ordenes' => $ordenes, 'form' => $form->createView(),'num_decimales'=>$num_decimales,'porpagina'=>$porpagina,'totalpaginas'=>$arrayPage[2],'totalprod'=>$totalregistros,'page'=>$arrayPage[0]));    
-//            } 
+ 
             }
    
             //return $this->render('WsunBundle:Admin:empresa.html.twig', array('ordenes' => $ordenes, 'form' => $form->createView(),'page'=>$request->get('pagina')));

@@ -5,11 +5,10 @@ namespace WsunBundle\Controller;
 use WsunBundle\Entity\Categoria;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
-/**
- * Categorium controller.
- *
- */
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+  /**
+     * @Security("has_role('ROLE_ADMIN')")
+  */
 class CategoriaController extends Controller
 {
     /**

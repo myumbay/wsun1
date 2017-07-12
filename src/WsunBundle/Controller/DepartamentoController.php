@@ -6,10 +6,10 @@ use WsunBundle\Entity\Departamento;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
- * Departamento controller.
- *
- */
+* @Security("has_role('ROLE_ADMIN')")
+*/
 class DepartamentoController extends Controller
 {
     /**

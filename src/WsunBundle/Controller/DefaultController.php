@@ -3,7 +3,7 @@
 namespace WsunBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class DefaultController extends Controller
 {
     public function indexAction()
@@ -31,6 +31,9 @@ class DefaultController extends Controller
         return $this->render('WsunBundle:Default:listado.html.twig',
                 array('pagination' => $pagination));
     }
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+    */
     public function productsAction(Request $request)
     {
         $id=$request->get('id');
@@ -72,35 +75,12 @@ class DefaultController extends Controller
         //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
         return $this->render('WsunBundle:Default:products.html.twig',array('productos' => $p,'categoria'=>$categoria,'idprod'=>$idprod));
     }
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+    */
     public function addProductsAction(Request $request)
     {
-//        $em = $this->getDoctrine()->getManager();
-//        $in = $em->createQueryBuilder()
-//            ->select('ep')
-//            ->from('WsunBundle:EmpresaProducto','ep')
-//            ->where('ep.empresa=:slug')
-//            ->setParameter('slug', 1);
-//        $pem=$in->getQuery()->getResult();
-//
-//        for($i=0;$i< count($pem);$i++)
-//            {
-//                $idprod[]=$pem[$i]->getProducto()->getId();
-//            }
-//        /* @var $qb \Doctrine\ORM\QueryBuilder */
-//        $qb = $em->createQueryBuilder();
-//        $qb->from('WsunBundle:Producto', 'p');
-//        $qb->innerJoin('p.categoria', 'c');
-//        $qb->select('p')->distinct();
-//       
-//        //if($id>0){
-//        $qb->andWhere($qb->expr()->notIn('p.id',$idprod));
-//        //}
-//        $qb->andWhere('p.estado = :estado');
-//        $qb->setParameter('estado', '1');
-//        $qb->addOrderBy('p.nombreProducto', 'ASC');
-//        $p = $qb->getQuery()->getResult();
         return $this->render('WsunBundle:Default:addProducts.html.twig');
-        //return $this->render('WsunBundle:Default:addProducts.html.twig',array('productos' => $p));
     }
   public function productsListAction(Request $request){
       $em = $this->getDoctrine()->getManager();

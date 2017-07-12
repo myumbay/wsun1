@@ -6,9 +6,9 @@ use WsunBundle\Entity\Pedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
- * Pedido controller.
- *
+ * @Security("has_role('ROLE_USER')")
  */
 class PedidoController extends Controller
 {
@@ -194,13 +194,7 @@ class PedidoController extends Controller
                 $request->query->getInt('page', 1),
                 $limite
         );
-//        return $this->render('WsunBundle:pedido:show.html.twig', array(
-//            'pedido' => $pedido,
-//            'pagination' => $pagination,
-//            'delete_form' => $deleteForm->createView(),
-//        ));
-        
-        
+
         
         $html = $this->renderView('WsunBundle:detallepedido:mail.html.twig', array(
             'pedido' => $pedido,
