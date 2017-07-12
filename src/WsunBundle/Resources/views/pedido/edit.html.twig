@@ -1,70 +1,59 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-
 <div class="box">
-  
-    <div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="well well-sm">
-               
-                {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"}) }}
-                    <fieldset>
-                        <legend class="text-center header">EDICIÓN DE PEDIDO</legend>
-                        <div class="row ">
-                           
-                                <div class="col-md-4">
-                                <span class="help-block text-muted small-font" > {{ form_label(edit_form.codigoPedido)}}</span>
-                                    {{ form_widget(edit_form.codigoPedido, { 'attr': {'placeholder': 'Escribe el código del pedido' } }) }}
-                               </div>
-                           
-                                <div class="col-md-4">
-                                    <span class="help-block text-muted small-font" > {{ form_label(edit_form.fechaCreacion)}}</span>
-                                    {{ form_widget(edit_form.fechaCreacion) }}
-                                </div>
-                                
-                                 <div class="col-md-4">
-                                    <span class="help-block text-muted small-font" > Total</span>
-                                    {{ form_widget(edit_form.totalPedido) }}
-                                </div>
-                        </div>
-                                   {%  if is_granted('ROLE_ACEPTAR_PEDIDO') %}
-                                <div class="row ">
-                                 <div class="col-md-4">
-                                    <span class="help-block text-muted small-font" > Estado</span>
-                                    {{ form_widget(edit_form.estadoPedido) }}
-                                </div>
-                            
-                                </div>
-                                {% endif%}
-                        </div>
-                    </fieldset>
-                {{ form_end(edit_form) }}
+    <div class="panel panel-azul">
+    <fieldest>
+        
+    <legend class="text-center header">Edición Pedido</legend>
+    {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"}) }}
+        <div class="container-fluid">
+        <div class="row text-justify">
+            <div class="col-md-4">
+                <span class="help-block text-muted small-font" > {{ form_label(edit_form.codigoPedido)}}</span>
+                                {{ form_widget(edit_form.codigoPedido, { 'attr': {'readonly':'true' } }) }}
             </div>
+            <div class="col-md-4">
+                <span class="help-block text-muted small-font" > {{ form_label(edit_form.fechaCreacion)}}</span>
+                                    {{ form_widget(edit_form.fechaCreacion) }}
+            </div>
+          <div class="col-md-2"><span class="help-block text-muted small-font" > Total</span>
+                                    {{ form_widget(edit_form.totalPedido) }}</div>
+          <div class="col-md-2"> 
+          </div>
         </div>
-    
-    <div class="row ">
-       <div class="col-md-2">
+        <div class="row ">
+            {% if is_granted('ROLE_ACEPTAR_PEDIDO')%}
+                   <div class="col-md-4">
+                    <span class="help-block text-muted small-font" > Estado</span>
+                    {{ form_widget(edit_form.estadoPedido) }}
+                    </div>
+            {% endif %}
+           
+        </div>
+    </fieldset>
+                {{ form_end(edit_form) }}
+          <div class="col-md-3">
                 <span class="help-block text-muted small-font" > </span>
                 <input type="submit" class="btn btn-info" value="Edit" />
-        </div>
-        <div class="col-md-2">
-                <span class="help-block text-muted small-font" > </span>
-                 <a href="{{ path('pedido_index') }}" class="btn btn-info">Atras</a>
-        </div>
-          <div class="col-md-2">
+            </div>
+             <div class="col-md-3">
+               <span class="help-block text-muted small-font" > </span>
+                 <a href="{{ path('pedido_index') }}" class="btn btn-primary btn-sm">Atras</a>
+
+            </div>
+            <div class="col-md-3">
               <span class="help-block text-muted small-font" > </span>
             <a href= "{{ path('detallepedido_index',{ 'id':pedido.id }) }}" class="btn btn-primary btn-sm">products</a>
          </div>
-        <div class="col-md-2">
+         <div class="col-md-3">
             <span class="help-block text-muted small-font" > </span>
                 {{ form_start(delete_form) }}
                 <input type="submit"  class="btn btn-info" value="Borrar">
                 {{ form_end(delete_form) }}
+        </div>   
         </div>
-       
+        </div>
     </div>
-    </div>
-   </div>            
+ 
 {% endblock %}

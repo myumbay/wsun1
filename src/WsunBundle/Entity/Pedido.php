@@ -35,7 +35,14 @@ class Pedido
      * @ORM\Column(name="estado_pedido", type="boolean", nullable=true)
      */
     private $estadoPedido;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="orden_compra", type="string", length=180, nullable=true)
+     */
+    private $ordenCompra;
+    
     /**
      * @var float
      *
@@ -217,6 +224,30 @@ class Pedido
     public function getTotalPedido()
     {
         return $this->totalPedido;
+    }
+    
+    /**
+     * Set ordenCompra
+     *
+     * @param string $ordenCompra
+     *
+     * @return Pedido
+     */
+    public function setOrdenCompra($ordenCompra)
+    {
+        $this->ordenCompra = $ordenCompra;
+
+        return $this;
+    }
+
+    /**
+     * Get ordenCompra
+     *
+     * @return string
+     */
+    public function getOrdenCompra()
+    {
+        return $this->ordenCompra;
     }
     public function __construct() {
         //$this->fechaCreacion=new \DateTime;

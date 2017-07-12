@@ -23,4 +23,7 @@ pedido_delete:
     defaults: { _controller: "WsunBundle:Pedido:delete" }
     methods:  DELETE
     
-
+pedido_pdf:
+    path:     /{id}/exportar
+    defaults: { _controller: "WsunBundle:Pedido:exportarPdf" }
+    methods:  GET

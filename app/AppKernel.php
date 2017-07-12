@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new WsunBundle\WsunBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             //new FOS\UserBundle\FOSUserBundle(),
             //new Ali\DatatableBundle\AliDatatableBundle(),
             

@@ -12,6 +12,7 @@ parameters:
     imagesize1: 150
     imagesize2: 300
     limitePaginacion: 50
+    correo_remitente: carolyumbay@gmail.com
     #your_root_path_parameter: /var/www/html/wsun/Documentos/Productos/
 framework:
     #esi: ~
@@ -75,11 +76,13 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
+    
     transport: '%mailer_transport%'
     host: '%mailer_host%'
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
@@ -162,3 +165,14 @@ knp_paginator:
     template:
         pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig  # plantilla controles
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # 
+# pasar un archivo html a a pdf
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     '../wkhtmltopdf'
+        options:    
+            print-media-type: true
+    image:
+        enabled:    true
+        binary:     'wkhtmltoimage'
+        options:    []

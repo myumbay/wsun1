@@ -215,6 +215,8 @@
            
             var contador = 1;
             var errores=0;
+            var txt = "¿Esta seguro de enviar productos? Si continúa se enviará un correo para su aprobación.";
+            if(confirm(txt)){
             $.ajax({
                     async:false,
                     complete: function(xhr, data)
@@ -240,6 +242,7 @@
                     }   
                     contador += 1;
                 });
+                }
                 if (errores){
                     return false;
                 }

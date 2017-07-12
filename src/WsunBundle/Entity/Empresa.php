@@ -60,7 +60,7 @@ class Empresa
     /**
      * @var string
      *
-     * @ORM\Column(name="orden_compra", type="string", length=180, nullable=false)
+     * @ORM\Column(name="orden_compra", type="string", length=180, nullable=true)
      */
     private $ordenCompra;
 

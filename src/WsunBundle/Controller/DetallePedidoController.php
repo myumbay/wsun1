@@ -153,6 +153,7 @@ class DetallePedidoController extends Controller
     }
     public function addPedidoAction(Request $request,$id)
     {
+       
         $idPedido=$request->get('idPedido');
         $em = $this->getDoctrine()->getManager();
         $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
@@ -264,7 +265,18 @@ class DetallePedidoController extends Controller
                     $em->persist($empPr);
 
             }
-            $em->flush();
+            $correo=$this->getParameter('correo_remitente'); 
+            
+            //$em->flush();
+            
+            $message = \Swift_Message::newInstance()
+            ->setSubject('Nuevo Pedido')
+            ->setFrom($correo)
+            ->setTo('misterio182@yahoo.es')
+            ->setBody('WsunBundle:DetallePedido:mail.html.twig', 'text/html');
+            # Send the message
+            $this->get('mailer')
+            ->send($message);
             
                 $mensaje = 'Pedido Guardado';
                 $this->session->getFlashBag()->add("status",$mensaje);

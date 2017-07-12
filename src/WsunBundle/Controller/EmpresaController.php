@@ -175,18 +175,40 @@ class EmpresaController extends Controller
                 }
         $em = $this->getDoctrine()->getManager();
         $empresa=$em->getRepository('WsunBundle:Empresa')->find($idempresa);
-        //$empresaProducto=$em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('empresa'=>$idempresa));
-        foreach ($request->get('productos') as $key => $valor){
-             $prod=0;   
-            //var_dump($empresaProducto);die;
+        $empresaProducto=$em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('empresa'=>$idempresa));
+        foreach ($empresaProducto as  $k =>$val){
+             $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id'=>$val->getId()));
+             $ep = $ep[0];
+             $ep->setEstado(0);
+             $em->persist($ep);
+        }
+        $em->flush();
+              
+             foreach ($request->get('productos') as $key => $valor){
+                $prod=0;   
+                //var_dump((integer)$valor['id'],'',$val->getProducto()->getId());
+                foreach ($empresaProducto as  $k =>$val){
+                if((integer)$valor['id']==$val->getProducto()->getId()){
+                    $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id'=>$val->getId()));
+                    $ep = $ep[0];
+                    $ep->setEstado(1);
+                    $em->persist($ep);
+                    $prod=1;
+                 }
+                }
+            if($prod==0){
                 $hoy = new \DateTime("now");
-                $prod= $em->getRepository('WsunBundle:Producto')->find($valor);
+                $prod= $em->getRepository('WsunBundle:Producto')->find($valor['id']);
                 $empPr = new EmpresaProducto();
                 $empPr->setEmpresa($empresa);
                 $empPr->setProducto($prod);
                 //$empPr->setCapacidad($capacidades[$i]);
                 $empPr->setCreated($hoy);
+                $emPr->setEstado(1);
                 $em->persist($empPr);
+            
+            }
+               
            
         }
         $em->flush();

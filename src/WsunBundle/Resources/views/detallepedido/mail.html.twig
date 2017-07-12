@@ -1,0 +1,84 @@
+ <div class="box">
+    <div class="panel panel-azul">
+    <fieldest>
+        <legend class="text-center header"><br> Orden de pedidos de Sumnistros</legend>
+        <table class="table table-bordered">
+            <tr>
+                <td></td> 
+                <td><b>Raz&#243;n Social:</b></td>
+                <td > {{pedido.IdUsuario.Departamento.IdEmpresa.NombreEmp}}</td>
+                <td width="20"></td>
+                <td><b>N&#176;:</b></td>
+                <td >{{ pedido.codigoPedido  }}</td>
+            </tr>
+            <tr>
+                <td></td> 
+                <td><b>Dir. Cliente:</b></td>
+                <td > {{ pedido.IdUsuario.Departamento.IdEmpresa.DireccionEmp  }}</td>
+                <td width="20"></td>
+                <td><b>Fecha:</b></td>
+                <td >{{ pedido.fechaCreacion.date |date('Y-m-d')  }}</td>
+            </tr>
+            <tr>
+                <td></td> 
+                <td><b>Responsable:</b></td>
+                <td > {{ pedido.IdUsuario.Departamento.Responsable  }}  }}</td>
+                <td width="20"></td>
+                <td><b>Area:</b></td>
+                <td >{{ pedido.IdUsuario.Departamento.nombreDep  }}</td>
+            </tr>
+            <tr>
+                <td></td> 
+                <td><b>Orden Compra Sap:</b></td>
+                <td > {{ pedido.ordenCompra }}  </td>
+                <td width="20"></td>
+                <td><b>Estado:</b></td>
+                <td >{% if pedido.estadoPedido %}Aprobado{% else %}Iniciado{% endif %}</td>
+            </tr>
+        </table>
+        
+          <legend class="text-center header"></legend>
+        <div class="count">
+                <span class="label label-primary">
+                Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+    <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'DESCRIPCIÓN', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CANTIDAD', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'VAL. UNIT', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'VAL. TOTAL', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+        </tr> 
+        {% set contador= 1%}
+        {% set total= 0 %}
+        {% for pd in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>    
+                <td>{{ pd.codigo }}</td>
+                <td>{{ pd.idProducto }}</td>
+                <td>{{ pd.cantidad }}</td>
+                <td>${{pd.valorUnitario|number_format(2,'.',',')}}</td>
+                <td>${{pd.valorTotal|number_format(2,'.',',')}}</td>
+                {% set total= total+ pd.valorTotal%}
+                 <td>
+                    <div class="row">
+                        {#<div class="col-md-3">
+                         <a href= "{{ path('detallepedido_show', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">show</a>
+                        </div>#}
+                       
+                        
+                    </div>
+                </td>
+            </tr>
+            {% set contador= contador+1%}
+        {% endfor %}
+        <tr><td>
+            {#<div class="col-md-4"><a href="{{ path('pedido_index') }}" class="icon-backward btn btn-primary btn-sm">Back</a></div>
+            <div class="col-md-4"><a href="{{ path('pedido_pdf') }}" class="icon-backward btn btn-primary btn-sm">Exportar pdf</a></div>
+            #}
+            </td></tr> </table> 

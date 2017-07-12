@@ -36,12 +36,21 @@ private $producto;
      * @ORM\Column(name="capacidad", type="float", precision=10, scale=0, nullable=true)
      */
 private $capacidad;
-    
+
+ /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=1, nullable=true, options={"comment" = "Estado del registro 1 SUb Categoria, 0 Categoria Principal"})
+     */
+   
+protected $estado; 
+
 /**
  * @var datetime $created
  *
  * @ORM\Column(name="created", type="datetime")
  */
+
 private $created;
  
 /**
@@ -98,6 +107,30 @@ private $created;
     {
         return $this->empresa;
     }
+    
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return EmpresaProducto
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return string 
+     */
+    public function getEstado()
+    {
+        return (boolean)$this->estado;
+    }
+    
     /**
      * Set createdAt
      *

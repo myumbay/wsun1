@@ -1,47 +1,95 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
+ <div class="box">
+    <div class="panel panel-azul">
+    <fieldest>
+        <legend class="text-center header"><div class="encabezado" style="height: 100px;width: 70%;"></div> <br> Orden de pedidos de Sumnistros</legend>
+        <div class="container-fluid">
+        <div class="row text-left">
+          <div class="col-md-1"> </div>  
+          <label class="col-md-2 control-label">Razón Social:</label>
+          <div class="col-md-3">{{pedido.IdUsuario.Departamento.IdEmpresa.NombreEmp}}</div>
+          <label class="col-md-3 control-label">N°:</label>
+          <div class="col-md-3">{{ pedido.codigoPedido  }}</div>
+        </div> 
+        <div class="row text-left">
+          <div class="col-md-1"> </div>  
+          <label class="col-md-2 control-label">Dir. Cliente:</label>
+          <div class="col-md-3">{{ pedido.IdUsuario.Departamento.IdEmpresa.DireccionEmp  }}</div>
+          <label class="col-md-3 control-label">Fecha:</label>
+          <div class="col-md-3">{{ pedido.fechaCreacion.date |date('Y-m-d')  }}</div>
+        </div> 
+        <div class="row text-left">
+          <div class="col-md-1"> </div>  
+          <label class="col-md-2 control-label">Responsable</label>
+          <div class="col-md-3">{{ pedido.IdUsuario.Departamento.Responsable  }} </div>
+          <label class="col-md-3 control-label">Area:</label>
+          <div class="col-md-3">{{ pedido.IdUsuario.Departamento.nombreDep  }}</div>
+        </div> 
+        
+        <div class="row text-left">
+          <div class="col-md-1"> </div>  
+          <label class="col-md-2 control-label">Orden Compra Sap</label>
+          <div class="col-md-3">{{ pedido.ordenCompra }} </div>
+          <label class="col-md-3 control-label">Estado:</label>
+          <div class="col-md-3">{% if pedido.estadoPedido %}Aprobado{% else %}Iniciado{% endif %}</div>
+        </div> 
+        <legend class="text-center header"></legend>
+        <div class="count">
+                <span class="label label-primary">
+                Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+    <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'DESCRIPCIÓN', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CANTIDAD', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'VAL. UNIT', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'VAL. TOTAL', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+        </tr> 
+        {% set contador= 1%}
+        {% set total= 0 %}
+        {% for pd in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>    
+                <td>{{ pd.codigo }}</td>
+                <td>{{ pd.idProducto }}</td>
+                <td>{{ pd.cantidad }}</td>
+                <td>${{pd.valorUnitario|number_format(2,'.',',')}}</td>
+                <td>${{pd.valorTotal|number_format(2,'.',',')}}</td>
+                {% set total= total+ pd.valorTotal%}
+                 <td>
+                    <div class="row">
+                        {#<div class="col-md-3">
+                         <a href= "{{ path('detallepedido_show', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">show</a>
+                        </div>#}
+                       
+                        
+                    </div>
+                </td>
+            </tr>
+            {% set contador= contador+1%}
+        {% endfor %}
+        <tr><td>
+            <div class="col-md-4"><a href="{{ path('pedido_index') }}" class="icon-backward btn btn-primary btn-sm">Back</a></div>
+            <div class="col-md-4"><a href="{{ path('pedido_pdf',{ 'id': pedido.id }) }}" class=" btn btn-primary btn-sm">Exportar pdf</a></div>
+            </td></tr> </table> 
+     {#     <div class="col-md-4"><a href="{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
+     <div class="col-md-4">
+        {{ form_start(delete_form) }}
+         <input type="submit" value="Delete" class="btn btn-primary btn-sm">
+     {{ form_end(delete_form) }}
+   </div>#}
+      
+        
+         </div>
+        </fieldest>
     
-<div class="box">
-    <fieldset>
-    <legend class="text-center header">PEDIDO</legend>
-            
-     <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Fecha: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ pedido.fechaCreacion.date |date('Y-m-d')  }}</div>
-    </div>       
-     <div class="row ">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Id: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ pedido.id }}</div>
-    </div>
-     <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Codigo de Pedido: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ pedido.codigoPedido }}</div>
-    </div>
-     <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Estado: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</div>
-    </div>
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Codigo de Pedido: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ pedido.codigoPedido }}</div>
-    </div>
-    <div class="row">
-       
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left"> Total de Pedido: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ pedido.totalPedido }}</div>
-    </div>
-    <br>
-     <div class="row">
-       
-        <div class="col-md-2"> <a href="{{ path('pedido_index') }}" class="btn btn-primary btn-sm">Back to the list</a></div>
-        <div class="col-md-2">
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete" class="btn btn-primary btn-sm">
-            {{ form_end(delete_form) }}
-        </div>
-    </div>
-    </fieldset>
-</div>
- 
+      </div> </div>
+   
 {% endblock %}

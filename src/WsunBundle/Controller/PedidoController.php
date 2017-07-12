@@ -5,7 +5,7 @@ namespace WsunBundle\Controller;
 use WsunBundle\Entity\Pedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Response;
 /**
  * Pedido controller.
  *
@@ -40,17 +40,22 @@ class PedidoController extends Controller
      */
     public function newAction(Request $request)
     {
-         $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $rol='';
         if($this->getUser())
             $rol=$this->getUser()->getRoles()[0]->getName();
-       
+        
+        
         $pedido = new Pedido();
         $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
         $form->handleRequest($request);
-    
+        $pedidos = $em->getRepository('WsunBundle:Pedido')->findOneBy(array(),array('id' => 'DESC'));
+        $codigo=$pedidos->getCodigoPedido()+1;
+        
         if ($form->isValid()){//$form->isSubmitted() && $form->isValid()) {
+            
             $em = $this->getDoctrine()->getManager();
+            $pedido->setCodigoPedido($codigo);
             $em->persist($pedido);
             $em->flush();
 
@@ -58,6 +63,7 @@ class PedidoController extends Controller
         }
 
         return $this->render('WsunBundle:pedido:new.html.twig', array(
+            'codigo'=>$codigo,
             'pedido' => $pedido,
             'form' => $form->createView(),
         ));
@@ -67,12 +73,22 @@ class PedidoController extends Controller
      * Finds and displays a pedido entity.
      *
      */
-    public function showAction(Pedido $pedido)
+    public function showAction(Request $request,Pedido $pedido)
     {
+        //var_dump($pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getNombreEmp());die;
         $deleteForm = $this->createDeleteForm($pedido);
-
+        $em = $this->getDoctrine()->getManager();
+        $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $pedidosDet, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
         return $this->render('WsunBundle:pedido:show.html.twig', array(
             'pedido' => $pedido,
+            'pagination' => $pagination,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -112,14 +128,30 @@ class PedidoController extends Controller
      */
     public function deleteAction(Request $request, Pedido $pedido)
     {
-        $form = $this->createDeleteForm($pedido);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        
+        $em = $this->getDoctrine()->getManager();
+        if($pedido->getEstadoPedido()==true){
+            $mensaje = 'No se puede eliminar debido a que ya se acepto el pedido';
+            $this->session->getFlashBag()->add("status",$mensaje);
+            return $this->redirectToRoute('pedido_index');
+        }else{
+           $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
+            foreach ($pedidosDet as $enty) {
+            $em->remove($enty);
+                }
             $em->remove($pedido);
-            $em->flush();
+            $em->flush();    
+            //$em->flush();
         }
+                
+//        $form = $this->createDeleteForm($pedido);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            
+//            $em->remove($pedido);
+//            $em->flush();
+//        }
 
         return $this->redirectToRoute('pedido_index');
     }
@@ -133,6 +165,7 @@ class PedidoController extends Controller
      */
     private function createDeleteForm(Pedido $pedido)
     {
+        
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('pedido_delete', array('id' => $pedido->getId())))
             ->setMethod('DELETE')
@@ -149,4 +182,42 @@ class PedidoController extends Controller
             'pedidosDet' => $pedidosDet,
         ));
     }
+    public function exportarPdfAction(Request $request){
+        $id=$request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $pedido = $em->getRepository('WsunBundle:Pedido')->find($id);
+        $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $pedidosDet, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+//        return $this->render('WsunBundle:pedido:show.html.twig', array(
+//            'pedido' => $pedido,
+//            'pagination' => $pagination,
+//            'delete_form' => $deleteForm->createView(),
+//        ));
+        
+        
+        
+        $html = $this->renderView('WsunBundle:detallepedido:mail.html.twig', array(
+            'pedido' => $pedido,
+            'pagination' => $pagination
+            )
+        );
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            200,
+            array(
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'attachment; filename="fichero.pdf"'
+            )
+        );
+
+
+    }
+    
 }
