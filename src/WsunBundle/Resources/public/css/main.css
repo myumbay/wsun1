@@ -241,3 +241,17 @@ float:left;
 /*background:grey;*/
 
 }
+.div_prod
+{
+    position: absolute;
+    top:10px;
+    bottom: 1px;
+    right: 10%;
+    left: 10%;
+    height: auto;
+    clear: both;
+ 
+    background: #fff;
+    
+    /*border: 1px solid black;*/
+}

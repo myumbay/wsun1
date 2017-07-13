@@ -21,13 +21,15 @@
 <div id="producto" class="col-xs-8">  
     
         {% for acat in array_cat %}
+           
         <div class="tab-pane fade " id="cat{{acat}}"> 
             
-            
+            <div class="div_prod" >  
              <div class="row col-xs-12 text-left">
              <div class="col-xs-2"><input class="selProducto" type="checkbox" id="seleccionarTodos{{acat}}" onclick="seleccion({{acat}})"/></div><div> <b>Seleccionar todos </b> </div>
              </div>
-        <div class="col-xs-8" id="form_area{{acat}}">
+             
+        <div class="col-xs-8 " id="form_area{{acat}}">
             {% for producto in productos %}
                 {% set valor ='' %}
                 {% for prod in idprod %}
@@ -35,11 +37,13 @@
                         {% set valor ='checked' %}
                     {% endif %}
                 {% endfor %}
+                {% if(acat==producto.categoria.padreId)%}
                 <div class="row col-xs-12 text-left">
                 <div class="col-xs-2"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" {{valor}}></div><div class="col-xs-8">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</div>
                 </div>
+                {% endif %}
             {% endfor %}
-        </div>
+        </div></div>
 {#            {% for producto in productos %}
                  {% set valor ='' %}
                  {% for prod in idprod %}
