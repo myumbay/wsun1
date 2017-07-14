@@ -60,7 +60,7 @@ class Empresa
     /**
      * @var string
      *
-     * @ORM\Column(name="orden_compra", type="string", length=180, nullable=true)
+     * @ORM\Column(name="orden_compra", type="float", precision=10, scale=0, nullable=true)
      */
     private $ordenCompra;
 
@@ -68,7 +68,7 @@ class Empresa
     /**
      * @var boolean
      *
-     * @ORM\Column(name="credito", type="boolean", nullable=false)
+     * @ORM\Column(name="credito", type="boolean", nullable=true)
      */
     private $credito;
 
@@ -93,7 +93,8 @@ class Empresa
     * @ORM\OneToMany(targetEntity="WsunBundle\Entity\EmpresaProducto", mappedBy="empresa", cascade={"persist"})
     */
     private $empresaProducto;
-
+    
+    
 
     public function __construct() {
         $this->empresaProducto = new \Doctrine\Common\Collections\ArrayCollection();

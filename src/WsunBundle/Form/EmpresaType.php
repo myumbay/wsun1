@@ -21,14 +21,12 @@ class EmpresaType extends AbstractType
                 ->add('telefonoEmp', TextType::class,array('label'=>'Telf. Empresa:'))
                 ->add('direccionEmp', TextType::class,array('label'=>'Dirección Empresa:'))
                 ->add('email', TextType::class,array('label'=>'E-mail Empresa:'))
-                ->add('ordenCompra', TextType::class,array('label'=>'N. Orden:'))
-                
                 ->add('credito',  CheckboxType::class,array('label'=>'Crédito:','required' => false,))
+                ->add('ordenCompra', TextType::class,array('label'=>'Valor Credito:'))
                 ->add('limiteOrden', TextType::class,array('label'=>'limite:'))
                 ->add('idubicacion');
         
     }
-    
     /**
      * {@inheritdoc}
      */
