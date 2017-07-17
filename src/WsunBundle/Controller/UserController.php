@@ -5,11 +5,10 @@ namespace WsunBundle\Controller;
 use WsunBundle\Entity\Usuarios;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
-/**
- * User controller.
- *
- */
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
 class UserController extends Controller
 {
     /**

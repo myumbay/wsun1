@@ -11,6 +11,9 @@ entradas_list:
 admin_productos_empresa_select:
     path:  /products/  
     defaults: { _controller: WsunBundle:Default:products }
+wsun_consulta_categoria:
+     path:  /subcategoria/ 
+     defaults: { _controller: WsunBundle:Default:consultaSubcategoria }
     
 productos_lista:
     path:  /productslista  

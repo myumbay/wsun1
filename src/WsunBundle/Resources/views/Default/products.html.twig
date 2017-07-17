@@ -5,6 +5,13 @@
 {% set contador = 1 %}
 
 <div id="categoria" class="col-xs-4">
+    <ul>
+    {% for c in categoria %}
+        <li class="btn"  ><span onclick="subcategoria({{c.id}})">{{c.nombreCat}}</span>
+            <ul><div id="submenu{{c.id}}"> </div></ul>
+        </li>
+    {% endfor %}
+    </ul>
     <ul class="vertical-menu">
         {% set array_cat =[] %}
                             {% for cat in categoria %}
@@ -19,7 +26,10 @@
     
 </div>
 <div id="producto" class="col-xs-8">  
-    
+    {% for categ in categoria %}
+        {{dump(categ.nombreCat)}}
+    {% endfor%}
+    {{dump(categoria)}}
         {% for acat in array_cat %}
            
         <div class="tab-pane fade " id="cat{{acat}}"> 
@@ -92,7 +102,7 @@
                     //$('#prod'+id+' input[type=checkbox]').prop("checked", false);
                 }
             //});
-        
+ 
    
 }
 </script>

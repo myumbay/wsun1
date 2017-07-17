@@ -31,7 +31,7 @@
                             <button id="btnGuardarEmpresa" class="btn btn-primary btn-sm" type="button" onclick="guardar();
                                     return false;">Guardar</button>
                         </span>#}
-                        <input class="btn btn-primary btn-sm" type="submit" value="Guardar">
+                       <input class="btn btn-primary btn-sm" type="submit" value="Guardar">
                        <input type="hidden" name="empresaId" id="empresaId" />
                     </div>
                 </div>
@@ -39,33 +39,7 @@
         </div>	
     
     <div class="row" id="div_producto">
-   
-        {#<table class="table-striped head-fixed " >
-            <thead><tr>
-                <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
-                <th>Producto</th>
-                
-                </tr>
-            </thead>
-            <tbody id="tablaProducts">#}
-                {#{% set contador = 1 %}
-                {% for producto in productos %}
-                    
-                <tr>
-                    <td class="text-center"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}"/></td>
-                    <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.nombreProducto }} {{ (producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
-        {#            <td><input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ producto.id }}" name="productos[{{ producto.id }}][capacidad]" /></td>#}
-              {#  </tr>
-                {% set contador = contador + 1 %}
-            {% else %}
-                <tr>
-                    <td colspan="3" class="text-info">
-                        No se encontraron resultados
-                    </td>
-                </tr>
-            {% endfor %}#}
-            {#</tbody>
-        </table>#}
+
     </div>
     <div id="respuesta" style="border:1px red  ">
     </div>    
@@ -107,6 +81,30 @@
                     }
             );
         });
+      var subcategoria = function(id)
+            {
+        $.ajax({
+                    async:false,
+                    complete: function(xhr, data)
+                    {
+                        if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != - 1){
+                            location.reload();
+                        }
+                    },
+                    method: 'POST',
+                    data: {'id':id},
+                    url: "{{ path('wsun_consulta_categoria')}}",
+                    context: document.body
+                }).done(function(dataJson) {
+                    console.log(dataJson);
+                    $("#submenu"+id).html('<table><tr>');
+                    //$(".selector-proveedor select").append('<option disabled selected value="0">Seleccione...</option>');
+                    $.each(dataJson.data, function(index,value){
+                    $("#submenu"+id).append('<tr><td style=" font-size:10px; font-family: Arial; height:10px" value="'+value.id+'">'+value.nombreCat+'</td></tr>');
+                        }); 
+                   $("#submenu"+id).html('</table>');
+                });
+            }
        var limpiarEmpresa = function(){
        
             $("#ruc").val('');

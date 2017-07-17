@@ -4,6 +4,7 @@ namespace WsunBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     public function indexAction()
@@ -37,6 +38,7 @@ class DefaultController extends Controller
     public function productsAction(Request $request)
     {
         $id=$request->get('id');
+        
         $em = $this->getDoctrine()->getManager();
         $in = $em->createQueryBuilder()
             ->select('ep')
@@ -46,6 +48,7 @@ class DefaultController extends Controller
             ->setParameter('slug', $id)
             ->setParameter('estado', '1');
         $pem=$in->getQuery()->getResult();
+        
         $idprod=array();
         for($i=0;$i< count($pem);$i++)
             {
@@ -54,8 +57,8 @@ class DefaultController extends Controller
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder();
         $qb->from('WsunBundle:Producto', 'p');
-        //$qb->innerJoin('p.categoria', 'c');
-        $qb->select('p')->distinct();
+        $qb->innerJoin('p.categoria', 'c');
+        $qb->select('p,c');//->distinct();
         //$qb->andWhere($qb->expr()->notIn('p.id',$idprod));
         $qb->andWhere('p.estado = :estado');
         $qb->setParameter('estado', '1');
@@ -67,14 +70,14 @@ class DefaultController extends Controller
             {
                 $idcat[]=$p[$i]->getCategoria()->getId();
             }
+         
         //$categoria=$em->getRepository('WsunBundle:Categoria')->findById($idcat); 
         $categoria = $em->getRepository('WsunBundle:Categoria')
           ->findBy(
-             array('id'=> $idcat), 
+             array('padreId'=> null), 
              array('nombreCat' => 'ASC')
            );
-
-        //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
+        
         return $this->render('WsunBundle:Default:products.html.twig',array('productos' => $p,'categoria'=>$categoria,'idprod'=>$idprod));
     }
     /**
@@ -84,6 +87,30 @@ class DefaultController extends Controller
     {
         return $this->render('WsunBundle:Default:addProducts.html.twig');
     }
+  public function consultaSubcategoriaAction(Request $request){
+      
+      $id=$request->get('id');
+      $em = $this->getDoctrine()->getManager();
+      /* @var $qb \Doctrine\ORM\QueryBuilder */
+    $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+    $qb->from('WsunBundle:Categoria', 'cat');
+    $qb->select('cat');
+    $qb->andWhere('cat.id = :id');
+    $qb->setParameter('id', $id);
+    $qb->addOrderBy('cat.nombreCat', 'ASC');
+    $categoria = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+      
+//      $categoria = $em->getRepository('WsunBundle:Categoria')
+//          ->findBy(
+//             array('padreId'=> $id), 
+//             array('nombreCat' => 'ASC')
+//           );
+     //var_dump($categoria);die;
+      $response = new Response(json_encode(array('data' => $categoria)));
+      $response->headers->set('Content-Type', 'application/json');
+      return $response;
+      
+  }  
   public function productsListAction(Request $request){
       $em = $this->getDoctrine()->getManager();
       $producto = $em->getRepository('WsunBundle:Producto')

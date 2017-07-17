@@ -8,10 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use WsunBundle\Entity\EmpresaProducto;
 use Symfony\Component\HttpFoundation\Session\Session;
-/**
- * Empresa controller.
- *
- */
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class EmpresaController extends Controller
 {
     /**
@@ -42,9 +39,9 @@ class EmpresaController extends Controller
 //        ));
     }
 
+   
     /**
-     * Creates a new empresa entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
@@ -81,8 +78,7 @@ class EmpresaController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing empresa entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, Empresa $empresa)
     {
@@ -103,9 +99,8 @@ class EmpresaController extends Controller
         ));
     }
 
-    /**
-     * Deletes a empresa entity.
-     *
+   /**
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, Empresa $empresa)
     {
@@ -122,11 +117,7 @@ class EmpresaController extends Controller
     }
 
     /**
-     * Creates a form to delete a empresa entity.
-     *
-     * @param Empresa $empresa The empresa entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @Security("has_role('ROLE_ADMIN')")
      */
     private function createDeleteForm(Empresa $empresa)
     {
@@ -158,6 +149,9 @@ class EmpresaController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function EmpresaGuardarAction(Request $request)
     {
        //var_dump($_POST,$request->get('productos'));die;

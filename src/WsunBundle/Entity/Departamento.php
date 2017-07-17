@@ -191,6 +191,6 @@ class Departamento
     }
     
      public function __toString() {
-        return $this->nombreDep;
+        return (string)$this->nombreDep;
     }
 }
