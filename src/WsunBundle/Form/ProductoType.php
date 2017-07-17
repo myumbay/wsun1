@@ -36,7 +36,7 @@ class ProductoType extends AbstractType
         $builder
                 ->add('nombreProducto',  TextType::class,array('label'=>'Nombre Producto:'))
                //->add('imagen' ,  TextType::class,array('label'=>'Imagen:'))//, array("attr"=>array("class"=>"form form-control")))
-                ->add('imagen', FileType::class, array('label' => 'Imagen del producto (5mb max.)','data_class' => NULL,
+                ->add('imagen', FileType::class, array('label' => 'Imagen del producto (254 x 270px.)','data_class' => NULL,
                         'label_attr' => array('class' => 'control-label col-lg-4'),
                         'required' => false,
                         'constraints' => array(

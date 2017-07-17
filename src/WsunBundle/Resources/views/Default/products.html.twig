@@ -30,18 +30,21 @@
              </div>
              
         <div class="col-xs-8 " id="form_area{{acat}}">
-            {% for producto in productos %}
+
+            {#% for producto in productos %#}
+            {% for key, producto in productos %}
+                {#{ dump(producto)}#}
                 {% set valor ='' %}
                 {% for prod in idprod %}
                     {% if(producto.id==prod) %}
                         {% set valor ='checked' %}
                     {% endif %}
                 {% endfor %}
-                {% if(acat==producto.categoria.padreId)%}
+                {#% if(acat==producto.categoria.padreId)%#}
                 <div class="row col-xs-12 text-left">
                 <div class="col-xs-2"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" {{valor}}></div><div class="col-xs-8">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</div>
                 </div>
-                {% endif %}
+                {#}% endif %#}
             {% endfor %}
         </div></div>
 {#            {% for producto in productos %}

@@ -46,7 +46,7 @@ class DefaultController extends Controller
             ->setParameter('slug', $id)
             ->setParameter('estado', '1');
         $pem=$in->getQuery()->getResult();
-
+        $idprod=array();
         for($i=0;$i< count($pem);$i++)
             {
                 $idprod[]=$pem[$i]->getProducto()->getId();
@@ -62,6 +62,7 @@ class DefaultController extends Controller
         $qb->addOrderBy('p.categoria', 'ASC');
         $qb->addOrderBy('p.nombreProducto', 'ASC');
         $p = $qb->getQuery()->getResult();
+
         for($i=0;$i< count( $p);$i++)
             {
                 $idcat[]=$p[$i]->getCategoria()->getId();
@@ -72,6 +73,7 @@ class DefaultController extends Controller
              array('id'=> $idcat), 
              array('nombreCat' => 'ASC')
            );
+
         //return $this->render('WsunBundle:Default:respuesta_buscar_productos_convenio.html.twig', array('productos' => $pep, 'convenio'=>$convenio))
         return $this->render('WsunBundle:Default:products.html.twig',array('productos' => $p,'categoria'=>$categoria,'idprod'=>$idprod));
     }

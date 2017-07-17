@@ -170,57 +170,73 @@ class EmpresaController extends Controller
                 return $this->redirectToRoute('admin_productos_empresa_index');
 
                 }else{
-                    
-                    
+
+
                 }
         $em = $this->getDoctrine()->getManager();
         $empresa=$em->getRepository('WsunBundle:Empresa')->find($idempresa);
         $empresaProducto=$em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('empresa'=>$idempresa));
-        foreach ($empresaProducto as  $k =>$val){
-             $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id'=>$val->getId()));
-             $ep = $ep[0];
-             $ep->setEstado(0);
-             $em->persist($ep);
+        if(count($empresaProducto)>0) {
+            foreach ($empresaProducto as $k => $val) {
+                $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id' => $val->getId()));
+                $ep = $ep[0];
+                $ep->setEstado(0);
+                $em->persist($ep);
+            }
+            $em->flush();
         }
-        $em->flush();
-              
-             foreach ($request->get('productos') as $key => $valor){
-                $prod=0;   
-                //var_dump((integer)$valor['id'],'',$val->getProducto()->getId());
-                foreach ($empresaProducto as  $k =>$val){
-                if((integer)$valor['id']==$val->getProducto()->getId()){
-                    $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id'=>$val->getId()));
-                    $ep = $ep[0];
-                    $ep->setEstado(1);
-                    $em->persist($ep);
-                    $prod=1;
-                 }
+        $productos=$request->get('productos');
+        for($i=1;$i<=count($productos);$i++){
+       // foreach ($request->get('productos') as $key => $valor){
+                $prod=0;
+
+                if(count($empresaProducto)>0) {
+                    foreach ($empresaProducto as $k => $val) {
+                        if ((integer)$productos[$i]['id'] == $val->getProducto()->getId()) {
+                            $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id' => $val->getId()));
+                            $ep = $ep[0];
+                            $ep->setEstado(1);
+                            $em->persist($ep);
+                            $prod = 1;
+                        }
+                    }
                 }
+
             if($prod==0){
+
                 $hoy = new \DateTime("now");
-                $prod= $em->getRepository('WsunBundle:Producto')->find($valor['id']);
+                $prod= $em->getRepository('WsunBundle:Producto')->find($productos[$i]['id']);
                 $empPr = new EmpresaProducto();
                 $empPr->setEmpresa($empresa);
                 $empPr->setProducto($prod);
                 //$empPr->setCapacidad($capacidades[$i]);
                 $empPr->setCreated($hoy);
-                $emPr->setEstado(1);
+                $empPr->setEstado(1);
+
                 $em->persist($empPr);
-            
+                var_dump($empPr);die;
+
             }
-               
-           
+
         }
-        $em->flush();
-        $mensaje = 'Datos Guardados';
-        $this->session->getFlashBag()->add("status",$mensaje);
-        return $this->redirectToRoute('admin_productos_empresa_index');
+            $em->flush();
+            $mensaje = 'Datos Guardados';
+            //$this->session->getFlashBag()->add("status", $mensaje);
+           //return $this->redirectToRoute('admin_productos_empresa_index');
+            $response = new Response(json_encode(array('error' => 0,'mensaje' => $mensaje)));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+
+
     } catch (\Exception $e) {
             $mensaje = "Error al Guardar los datos.";
-    }    
-       
+    }
+        $response = new Response(json_encode(array('error' => 0,'mensaje' => $mensaje)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
 }
-    
+
     public function showProductosAction(Request $request)
     {
         $id=$request->query->get("id");

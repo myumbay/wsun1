@@ -61,8 +61,9 @@ class ProductoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
         $iva=$iva->getValor();
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            //var_dump($form);die;
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
                 if(!$em->getRepository('WsunBundle:Producto')->findByNombreProducto(trim($producto->getNombreProducto())))
                 {

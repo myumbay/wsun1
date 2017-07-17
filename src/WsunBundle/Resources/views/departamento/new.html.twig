@@ -8,39 +8,52 @@
             {{message}}
         </div>
     {% endfor%}
-    <div class="panel-body">
-    <div class="panel2">
-            <div class="panel-heading">
-                <h3> <strong><span>Nuevo</span> de Departamentos</strong></h3>
-            </div> 
-        {{ form_start(form) }}    
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.nombreDep)}} </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.nombreDep) }}</div>
-    </div>        
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.responsable)}}  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(form.responsable)}}</div>
-    </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.telefono)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.telefono)}}</div>
-      </div>
-       <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.valor)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.valor)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Empresa   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.idEmpresa)}}</div>
-      </div>
-      <div class="row">
-          <input type="submit" value="Create" />
-      </div>
-        
+        <div class="panel panel-azul">
+            <fieldest>
+            <legend class="text-center header"><strong><span>Nuevo</span> de Departamentos</strong></legend>
+                {{ form_start(form, { 'enctype':"multipart/form-data"}) }}
+                <div class="container-fluid">
+                    <div class="row   text-justify">
+                        <div class="col-md-2"></div>
+                        <label class="col-sm-4 control-label">{{ form_label(form.nombreDep)}}</label>
+                        <div class="col-sm-2 right" >{{ form_widget(form.nombreDep) }}</div>
+                        <div class="col-sm-3 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-2"></div>
+                        <label class="col-sm-4 control-label">{{ form_label(form.responsable)}}</label>
+                        <div class="col-sm-2 right" >{{form_widget(form.responsable)}}  </div>
+                        <div class="col-sm-3 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-2"></div>
+                        <label class="col-sm-4 control-label">{{ form_label(form.telefono)}} </label>
+                        <div class="col-sm-2 right" >{{ form_widget(form.telefono)}}  </div>
+                        <div class="col-sm-3 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-2"></div>
+                        <label class="col-sm-4 control-label">{{ form_label(form.valor)}} </label>
+                        <div class="col-sm-2 right" >{{ form_widget(form.valor)}}  </div>
+                        <div class="col-sm-3 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-2"></div>
+                        <label class="col-sm-4 control-label">Empresa </label>
+                        <div class="col-sm-2 right" >{{ form_widget(form.idEmpresa)}}  </div>
+                        <div class="col-sm-3 "></div>
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                    </div></div>
+                </fieldset>
      {{ form_end(form) }}
-    </div> 
-    <a href="{{ path('admin_departamento_index') }}">Back to the list</a>
- </div> </div>    
+    <div class="col-md-2"> <a href="{{ path('admin_departamento_index') }}" class="btn btn-primary btn-sm">Atras</a></div>
+
+
+</div>  </div>
+
 
 {% endblock %}

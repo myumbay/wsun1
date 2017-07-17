@@ -1,5 +1,4 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
-
 {% block bloque1 %}
      
 <div class="box">
@@ -8,54 +7,76 @@
         <div class="alert alert-success">
             {{message}}
         </div>
-    {% endfor%} 
-    <div class="panel-body">
-    <div class="panel2">
-            <div class="panel-heading">
-                <h3> <strong><span>Nuevo</span> Producto</strong></h3>
-            </div> 
-      
-         {{ form_start(form, { 'enctype':"multipart/form-data"}) }}
-        <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.nombreProducto)}} </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.nombreProducto) }}</div>
-    </div>        
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.imagen)}}  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(form.imagen)}}</div>
-    </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.codigoProducto)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.codigoProducto)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.observacion)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.observacion)}}</div>
-      </div>
-       <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.precioProducto)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.precioProducto)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.estado)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.estado)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(form.iva)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.iva)}} {{iva}}%</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Categoria   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(form.categoria)}}</div>
-      </div>
-      <div class="row">
-          <input type="submit" value="Create" />
-      </div>
-        
+    {% endfor%}
+        <div class="panel panel-azul">
+            <fieldest>
+                <legend class="text-center header"><strong><span>Nuevo</span> Producto</strong></legend>
+                {{ form_start(form, { 'enctype':"multipart/form-data"}) }}
+                <div class="container-fluid">
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.nombreProducto)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(form.nombreProducto) }}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.imagen)}}</label>
+                        <div class="col-md-4 right" >{{form_widget(form.imagen)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.codigoProducto)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(form.codigoProducto)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.iva)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(form.iva)}} {{iva}}%</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.precioProducto)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(form.precioProducto)}} </div>
+                        <div class="col-md-1 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.estado)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(form.estado)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.categoria)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(form.categoria)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(form.observacion)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(form.observacion)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                        <div class="col-md-2"> <a href="{{ path('admin_producto_index') }}" class="btn btn-primary btn-sm">Atras</a></div>
+                    </div></div>
+
+                </fieldest>
         {{ form_end(form) }}
-    </div> 
-    <a href="{{ path('admin_producto_index') }}">Back to the list</a>
- </div> </div>   
-</div>  
+
+
+
+        </div>  </div>
+>
         
 {% endblock %}
