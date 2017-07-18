@@ -81,30 +81,82 @@
                     }
             );
         });
-      var subcategoria = function(id)
-            {
-        $.ajax({
-                    async:false,
-                    complete: function(xhr, data)
-                    {
-                        if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != - 1){
-                            location.reload();
-                        }
-                    },
-                    method: 'POST',
-                    data: {'id':id},
-                    url: "{{ path('wsun_consulta_categoria')}}",
-                    context: document.body
-                }).done(function(dataJson) {
-                    console.log(dataJson);
-                    $("#submenu"+id).html('<table><tr>');
-                    //$(".selector-proveedor select").append('<option disabled selected value="0">Seleccione...</option>');
-                    $.each(dataJson.data, function(index,value){
-                    $("#submenu"+id).append('<tr><td style=" font-size:10px; font-family: Arial; height:10px" value="'+value.id+'">'+value.nombreCat+'</td></tr>');
-                        }); 
-                   $("#submenu"+id).html('</table>');
-                });
-            }
+
+      var subcategoria = function(id) {
+          $.ajax({
+              async: false,
+              complete: function (xhr, data) {
+                  if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != -1) {
+                      location.reload();
+                  }
+              },
+              method: 'POST',
+              data: {'id': id},
+              url: "{{ path('wsun_consulta_categoria') }}",
+              context: document.body
+          }).done(function (dataJson) {
+              var display_results = $("#submenu"+id);
+              display_results.empty();
+              display_results.html("Cargando...");
+              var results = '<table id="submenu"+id class="text-justify"  >';
+              results += '<th></th> </tr> <tbody>';
+              $("#submenu"+id).html('<table><tr>');
+              $.each(dataJson.data, function (index, value) {
+                  console.log(dataJson.data);
+                  results +='<tr>';
+                  results +='<td class="icon-hand-up" style="padding-left: 20px;" onclick="listaProductos(\''+value.id+'\')" ><span  >' + value.nombreCat + '</span></td>';
+                  results +='</tr>';	;
+              });
+            results += '</tbody></table>';
+            display_results.append(results);
+          });
+      }
+        var seleccion = function(id) {
+          alert('hola');
+        }
+      var listaProductos= function(id){
+          $.ajax({
+              async: false,
+              complete: function (xhr, data) {
+                  if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != -1) {
+                      location.reload();
+                  }
+              },
+              method: 'POST',
+              data: {'id': id},
+              url: "{{ path('wsun_lista_productos') }}",
+              context: document.body
+          }).done(function (dataJson) {
+              var display_results = $("#div_prod");
+              display_results.empty();
+              //display_results.html("Cargando...");
+              var results = '<div  ><div class="row col-xs-12 text-left"><div class="col-xs-2"><input class="selProducto" type="checkbox" id="seleccionarTodos'+id+'" onclick="seleccion(\''+id+'\')"/></div><div> <b>Seleccionar todos </b> </div></div>' ;
+              results += '<div class="col-xs-8 " id="form_area'+id+'}">';
+             // results += '<th></th> </tr> <tbody>';
+              var valor='';
+              $("#submenu"+id).html('<table><tr>');
+              $.each(dataJson.data, function (index, value) {
+
+                  results +=' <div class="row col-xs-12 text-left">';
+                  results +=' <div class="col-xs-2"><input class="selProducto" type="checkbox" name="productos['+value.id+'][id]" value="'+value.id+'" '+valor+'></div><div class="col-xs-8">'+value.codigoProducto+':'+value.nombreProducto+'</div>';
+                  results +='</div>';
+
+              });
+              results += '</div></div>';
+              display_results.append(results);
+          });
+      }
+        var seleccion1 = function(id) {
+            alert(id);/*
+             if ($("#seleccionarTodos" + id).is(':checked')) {
+             $('#form_area' + id + ' input[type=checkbox]').prop("checked", true);
+
+             } else {
+             $('#form_area' + id + ' input[type=checkbox]').prop("checked", false);
+
+             //$('#prod'+id+' input[type=checkbox]').prop("checked", false);
+             }*/
+        }
        var limpiarEmpresa = function(){
        
             $("#ruc").val('');

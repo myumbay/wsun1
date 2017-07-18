@@ -1,17 +1,21 @@
 
 <div class="box">
 <div class="panel panel-azul">
-<div class="col-xs-12">    
+<!--<div class="col-xs-12">   -->
 {% set contador = 1 %}
 
-<div id="categoria" class="col-xs-4">
-    <ul>
+<div id="categoria" class="col-md-4 text-left">
+
     {% for c in categoria %}
-        <li class="btn"  ><span onclick="subcategoria({{c.id}})">{{c.nombreCat}}</span>
-            <ul><div id="submenu{{c.id}}"> </div></ul>
-        </li>
+        <ul list-style-type ><span onclick="subcategoria({{c.id}})">{{c.nombreCat}}</span>
+            <li id="submenu{{c.id}}" >  </li>
+        </ul>
     {% endfor %}
-    </ul>
+</div>
+    <div id="div_prod" class="col-md-8 text-left">
+        hdhh
+    </div>
+
     <ul class="vertical-menu">
         {% set array_cat =[] %}
                             {% for cat in categoria %}
@@ -24,12 +28,12 @@
                             
                         </ul>
     
-</div>
+
 <div id="producto" class="col-xs-8">  
     {% for categ in categoria %}
-        {{dump(categ.nombreCat)}}
+        {#{dump(categ.nombreCat)}#}
     {% endfor%}
-    {{dump(categoria)}}
+
         {% for acat in array_cat %}
            
         <div class="tab-pane fade " id="cat{{acat}}"> 

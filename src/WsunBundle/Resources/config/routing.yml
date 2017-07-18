@@ -7,7 +7,11 @@ admin_productos_empresa_index:
 entradas_list:
     path: /pruebas/entradas/
     defaults: { _controller: WsunBundle:Default:entradas}
-    
+
+wsun_lista_productos:
+    path: /lista/productos/
+    defaults: { _controller: WsunBundle:Default:listaProductos}
+
 admin_productos_empresa_select:
     path:  /products/  
     defaults: { _controller: WsunBundle:Default:products }

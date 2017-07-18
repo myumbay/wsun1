@@ -95,7 +95,7 @@ class DefaultController extends Controller
     $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
     $qb->from('WsunBundle:Categoria', 'cat');
     $qb->select('cat');
-    $qb->andWhere('cat.id = :id');
+    $qb->andWhere('cat.padreId = :id');
     $qb->setParameter('id', $id);
     $qb->addOrderBy('cat.nombreCat', 'ASC');
     $categoria = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -105,12 +105,27 @@ class DefaultController extends Controller
 //             array('padreId'=> $id), 
 //             array('nombreCat' => 'ASC')
 //           );
-     //var_dump($categoria);die;
+    // var_dump($categoria);die;
       $response = new Response(json_encode(array('data' => $categoria)));
       $response->headers->set('Content-Type', 'application/json');
       return $response;
       
-  }  
+  }
+  public function listaProductosAction(Request $request){
+      $id=$request->get('id');
+      $em = $this->getDoctrine()->getManager();
+      /* @var $qb \Doctrine\ORM\QueryBuilder */
+      $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+      $qb->from('WsunBundle:Producto', 'prod');
+      $qb->select('prod');
+      $qb->andWhere('prod.categoria = :id');
+      $qb->setParameter('id', $id);
+      $qb->addOrderBy('prod.nombreProducto', 'ASC');
+      $producto = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+      $response = new Response(json_encode(array('data' => $producto)));
+      $response->headers->set('Content-Type', 'application/json');
+      return $response;
+  }
   public function productsListAction(Request $request){
       $em = $this->getDoctrine()->getManager();
       $producto = $em->getRepository('WsunBundle:Producto')
