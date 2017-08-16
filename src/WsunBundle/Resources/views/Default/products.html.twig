@@ -3,8 +3,9 @@
 <div class="panel panel-azul">
 <!--<div class="col-xs-12">   -->
 {% set contador = 1 %}
+<div class="row">
+        <div class="col-xs-4 " class="text-justify">
 
-<div id="categoria" class="col-md-4 text-left">
 
     {% for c in categoria %}
         <ul list-style-type ><span onclick="subcategoria({{c.id}})">{{c.nombreCat}}</span>
@@ -12,101 +13,8 @@
         </ul>
     {% endfor %}
 </div>
-    <div id="div_prod" class="col-md-8 text-left">
-        hdhh
-    </div>
-
-    <ul class="vertical-menu">
-        {% set array_cat =[] %}
-                            {% for cat in categoria %}
-                                {% if (cat.padreId=='')%}
-                                   {% set array_cat = array_cat|merge([cat.id])  %}
-                                    <li ><a href="#cat{{cat.id}}"  data-toggle="tab">{{cat.nombreCat}}</a></li>
-                                
-                                {% endif%}
-                            {% endfor %}
-                            
-                        </ul>
-    
-
-<div id="producto" class="col-xs-8">  
-    {% for categ in categoria %}
-        {#{dump(categ.nombreCat)}#}
-    {% endfor%}
-
-        {% for acat in array_cat %}
-           
-        <div class="tab-pane fade " id="cat{{acat}}"> 
-            
-            <div class="div_prod" >  
-             <div class="row col-xs-12 text-left">
-             <div class="col-xs-2"><input class="selProducto" type="checkbox" id="seleccionarTodos{{acat}}" onclick="seleccion({{acat}})"/></div><div> <b>Seleccionar todos </b> </div>
-             </div>
-             
-        <div class="col-xs-8 " id="form_area{{acat}}">
-
-            {#% for producto in productos %#}
-            {% for key, producto in productos %}
-                {#{ dump(producto)}#}
-                {% set valor ='' %}
-                {% for prod in idprod %}
-                    {% if(producto.id==prod) %}
-                        {% set valor ='checked' %}
-                    {% endif %}
-                {% endfor %}
-                {#% if(acat==producto.categoria.padreId)%#}
-                <div class="row col-xs-12 text-left">
-                <div class="col-xs-2"><input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" {{valor}}></div><div class="col-xs-8">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</div>
-                </div>
-                {#}% endif %#}
-            {% endfor %}
-        </div></div>
-{#            {% for producto in productos %}
-                 {% set valor ='' %}
-                 {% for prod in idprod %}
-                     {% if(producto.id==prod) %}
-                         {% set valor ='checked' %}
-                     {% endif %}
-                 {% endfor %} 
-{#                {{dump(producto.id,idprod)}}#}
-                
-                 {#{% if(acat==producto.categoria.padreId)%}
-                     <tr>
-                         <td class="text-center" width="200">
-                             <input class="selProducto" type="checkbox" name="productos[{{ producto.id }}][id]" value="{{ producto.id }}" {{valor}}></td><td width="400" class="lbl1">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</td>
-                     </tr>   
-                 
-                 {% endif %}
-            {% endfor %}#}
-        
-             
-        </div>
-        {% endfor %}
+ <div class="col-xs-8 ">
+ </div>
  
 </div>
-</div>  </div> </div>     
-<script>
-    $(window).ready(function() {
-        $("#seleccionarTodos").click(function() {
-            if ($(this).is(':checked')) {
-                $(".selProducto").prop("checked", true);
-            }else{
-                $(".selProducto").prop("checked", false);
-            }
-        });
-    });
-  var seleccion = function(id){
-   
-               if ($("#seleccionarTodos"+id).is(':checked')) {
-                   $('#form_area'+id+' input[type=checkbox]').prop("checked", true);
-                    
-                }else{
-                   $('#form_area'+id+' input[type=checkbox]').prop("checked", false);
-                
-                    //$('#prod'+id+' input[type=checkbox]').prop("checked", false);
-                }
-            //});
- 
-   
-}
-</script>
+</div>  </div> 

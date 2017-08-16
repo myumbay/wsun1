@@ -44,13 +44,15 @@ class PedidoController extends Controller
         $rol='';
         if($this->getUser())
             $rol=$this->getUser()->getRoles()[0]->getName();
-        
-        
         $pedido = new Pedido();
         $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
         $form->handleRequest($request);
         $pedidos = $em->getRepository('WsunBundle:Pedido')->findOneBy(array(),array('id' => 'DESC'));
-       
+        if(count($pedidos)>0){
+            $codigo=$pedidos->getCodigoPedido()+1;
+        }else{
+            $codigo=100;
+        }
         if ($form->isValid()){//$form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();

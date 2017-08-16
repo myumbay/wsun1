@@ -267,7 +267,7 @@ class DetallePedidoController extends Controller
             }
             $correo=$this->getParameter('correo_remitente'); 
             
-            //$em->flush();
+            $em->flush();
             
             $message = \Swift_Message::newInstance()
             ->setSubject('Nuevo Pedido')

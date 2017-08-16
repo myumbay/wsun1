@@ -42,6 +42,9 @@
 
     </div>
     <div id="respuesta" style="border:1px red  ">
+       <div id="list_products" class="col-md-12 text-left">
+     
+        </div> 
     </div>    
     
     </form>
@@ -95,14 +98,14 @@
               url: "{{ path('wsun_consulta_categoria') }}",
               context: document.body
           }).done(function (dataJson) {
-              var display_results = $("#submenu"+id);
-              display_results.empty();
-              display_results.html("Cargando...");
-              var results = '<table id="submenu"+id class="text-justify"  >';
-              results += '<th></th> </tr> <tbody>';
+              var   display_results = $("#submenu"+id);
+                    display_results.empty();
+                    display_results.html("Cargando...");
+              var   results = '<table id="submenu"+id class="text-justify"  >';
+                    results += '<th></th> </tr> <tbody>';
               $("#submenu"+id).html('<table><tr>');
               $.each(dataJson.data, function (index, value) {
-                  console.log(dataJson.data);
+                  
                   results +='<tr>';
                   results +='<td class="icon-hand-up" style="padding-left: 20px;" onclick="listaProductos(\''+value.id+'\')" ><span  >' + value.nombreCat + '</span></td>';
                   results +='</tr>';	;
@@ -111,52 +114,20 @@
             display_results.append(results);
           });
       }
-        var seleccion = function(id) {
-          alert('hola');
-        }
       var listaProductos= function(id){
-          $.ajax({
-              async: false,
-              complete: function (xhr, data) {
-                  if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != -1) {
-                      location.reload();
-                  }
-              },
-              method: 'POST',
-              data: {'id': id},
-              url: "{{ path('wsun_lista_productos') }}",
-              context: document.body
-          }).done(function (dataJson) {
-              var display_results = $("#div_prod");
-              display_results.empty();
-              //display_results.html("Cargando...");
-              var results = '<div  ><div class="row col-xs-12 text-left"><div class="col-xs-2"><input class="selProducto" type="checkbox" id="seleccionarTodos'+id+'" onclick="seleccion(\''+id+'\')"/></div><div> <b>Seleccionar todos </b> </div></div>' ;
-              results += '<div class="col-xs-8 " id="form_area'+id+'}">';
-             // results += '<th></th> </tr> <tbody>';
-              var valor='';
-              $("#submenu"+id).html('<table><tr>');
-              $.each(dataJson.data, function (index, value) {
+      var empresa = $('#empresaId').val();  
+                 $.ajax({
+                        method: 'POST',
+                        data: {id:id,'empresa':empresa },
+                        url: "{{ path('wsun_lista_productos') }}",
+                        context: document.body
+                    }).done(function(data) {
+                        $('#list_products').html(data);
+                        $('#empresaId').val(empresa);
+                    });
 
-                  results +=' <div class="row col-xs-12 text-left">';
-                  results +=' <div class="col-xs-2"><input class="selProducto" type="checkbox" name="productos['+value.id+'][id]" value="'+value.id+'" '+valor+'></div><div class="col-xs-8">'+value.codigoProducto+':'+value.nombreProducto+'</div>';
-                  results +='</div>';
-
-              });
-              results += '</div></div>';
-              display_results.append(results);
-          });
       }
-        var seleccion1 = function(id) {
-            alert(id);/*
-             if ($("#seleccionarTodos" + id).is(':checked')) {
-             $('#form_area' + id + ' input[type=checkbox]').prop("checked", true);
 
-             } else {
-             $('#form_area' + id + ' input[type=checkbox]').prop("checked", false);
-
-             //$('#prod'+id+' input[type=checkbox]').prop("checked", false);
-             }*/
-        }
        var limpiarEmpresa = function(){
        
             $("#ruc").val('');
@@ -195,38 +166,11 @@
                 return false;
             }
 
-            if ($('#tablaProducts input[type=checkbox]:checked').length ==0){
+            if ($('#form_area input[type=checkbox]:checked').length ==0){
                 alert('Seleccione un producto');
                 return false;
             }
-            
-         {#   $('#tablaProducts input[type=checkbox]:checked').each(function () {
-                     
-                    var idProducto = $(this).val();
-                    if ($('#capacidad' + idProducto).val() == '') {
-                        alert('Ingrese capacidad Productiva');
-                        $('#capacidad' + idProducto).focus();
-                        banCapacidadproductiva = false;
-                        return false;
-                    } else if (isNaN($('#capacidad' + idProducto).val()) || $('#capacidad' + idProducto).val() % 1 != 0) {
-                        alert('Capacidad Productiva invalida, ingrese solo números enteros.');
-                        $('#capacidad' + idProducto).focus();
-                        banCapacidadproductiva = false;
-                        return false;
-                    } 
-                    else if (!parseInt($('#capacidad' + idProducto).val())) {
-                        alert('Ingrese capacidad Productiva');
-                        $('#capacidad' + idProducto).val('');
-                        $('#capacidad' + idProducto).focus();
-                        banCapacidadproductiva = false;
-                        return false;
-                    }
-                });#}
-                
-              {#  if (!banCapacidadproductiva) {
-                    return false;
-                }#}
-                
+               
             return true;
         };
         var guardar = function () {
@@ -236,16 +180,12 @@
             var empresa_id = $('#empresaId').val();
             
             var producto = '';
-{#            var capacidades= '';#}
-             $('#tablaProducts input[type=checkbox]:checked').each(function () {
+             $('#form_area input[type=checkbox]:checked').each(function () {
                 var idProducto = $(this).val();
-                var capacidad = $('#capacidad' + idProducto).val();
-                
                 producto +=  idProducto+',';
-{#                capacidades+= (capacidad?capacidad:'--')+',';#}
             });
             producto = producto.slice(0,-1);
-{#            capacidades = capacidades.slice(0,-1);#}
+            console.log(producto);
             var contador = 1;
             var errores=0;
             $.ajax({
