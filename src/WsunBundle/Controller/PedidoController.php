@@ -50,8 +50,7 @@ class PedidoController extends Controller
         $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
         $form->handleRequest($request);
         $pedidos = $em->getRepository('WsunBundle:Pedido')->findOneBy(array(),array('id' => 'DESC'));
-        $codigo=$pedidos->getCodigoPedido()+1;
-        
+       
         if ($form->isValid()){//$form->isSubmitted() && $form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();

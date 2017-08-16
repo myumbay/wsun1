@@ -40,45 +40,14 @@ class DefaultController extends Controller
         $id=$request->get('id');
         
         $em = $this->getDoctrine()->getManager();
-        $in = $em->createQueryBuilder()
-            ->select('ep')
-            ->from('WsunBundle:EmpresaProducto','ep')
-            ->where('ep.empresa=:slug')
-            ->andWhere('ep.estado=:estado')
-            ->setParameter('slug', $id)
-            ->setParameter('estado', '1');
-        $pem=$in->getQuery()->getResult();
-        
-        $idprod=array();
-        for($i=0;$i< count($pem);$i++)
-            {
-                $idprod[]=$pem[$i]->getProducto()->getId();
-            }
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $em->createQueryBuilder();
-        $qb->from('WsunBundle:Producto', 'p');
-        $qb->innerJoin('p.categoria', 'c');
-        $qb->select('p,c');//->distinct();
-        //$qb->andWhere($qb->expr()->notIn('p.id',$idprod));
-        $qb->andWhere('p.estado = :estado');
-        $qb->setParameter('estado', '1');
-        $qb->addOrderBy('p.categoria', 'ASC');
-        $qb->addOrderBy('p.nombreProducto', 'ASC');
-        $p = $qb->getQuery()->getResult();
 
-        for($i=0;$i< count( $p);$i++)
-            {
-                $idcat[]=$p[$i]->getCategoria()->getId();
-            }
-         
-        //$categoria=$em->getRepository('WsunBundle:Categoria')->findById($idcat); 
         $categoria = $em->getRepository('WsunBundle:Categoria')
           ->findBy(
              array('padreId'=> null), 
              array('nombreCat' => 'ASC')
            );
         
-        return $this->render('WsunBundle:Default:products.html.twig',array('productos' => $p,'categoria'=>$categoria,'idprod'=>$idprod));
+        return $this->render('WsunBundle:Default:products.html.twig',array('categoria'=>$categoria));
     }
     /**
      * @Security("has_role('ROLE_ADMIN')")
@@ -113,6 +82,7 @@ class DefaultController extends Controller
   }
   public function listaProductosAction(Request $request){
       $id=$request->get('id');
+      $empresa=$request->get('empresa');
       $em = $this->getDoctrine()->getManager();
       /* @var $qb \Doctrine\ORM\QueryBuilder */
       $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
@@ -121,10 +91,22 @@ class DefaultController extends Controller
       $qb->andWhere('prod.categoria = :id');
       $qb->setParameter('id', $id);
       $qb->addOrderBy('prod.nombreProducto', 'ASC');
-      $producto = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-      $response = new Response(json_encode(array('data' => $producto)));
-      $response->headers->set('Content-Type', 'application/json');
-      return $response;
+      $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+     // $em = $this->getDoctrine()->getManager();
+        $in = $em->createQueryBuilder()
+            ->select('ep')
+            ->from('WsunBundle:EmpresaProducto','ep')
+            ->where('ep.empresa=:slug')
+            ->andWhere('ep.estado=:estado')
+            ->setParameter('slug', $empresa)
+            ->setParameter('estado', '1');
+        $pem=$in->getQuery()->getResult();
+      return $this->render('WsunBundle:Default:productsConsulta.html.twig', array('productos' =>$productos,'pem'=>$pem));
+      
+//      $producto = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+//      $response = new Response(json_encode(array('data' => $producto)));
+//      $response->headers->set('Content-Type', 'application/json');
+//      return $response;
   }
   public function productsListAction(Request $request){
       $em = $this->getDoctrine()->getManager();
