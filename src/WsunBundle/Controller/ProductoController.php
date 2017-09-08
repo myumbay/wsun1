@@ -9,26 +9,22 @@ use Liip\ImagineBundle\Imagine\Filter\Loader\ResizeFilterLoader;
 use WsunBundle\Form\ProductoType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use WsunBundle\Entity\Parametro;
-/**
- * Producto controller.
- *
- */
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 class ProductoController extends Controller
 {
    private $session;
     public function __construct() {
         $this->session=new Session();
     }
-    
+
     /**
-     * Lists all producto entities.
-     *
-     */
+     * @Security("has_role('ROLE_ADMIN')")
+    */
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        //$dql = "SELECT e FROM WsunBundle:Producto e";
-        //$query = $em->createQuery($dql);
+        
         $productos = $em->getRepository('WsunBundle:Producto')->findAll(array('nombreProducto' => 'ASC')); 
         $limite = $this->container->getParameter('limitePaginacion');
         $paginator = $this->get('knp_paginator');
@@ -41,20 +37,15 @@ class ProductoController extends Controller
         return $this->render('WsunBundle:producto:index.html.twig',
                 array('pagination' => $pagination));
         
-        ///$em = $this->getDoctrine()->getManager();
-        //$productos = $em->getRepository('WsunBundle:Producto')->findBy( array('estado' => '1'), array('nombreProducto' => 'ASC'));
-       // $productos = $em->getRepository('WsunBundle:Producto')->findAll(array('nombreProducto' => 'ASC'));        
-        //return $this->render('WsunBundle:producto:index.html.twig', array(
-        //    'productos' => $productos,
-        //));
+     
     }
 
-    /**
-     * Creates a new producto entity.
-     *
-     */
+     /**
+     * @Security("has_role('ROLE_ADMIN')")
+    */
     public function newAction(Request $request)
     {
+       
         $producto = new Producto();
         $form = $this->createForm('WsunBundle\Form\ProductoType', $producto);
         $form->handleRequest($request);
@@ -63,25 +54,23 @@ class ProductoController extends Controller
         $iva=$iva->getValor();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //var_dump($form);die;
-            /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
+            
                 if(!$em->getRepository('WsunBundle:Producto')->findByNombreProducto(trim($producto->getNombreProducto())))
                 {
-                    $file = $producto->getImagen();                    
-                    $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
-                    $producto->setImagen($file->getClientOriginalName());          
-                    $em->persist($producto);
-                    $narchivo = $producto->getId() . '.' . $file->getClientOriginalName(); 
-                    //$image = new \Imagick('../Documentos/Productos/pastel.jpg' );
-                    $file->move(realpath($path), $narchivo);  
-                    //$image = new \Imagick('../Documentos/Productos/'.$narchivo );
-                    //$image->cropthumbnailimage(300, 300);
-                    //Guarda el archivo mas corto
-                    //$image->writeimage( '../Documentos/Productos/imagen_thumb.png' );
-                    //$image->writeimage( '../Documentos/Productos/'.$narchivo );
-                    //$image->cropthumbnailimage(150, 150);
-                    //$image->writeimage( '../Documentos/Productos/Products/'.$narchivo );
-                    $em->flush();
+                   $em = $this->getDoctrine()->getManager();
+                   $em->persist($producto);
+                   $em->flush();  
+                   /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
+                   $file = $producto->getImagen(); 
+                   $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
+                   $producto->setImagen($file->getClientOriginalName());
+                   $narchivo = $producto->getId() . '.' . $file->getClientOriginalName();
+                   $producto->setImagen($file->getClientOriginalName());    
+                   $em->persist($producto);
+                    $em->flush(); 
+               
+                $file->move(realpath($path), $narchivo);
+                //$em->getConnection()->commit();
                     return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId()));
                 } else{
                     $mensaje = 'El producto ya esta registrado';
@@ -95,11 +84,6 @@ class ProductoController extends Controller
             'form' => $form->createView(),
         ));
     }
-
-    /**
-     * Finds and displays a producto entity.
-     *
-     */
     public function showAction(Request $request,Producto $producto)
     {
 
@@ -109,10 +93,6 @@ class ProductoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
         $iva=$iva->getValor();
-        //$medidas=array();
-        //$size=$this->getParameter('dimension_imagen1');
-       // $medidas=$this->redimensionar($url,$size);
-        
         $deleteForm = $this->createDeleteForm($producto);
         return $this->render('WsunBundle:producto:show.html.twig', array(
             'url'=>$url,
@@ -139,10 +119,9 @@ public function redimensionar($src, $ancho_forzado){
    }
    return array($max_width, $height_dyn);
 }
-    /**
-     * Displays a form to edit an existing producto entity.
-     *
-     */
+     /**
+     * @Security("has_role('ROLE_ADMIN')")
+    */
     public function editAction(Request $request, Producto $producto)
     {        
         $deleteForm = $this->createDeleteForm($producto);
@@ -266,27 +245,12 @@ public function redimensionar($src, $ancho_forzado){
                 $qb->from('SercopComunBundle:Producto', 'p');
                 $qb->select("p.nombreProducto, p.id");
                 $qb->leftJoin('p.categoria', 'c');
-//                if ($id) {
-//                    $qb
-//                            ->leftJoin('c.padreId', 'padre1')
-//                            ->leftJoin('padre1.padre', 'padre2')
-//                            ->leftJoin('padre2.padre', 'padre3');
-//                    $qb->andWhere('((c.id = :id) or (padre1.id = :id) or (padre2.id = :id) or (padre3.id = :id))');
-//                    $qb->setParameter('id', $id);
-//                }
+
                 
                 $qb->andwhere('p.estado = :estado');
                 $qb->setParameter('estado', '1');
                 $productos = $qb->getQuery()->execute();           
-                //GUARDANDO cache
-//                $cacheDriver = new \Doctrine\Common\Cache\ApcCache();                                
-//                if ($cacheDriver->contains('mas_visto'.$id.$cobertura)) {           
-//                    //$deleted = $cacheDriver->deleteAll();die;
-//                    $productos = $cacheDriver->fetch('mas_visto'.$id.$cobertura);                                       
-//                } else {
-//                    $productos = $qb->getQuery()->execute();
-//                    $cacheDriver->save('mas_visto'.$id.$cobertura, $productos, 86400);                    
-//                }
+
                                               
                 $ids = array();
                 foreach ($productos as $producto) {

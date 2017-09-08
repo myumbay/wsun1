@@ -102,3 +102,10 @@ WsunAnnotations:
     prefix:   /
     type:     annotation         
 
+wsun_reporte_consulta_departamento:
+    path:  /departamento  
+    defaults: { _controller: WsunBundle:Admin:consultaDepartamento }
+
+wsun_reporte_consulta_pedido:
+    path:  /productosConsulta  
+    defaults: { _controller: WsunBundle:Admin:consultaProductos }

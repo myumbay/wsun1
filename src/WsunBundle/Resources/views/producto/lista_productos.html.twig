@@ -1,0 +1,64 @@
+<div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 ">
+                    <table id= "tablaProductos" class="table table-bordered table-condensed table-striped table-hover head-fixed">
+                        <thead>
+                        <div class="col-xs-2">
+                        <span class="input-group-btn">
+                        <button onclick="guardar();return false;" id="btnGuardar" class="btn btn-primary btn-sm">
+                            {{ icon('floppy-disk')}} Guardar
+                        </button></div> <div class="col-xs-10" id="respuesta">
+                                </div> 
+                        </thead>
+                        <tbody>
+                            <tbody>
+                           
+                                {% set contador=0 %}
+                                
+                                <div class="col-xs-12" id="form_productos">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            {% for key, prod in productos %}
+                                                 {% set contador=contador+1 %}
+                                                 <tr><td>{{contador}}</td><td>{{prod.nombreProducto}}</td>
+                                                 </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    
+                                
+                                            {#{% for key, prod in productos %}
+                                                {% set contador=contador+1 %}
+                                                    <li>
+                                                        <div class="row">
+                                                        <div div class="col-md-10"> 
+                                                            <span><strong> {{contador}}.-</strong></span> ({{prod.peid}})-({{prod.id}}) {{prod.nombre}} ($ {{prod.precioPorUnidad | number_format(4,',','.')}})
+                                                            {%if prod.estado==1 %}
+                                                                 <span class="text-success">Activo</span>
+                                                                {%else%}
+                                                                <span class="text-danger">Inactivo</span>    
+                                                            {%endif%}
+                                                           
+                                                        </div>
+                                                        <div div class="col-md-2"> 
+                                                            {%if(prod.activarVinculacion=='1')%}
+                                                            {% set valor='checked'%}
+                                                            {% else%}
+                                                                {% set valor=''%}
+                                                            {% endif %}
+                                                            {%if productos|length > 1 %}
+                                                                <input class="selProducto" type="checkbox"  name="productos[{{ prod.id }}][id]" value="{{ prod.id }}" {{valor}}>
+                                                            {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div style="padding-bottom: 10px; display: block; width: 100%;overflow:auto;">
+                                                        </div>
+                                                        </li>
+                                            {% endfor %}#}
+                                     
+                     
+                </div>
+            </div>
+        </div>
+    </div>
+        

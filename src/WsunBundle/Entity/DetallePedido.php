@@ -59,17 +59,17 @@ class DetallePedido
     /**
      * @var \EmpresaProducto
      *
-     * @ORM\ManyToOne(targetEntity="EmpresaProducto")
+     * @ORM\ManyToOne(targetEntity="EmpresaProducto",inversedBy="detallePedido")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
      * })
      */
+    
     protected $idProducto;
-
-    /**
-     * @var \Pedido
+     /**
+     * 
      *
-     * @ORM\ManyToOne(targetEntity="Pedido")
+     * @ORM\ManyToOne(targetEntity="Pedido", inversedBy="detallePedido")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_pedido", referencedColumnName="id")
      * })

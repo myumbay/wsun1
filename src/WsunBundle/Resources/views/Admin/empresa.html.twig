@@ -1,9 +1,9 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-<div class="box">  
+ 
      <div class="panel panel-azul">
-            <strong><span class="icon-list"> Reportes</span> de órdenes por provincia</strong>
+            <strong><span class="icon-list"> Reportes</span> de órdenes por Empresa</strong>
         <div class="panel-body">
             {% for message in app.session.flashbag().get('status')%}
         <div class="alert alert-success">
@@ -13,43 +13,71 @@
         {% endfor%}
             
         {{ form_start(form) }}
-            <div class="row">
-                <div class="col-sm-4">
+        
+    <div class="row">
+        <div class="col-xs-6">
+          <div class="selector-empresa">
+            <label class="col-sm-4 control-label">Empresas: </label>
+            <div class="col-sm-8 form-control-static">
+                <select id="selector_empresa" name="selector_empresa" class="chosen-select" required="required" tabindex="2">    
+                    <option disabled selected value="0">Seleccione...</option>
+                    {% for key, e in empresa %}
+                        <option value="{{e.id}}" >{{ e.ruc }}   ({{e.nombreEmp}})</option>
+                      {% endfor %}
+                </select>
+            </div>
+            </div>     
+       </div>
+        <div class="col-xs-6">
+        <div class="selector-departamento">
+            <label class="col-sm-4 control-label">Departamento: </label>
+            <div class="col-sm-8 form-control-static">
+                <select id="selector_departamento" class="chosen-select" tabindex="2">    
+                    <option disabled selected value="0">Seleccione...</option>
+                </select>
+            </div>
+            </div>    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <label class="col-sm-4 control-label">{{ form_label(form.desde) }}: </label>
+             <div class="col-sm-8 form-control-static">
+             {{ form_widget(form.desde, {'style': 'horizontal'} ) }}
+             </div>
+        </div>
+        <div class="col-xs-6">
+            <label class="col-sm-4 control-label">{{ form_label(form.hasta) }}: </label>
+             <div class="col-sm-8 form-control-static">
+             {{ form_widget(form.hasta, {'style': 'horizontal'} ) }}
+             </div>
+        </div>
+    </div>    
+               {# <div class="col-sm-4">
                     {{ form_row(form.nombre, {'label':'Ruc/Empresa','onkeydown':'if (event.keyCode == 13) {
                                             return false;}'}) }}
-                    <div  id="autocomplete_container_empresa">
+                    <div  class="text-left table bg-info" id="autocomplete_container_empresa">
                     </div>
-                </div>
-            </div> 
-
-            <div class="row">
-                <div class="col-sm-4">
-                    {{ form_row(form.provincia, {'class': 'horizontal'}) }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form_row(form.desde, {'style': 'horizontal'} ) }}
-                </div>
-                <div class="col-sm-4">
-                   {{ form_row(form.hasta, {'style': 'horizontal'} ) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <button id='btnBuscar' class="btn btn-primary">Buscar</button>
-                </div>
-                <div class="col-sm-4">
-                    <a class="btn btn-danger" href="{#{ path('sercop_sercop_bundle_admin_reportes_proveedores') }#}" >Reiniciar búsqueda</a>
-                </div>
-{#                {% if (proveedores|length) %}#}
-                <div class="col-sm-4">
-                    <button id='btnExportar' class="btn btn-warning">Exportar a CSV</button>
-                </div>
-{#                        {% endif %}#}
-            </div>
-            
-            {{ form_end(form)}}
+                </div>#}
+    
+    <div class="row">
+        <div class="col-sm-4">
+         <button id='btnBuscar' class="btn btn-primary">Buscar Pedido</button>
+        </div>
+        <div class="col-sm-4">
+            <a class="btn btn-info" href="{#{ path('sercop_sercop_bundle_admin_reportes_proveedores') }#}" >Reiniciar</a>
+        </div>
+        <div class="col-sm-4">
+            <button id='btnExportar' class="btn btn-warning">Exportar(CSV)</button>
+        </div>
     </div>
-    <div>
+    <div class="form-group">
+        <div class="col-xs-12" id="form_productos">
+            sfsfsfsf
+        </div>
+    </div>
+</div>
+    
     <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -62,27 +90,58 @@
                     </tr>
                 </thead>
                 <tbody>
-               {% for orden in ordenes[0] %}
                     
-                    <tr>
-                        
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="9"> No se encontraron registros</td>
-                    </tr>
-                {% endfor %}#}
-                </tbody>
-            </table>
-        </div>
-    
-</div>
+    </table>
+{{ form_end(form)}}          
+                
 {% endblock %}
  {% block javascripts %}
      {{ parent() }}
     <script type="text/javascript">
          $(document).ready(function () {
-     
+                $("#selector_empresa").click(function(){
+                var id=$(this).val();    
+               
+                $.ajax({
+                            async:false,
+                            complete: function(xhr, data)
+                            {
+                                if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != - 1){
+                                    location.reload();
+                                }
+                            },
+                            method: 'POST',
+                            data: {'id':id},
+                            url: "{{ path('wsun_reporte_consulta_departamento')}}",
+                            context: document.body
+                        }).done(function(dataJson) {
+                            $(".selector-departamento select ").html('');
+                            $(".selector-departamento select").append('<option disabled selected value="0">Seleccione...</option>');
+                            $.each(dataJson.data, function(index,value){                    
+                            $(".selector-departamento select").append('<option style=" "    value="'+value.id+'">'+value.nombreDep+'</option>');
+                    }); 
+                    $("#selector_departamento").trigger("chosen:updated");
+
+                        });
+            });
+            
+       $("#selector_departamento").chosen().change(function(){
+        var id = $(this).val();
+        var empresa_id = $('#selector_empresa').val();
+                 $.ajax({
+                        method: 'POST',
+                        data: {id:id,empresa_id:empresa_id },
+                        url: "{{ path('wsun_reporte_consulta_pedido') }}",
+                        context: document.body
+                    }).done(function(data) {
+                        
+                        $('#form_productos').html(data);
+                    });
+    });
+    $('#selector_departamento').chosen();          
+             
+             
+            $(".form_datetime").datepicker({format: 'yyyy-mm-dd'});
             $('.typeahead.empresa').autocomplete(
                     {
                         minChars: 3,
