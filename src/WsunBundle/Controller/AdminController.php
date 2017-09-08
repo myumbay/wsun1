@@ -74,14 +74,17 @@ class AdminController extends Controller
       
         /* @var $qb \Doctrine\ORM\QueryBuilder */
             $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
-            $qb->from('WsunBundle:DetallePedido', 'emProd');
-            $qb->select('prod.id ,prod.nombreProducto,prod.Iva,sum(empro.cantidad)');
-            $qb->innerJoin('dped.idProducto', 'emProd');//empresa producto
-            $qb->innerJoin('emProd.producto', 'prod');
-            $qb->innerJoin('dped.idPedido', 'ped');
-            $qb->innerJoin('ped.idUsuario', 'u');
-            $qb->innerJoin('u.departamento', 'dpt');
-            $qb->innerjoin('dpt.idEmpresa', 'e');
+            $qb->from('WsunBundle:DetallePedido', 'dp');
+            $qb->select('dp');
+            $qb->innerJoin('dp.idProducto', 'emProd');
+            $qb->innerJoin('emProd.producto', 'pro');
+//            $qb->select('prod.id ,prod.nombreProducto,prod.Iva,sum(empro.cantidad)');
+//            $qb->innerJoin('emProd.idProducto', 'emProd');//empresa producto
+//            $qb->innerJoin('emProd.producto', 'prod');
+//            $qb->innerJoin('dped.idPedido', 'ped');
+//            $qb->innerJoin('ped.idUsuario', 'u');
+//            $qb->innerJoin('u.departamento', 'dpt');
+//            $qb->innerjoin('dpt.idEmpresa', 'e');
             
             
 //            $qb->from('WsunBundle:Empresa', 'e');
@@ -93,15 +96,15 @@ class AdminController extends Controller
 //            $qb->innerJoin('dped.empresaProducto', 'empro');
 //            $qb->innerJoin('empro.producto', 'prod');
             
-            $qb->andWhere('e.id = :empresa');
-            $qb->andWhere('dep.id = :dep');
-            $qb->setParameter('empresa', $empresa);
-          //  $qb->setParameter('estado', '1');
-            $qb->setParameter('dep', $id);
-            $qb->addOrderBy('prod.nombreProducto', 'ASC');
-            $qb->addGroupBy('empro.cantidad');
+//            $qb->andWhere('e.id = :empresa');
+//            $qb->andWhere('dep.id = :dep');
+//            $qb->setParameter('empresa', $empresa);
+//          //  $qb->setParameter('estado', '1');
+//            $qb->setParameter('dep', $id);
+//            $qb->addOrderBy('prod.nombreProducto', 'ASC');
+//            $qb->addGroupBy('empro.cantidad');
             $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-           
+           var_dump($productos);die;
         return $this->render('WsunBundle:Admin:lista_productos.html.twig', array('productos' =>$productos));
    }
     public function ConsultaAjaxAction(Request $request) {
