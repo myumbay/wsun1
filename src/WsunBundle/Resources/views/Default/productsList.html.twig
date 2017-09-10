@@ -16,7 +16,7 @@
                             {% for cat in categoria %}
                                 {% if (cat.padreId=='')%}
                                    {% set array_cat = array_cat|merge([cat.id])  %}
-                                    <li ><a href="#cat{{cat.id}}"  data-toggle="tab">{{cat.nombreCat}}</a></li>
+                                    <li class="btn-link" ><a href="#cat{{cat.id}}"  data-toggle="tab">{{cat.nombreCat}}</a></li>
                                 
                                 {% endif%}
                             {% endfor %}

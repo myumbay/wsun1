@@ -21,8 +21,11 @@ class DetallePedidoController extends Controller
     {
          
         $id=$request->get('id');
-        $idEmpresa=$request->get('idEmpresa');
+        $user = $this->getUser();
+        $idUser=$user->getId();
         $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('WsunBundle:Usuarios')->find($idUser);
+        $idEmpresa=$usuario->getDepartamento()->getIdEmpresa()->getId();
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($id);
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
@@ -153,7 +156,6 @@ class DetallePedidoController extends Controller
     }
     public function addPedidoAction(Request $request,$id)
     {
-       
         $idPedido=$request->get('idPedido');
         $em = $this->getDoctrine()->getManager();
         $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');

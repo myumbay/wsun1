@@ -1,0 +1,47 @@
+
+ 
+     <div class="panel panel-azul">
+
+        <div class="panel-body">
+            {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+        </div>
+        {% endfor%}
+            
+ <div class="col-xs-12" id="form_productos">
+
+        <table class="table table-bordered">
+            <tr>
+                {# sorting of properties based on query components #}
+                <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'DEPARTAMENTO', '') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', '') }}</th>
+                {#<th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}#}
+                </th>
+                <th>{{ knp_pagination_sortable(pagination, 'GRABA IVA', '') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'TOTAL ORDENES', '') }}</th>
+
+            </tr>
+                <tbody>
+                {% set contador= 1%}
+                {% for productos in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>{{ contador }}</td>
+                        <td>{{ productos.nombreDep }}</td>
+                        <td>{{ productos.nombreProducto }}</td>
+                        <td>{% if (productos.iva==1) %}
+                                {{ iva }}
+                            {% else %}
+                                0
+                            {% endif %}</td>
+                        <td>{{ productos.total }}</td>
+
+                    </tr>
+                    {% set contador= contador+1%}
+                {% endfor %}
+
+    </table>
+    </div>

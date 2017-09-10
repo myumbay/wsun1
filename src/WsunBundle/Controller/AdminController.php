@@ -68,44 +68,48 @@ class AdminController extends Controller
             $response->headers->set('Content-Type', 'application/json');
             return $response; 
     }
-   public function consultaProductosAction(Request $request) {
-         $id=$request->get('id');
-         $empresa=$request->get('empresa_id');
-      
+    public function consultaProductosAction(Request $request) {
+        $id=$request->get('id');
+        $empresa=$request->get('empresa_id');
+        $desde=$request->get('desde');
+        $hasta=$request->get('hasta');
+        $em = $this->getDoctrine()->getManager();
+        $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
+        $iva=$iva->getValor();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
-            $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
-            $qb->from('WsunBundle:DetallePedido', 'dp');
-            $qb->select('dp');
-            $qb->innerJoin('dp.idProducto', 'emProd');
-            $qb->innerJoin('emProd.producto', 'pro');
-//            $qb->select('prod.id ,prod.nombreProducto,prod.Iva,sum(empro.cantidad)');
-//            $qb->innerJoin('emProd.idProducto', 'emProd');//empresa producto
-//            $qb->innerJoin('emProd.producto', 'prod');
-//            $qb->innerJoin('dped.idPedido', 'ped');
-//            $qb->innerJoin('ped.idUsuario', 'u');
-//            $qb->innerJoin('u.departamento', 'dpt');
-//            $qb->innerjoin('dpt.idEmpresa', 'e');
-            
-            
-//            $qb->from('WsunBundle:Empresa', 'e');
-//            $qb->select('prod.id ,prod.nombreProducto,prod.Iva,sum(empro.cantidad)');
-//            $qb->innerJoin('e.departamento', 'dpt');
-//            $qb->innerJoin('dpt.usuarios', 'u');
-//            $qb->innerJoin('u.pedido', 'ped');
-//            $qb->innerJoin('ped.detallePedido', 'dped');
-//            $qb->innerJoin('dped.empresaProducto', 'empro');
-//            $qb->innerJoin('empro.producto', 'prod');
-            
-//            $qb->andWhere('e.id = :empresa');
-//            $qb->andWhere('dep.id = :dep');
-//            $qb->setParameter('empresa', $empresa);
-//          //  $qb->setParameter('estado', '1');
-//            $qb->setParameter('dep', $id);
-//            $qb->addOrderBy('prod.nombreProducto', 'ASC');
-//            $qb->addGroupBy('empro.cantidad');
-            $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-           var_dump($productos);die;
-        return $this->render('WsunBundle:Admin:lista_productos.html.twig', array('productos' =>$productos));
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:DetallePedido', 'dp');
+        $qb->select('prod.id,prod.nombreProducto,dpt.nombreDep,prod.iva,sum(dp.cantidad) total');
+        $qb->innerJoin('dp.idProducto', 'emProd');
+        $qb->innerJoin('emProd.producto', 'prod');
+        $qb->innerJoin('dp.idPedido', 'ped');
+        $qb->innerJoin('ped.idUsuario', 'u');
+        $qb->innerJoin('u.departamento', 'dpt');
+        $qb->innerJoin('dpt.idEmpresa', 'e');
+        $qb->andWhere('e.id = :empresa');
+        $qb->setParameter('empresa', $empresa);
+        if($id>0) {
+            $qb->andWhere('dpt.id = :dep');
+            $qb->setParameter('dep', $id);
+        }
+        $qb->andWhere('ped.fechaCreacion >= :desde');
+        $qb->setParameter('desde', $desde);
+        $qb->andWhere('ped.fechaCreacion <= :hasta');
+        $qb->setParameter('hasta', $hasta);
+        $qb->addGroupBy('prod.id,prod.nombreProducto,dpt.nombreDep, prod.iva');
+        $qb->addOrderBy('prod.nombreProducto', 'ASC');
+
+        $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+            $productos,
+            $request->query->getInt('page', 1),
+            $limite
+        );
+
+        return $this->render('WsunBundle:Admin:lista_productos.html.twig',
+            array('pagination' => $pagination,'iva'=>$iva));
    }
     public function ConsultaAjaxAction(Request $request) {
          $query = $request->get('query');

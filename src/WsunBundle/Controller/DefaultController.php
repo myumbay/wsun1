@@ -101,6 +101,7 @@ class DefaultController extends Controller
             ->setParameter('slug', $empresa)
             ->setParameter('estado', '1');
         $pem=$in->getQuery()->getResult();
+
       return $this->render('WsunBundle:Default:productsConsulta.html.twig', array('productos' =>$productos,'pem'=>$pem));
       
 //      $producto = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -117,10 +118,10 @@ class DefaultController extends Controller
            ); 
       $categoria = $em->getRepository('WsunBundle:Categoria')
           ->findBy(
-             array(), 
+             array('padreId'=>null),
              array('nombreCat' => 'ASC')
-           ); 
-     
+           );
+
       return $this->render('WsunBundle:Default:productsList.html.twig',array('categoria' => $categoria,'productos'=>$producto));
   }
 }

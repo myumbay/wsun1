@@ -62,36 +62,26 @@
     
     <div class="row">
         <div class="col-sm-4">
-         <button id='btnBuscar' class="btn btn-primary">Buscar Pedido</button>
+         {#<button id='btnBuscar' class="btn btn-primary">Buscar Pedido</button>#}
+            <a id='btnBuscar' class="btn btn-info" href="#" >Buscar Pedido</a>
         </div>
         <div class="col-sm-4">
             <a class="btn btn-info" href="{#{ path('sercop_sercop_bundle_admin_reportes_proveedores') }#}" >Reiniciar</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <button id='btnExportar' class="btn btn-warning">Exportar(CSV)</button>
+        </div>
+        <div class="col-sm-2">
+        <a class="btn btn-primary" href="{{ path('admin_reportes') }}">Atras</a>
         </div>
     </div>
     <div class="form-group">
         <div class="col-xs-12" id="form_productos">
-            sfsfsfsf
+
         </div>
     </div>
 </div>
-    
-    <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Empresa</th>
-                        <th>Ruc</th>
-                        <th>Departamento</th>
-                        <th>Productos</th>
-                        <th>cantidad</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    
-    </table>
+
 {{ form_end(form)}}          
                 
 {% endblock %}
@@ -99,7 +89,24 @@
      {{ parent() }}
     <script type="text/javascript">
          $(document).ready(function () {
-                $("#selector_empresa").click(function(){
+             $("#btnBuscar").click(function(){
+
+                 var id =0;
+                 var desde =$('#form_desde').val();
+                 var hasta =$('#form_hasta').val();
+                 var empresa_id = $('#selector_empresa').val();
+                 $.ajax({
+                     method: 'POST',
+                     data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },
+                     url: "{{ path('wsun_reporte_consulta_pedido') }}",
+                     context: document.body
+                 }).done(function(data) {
+
+                     $('#form_productos').html(data);
+                 });
+             });
+
+             $("#selector_empresa").click(function(){
                 var id=$(this).val();    
                
                 $.ajax({
@@ -127,10 +134,12 @@
             
        $("#selector_departamento").chosen().change(function(){
         var id = $(this).val();
+        var desde =$('#form_desde').val();
+        var hasta =$('#form_hasta').val();
         var empresa_id = $('#selector_empresa').val();
                  $.ajax({
                         method: 'POST',
-                        data: {id:id,empresa_id:empresa_id },
+                        data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },
                         url: "{{ path('wsun_reporte_consulta_pedido') }}",
                         context: document.body
                     }).done(function(data) {
