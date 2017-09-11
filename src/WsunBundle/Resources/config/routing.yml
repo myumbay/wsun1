@@ -33,7 +33,10 @@ addpedido_index:
 admin_reportes:
     path:  /reportes
     defaults: { _controller: WsunBundle:Admin:Reportes }
-    
+
+admin_generar_csv:
+    path:  /cvs
+    defaults: { _controller: WsunBundle:Admin:generateCsv }
 wsun_admin_reportes_productos_empresa:
     path:  /reportes_empresa
     defaults: { _controller: WsunBundle:Admin:Empresa }
