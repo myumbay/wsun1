@@ -13,26 +13,23 @@
  <div class="col-xs-12" id="form_productos">
 
         <table class="table table-bordered">
-            <tr>
-                {# sorting of properties based on query components #}
-                <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'DEPARTAMENTO', '') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'USUARIO', '') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', '') }}</th>
-                {#<th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
-                    {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}#}
+            {#<tr>
+                 sorting of properties based on query components 
+                <th>{{ knp_pagination_sortable(data, 'N°', '') }}</th>
+                <th>{{ knp_pagination_sortable(data, 'DEPARTAMENTO', '') }}</th>
+                <th>{{ knp_pagination_sortable(data, 'NOMBRE PRODUCTO', '') }}</th>
+             
                 </th>
-                <th>{{ knp_pagination_sortable(pagination, 'GRABA IVA', '') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'TOTAL ORDENES', '') }}</th>
+                <th>{{ knp_pagination_sortable(data, 'GRABA IVA', '') }}</th>
+                <th>{{ knp_pagination_sortable(data, 'TOTAL ORDENES', '') }}</th>
 
-            </tr>
+            </tr>#}
                 <tbody>
                 {% set contador= 1%}
-                {% for productos in pagination %}
+                {% for productos in data %}
                     <tr {% if loop.index is odd %}class="color"{% endif %}>
                         <td>{{ contador }}</td>
                         <td>{{ productos.nombreDep }}</td>
-                        <td>{{ productos.username }}</td>
                         <td>{{ productos.nombreProducto }}</td>
                         <td>{% if (productos.iva==1) %}
                                 {{ iva }}

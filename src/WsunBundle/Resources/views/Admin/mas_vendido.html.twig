@@ -16,13 +16,11 @@
             <tr>
                 {# sorting of properties based on query components #}
                 <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'DEPARTAMENTO', '') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'USUARIO', '') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'EMPRESA', '') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', '') }}</th>
                 {#<th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}#}
                 </th>
-                <th>{{ knp_pagination_sortable(pagination, 'GRABA IVA', '') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'TOTAL ORDENES', '') }}</th>
 
             </tr>
@@ -31,14 +29,9 @@
                 {% for productos in pagination %}
                     <tr {% if loop.index is odd %}class="color"{% endif %}>
                         <td>{{ contador }}</td>
-                        <td>{{ productos.nombreDep }}</td>
-                        <td>{{ productos.username }}</td>
+                        <td>{{ productos.nombreEmp }}</td>
                         <td>{{ productos.nombreProducto }}</td>
-                        <td>{% if (productos.iva==1) %}
-                                {{ iva }}
-                            {% else %}
-                                0
-                            {% endif %}</td>
+                        
                         <td>{{ productos.total }}</td>
 
                     </tr>

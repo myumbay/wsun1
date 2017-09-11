@@ -61,14 +61,19 @@
          </div>#}
 
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {#<button id='btnBuscar' class="btn btn-primary">Buscar Pedido</button>#}
                 <a id='btnBuscar' class="btn btn-info" href="#" >Buscar Pedido</a>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-2">
+                <a id='btnMasVendido' class="btn btn-info" href="#" >Mas vendido</a>
+                {#<a class="btn btn-info" href="{{ path('admin_generar_csv') }}" >Exportar(CSV)</a>#}
+            </div>    
+            <div class="col-sm-2">
                 <a class="btn btn-info" href="{#{ path('sercop_sercop_bundle_admin_reportes_proveedores') }#}" >Reiniciar</a>
             </div>
-            <div class="col-sm-4">
+           
+            <div class="col-sm-2">
                 <a id='btnExportar' class="btn btn-info" href="#" >Exportar(CSV)</a>
                 {#<a class="btn btn-info" href="{{ path('admin_generar_csv') }}" >Exportar(CSV)</a>#}
             </div>
@@ -92,9 +97,24 @@
      {{ parent() }}
      <script type="text/javascript">
          $(document).ready(function () {
+             
+             $("#btnMasVendido").click(function(){
+                 var id =$('#id_departamento').val();
+                 var desde =$('#form_desde').val();
+                 var hasta =$('#form_hasta').val();
+                 var empresa_id = $('#selector_empresa').val();
+                 $.ajax({
+                     method: 'POST',
+                     data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },
+                     url: "{{ path('admin_mas_vendido') }}",
+                     context: document.body
+                 }).done(function(data) {
+                     $('#form_productos').html(data);
+                 });
+             });
              $("#btnExportar").click(function(){
 
-                 var id =$('#form_desde').val();
+                 var id =$('#id_departamento').val();
                  var desde =$('#form_desde').val();
                  var hasta =$('#form_hasta').val();
                  var empresa_id = $('#selector_empresa').val();

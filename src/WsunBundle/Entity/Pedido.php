@@ -43,12 +43,12 @@ class Pedido
      */
     private $ordenCompra;
     
-    /**
-     * @var float
+ /**
+     * @var integer
      *
-     * @ORM\Column(name="iva", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="updated_by", type="integer", nullable=false, options={"comment" = "Id del usuario del usuario que actualizó"})
      */
-    private $iva;
+    protected $updatedBy;
 
     /**
      * @var float
@@ -132,27 +132,24 @@ class Pedido
     }
 
     /**
-     * Set iva
+     * Set updatedBy
      *
-     * @param float $iva
-     *
+     * @param integer $updatedBy
      * @return Pedido
      */
-    public function setIva($iva)
-    {
-        $this->iva = $iva;
+    public function setUpdatedBy($updatedBy) {
+        $this->updatedBy = $updatedBy;
 
         return $this;
     }
 
     /**
-     * Get iva
+     * Get updatedBy
      *
-     * @return float
+     * @return integer 
      */
-    public function getIva()
-    {
-        return $this->iva;
+    public function getUpdatedBy() {
+        return $this->updatedBy;
     }
 
     /**

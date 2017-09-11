@@ -8,6 +8,22 @@
         </div>
     {% endfor%} 
     <div class="panel panel-azul">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="selector-empresa">
+                    <label class="col-sm-4 control-label">Empresas: </label>
+                    <div class="col-sm-8 form-control-static">
+                        <select id="selector_empresa" name="selector_empresa" class="chosen-select" required="required" tabindex="2">
+                            <option disabled selected value="0">Seleccione...</option>
+                            {% for key, e in pagination %}
+                                <option value="{{e.id}}" >{{ e.codigoPedido }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <fieldset>
             <legend class="text-center header">LISTA DE PEDIDOS</legend>
              <div class="count">

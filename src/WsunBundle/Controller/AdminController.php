@@ -69,6 +69,49 @@ class AdminController extends Controller
             $response->headers->set('Content-Type', 'application/json');
             return $response; 
     }
+    public function masVendidoAction(Request $request) {
+        $id=$request->get('id');
+        $empresa=$request->get('empresa_id');
+        $desde=$request->get('desde');
+        $hasta=$request->get('hasta');
+       
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:DetallePedido', 'dp');
+        $qb->select('e.nombreEmp,prod.id,prod.nombreProducto,dpt.nombreDep,sum(dp.cantidad) total');
+        $qb->innerJoin('dp.idProducto', 'emProd');
+        $qb->innerJoin('emProd.producto', 'prod');
+        $qb->innerJoin('dp.idPedido', 'ped');
+        $qb->innerJoin('ped.idUsuario', 'u');
+        $qb->innerJoin('u.departamento', 'dpt');
+        $qb->innerJoin('dpt.idEmpresa', 'e');
+        if($empresa>0) {
+        $qb->andWhere('e.id = :empresa');
+        $qb->setParameter('empresa', $empresa);
+        }
+        if($id>0) {
+            $qb->andWhere('dpt.id = :dep');
+            $qb->setParameter('dep', $id);
+        }
+        $qb->andWhere('ped.fechaCreacion >= :desde');
+        $qb->setParameter('desde', $desde);
+        $qb->andWhere('ped.fechaCreacion <= :hasta');
+        $qb->setParameter('hasta', $hasta);
+        $qb->addGroupBy('e.nombreEmp,prod.id,prod.nombreProducto,dpt.nombreDep');
+        $qb->addOrderBy('prod.nombreProducto', 'Desc');
+
+        $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+            $productos,
+            $request->query->getInt('page', 1),
+            $limite
+        );
+
+        return $this->render('WsunBundle:Admin:mas_vendido.html.twig',
+            array('pagination' => $pagination));
+    }
     public function consultaProductosAction(Request $request) {
         $id=$request->get('id');
         $empresa=$request->get('empresa_id');
@@ -80,7 +123,7 @@ class AdminController extends Controller
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->from('WsunBundle:DetallePedido', 'dp');
-        $qb->select('prod.id,prod.nombreProducto,dpt.nombreDep,prod.iva,sum(dp.cantidad) total');
+        $qb->select('prod.id,prod.nombreProducto,dpt.nombreDep,prod.iva,u.username,sum(dp.cantidad) total');
         $qb->innerJoin('dp.idProducto', 'emProd');
         $qb->innerJoin('emProd.producto', 'prod');
         $qb->innerJoin('dp.idPedido', 'ped');
@@ -97,7 +140,7 @@ class AdminController extends Controller
         $qb->setParameter('desde', $desde);
         $qb->andWhere('ped.fechaCreacion <= :hasta');
         $qb->setParameter('hasta', $hasta);
-        $qb->addGroupBy('prod.id,prod.nombreProducto,dpt.nombreDep, prod.iva');
+        $qb->addGroupBy('prod.id,prod.nombreProducto,dpt.nombreDep, prod.iva,u.username');
         $qb->addOrderBy('prod.nombreProducto', 'ASC');
 
         $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -141,81 +184,80 @@ class AdminController extends Controller
     /*exportar a cvs*/
     public function generateCsvAction(Request $request)
     {
+         $id=$request->get('id');
+            $empresa=$request->get('empresa_id');
+            $desde=$request->get('desde');
+            $hasta=$request->get('hasta');
+            $response = new StreamedResponse();
+            $response->setCallback(function() use ($empresa,$hasta,$desde,$id){
+                $em = $this->getDoctrine()->getManager();
+                $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
+                $iva=$iva->getValor();
+               
+                /* @var $qb \Doctrine\ORM\QueryBuilder */
+                $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+                $qb->from('WsunBundle:DetallePedido', 'dp');
+                $qb->select('prod.id,prod.nombreProducto,dpt.nombreDep,prod.iva,sum(dp.cantidad) total');
+                $qb->innerJoin('dp.idProducto', 'emProd');
+                $qb->innerJoin('emProd.producto', 'prod');
+                $qb->innerJoin('dp.idPedido', 'ped');
+                $qb->innerJoin('ped.idUsuario', 'u');
+                $qb->innerJoin('u.departamento', 'dpt');
+                $qb->innerJoin('dpt.idEmpresa', 'e');
+                $qb->andWhere('e.id = :empresa');
+                $qb->setParameter('empresa', $empresa);
+                if($id>0) {
+                   $qb->andWhere('dpt.id = :dep');
+                    $qb->setParameter('dep', $id);
+                }
+                $qb->andWhere('ped.fechaCreacion >= :desde');
+                $qb->setParameter('desde', $desde);
+                $qb->andWhere('ped.fechaCreacion <= :hasta');
+                $qb->setParameter('hasta', $hasta);
+                $qb->addGroupBy('prod.id,prod.nombreProducto,dpt.nombreDep, prod.iva');
+                $qb->addOrderBy('prod.nombreProducto', 'ASC');
+                $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+                 
+                $handle = fopen('php://output', 'w+');
+                
+                // Add the header of the CSV file
+                fputcsv($handle, array('No.', 'DEPARTAMENTO', 'PRODUCTO', 'IVA%','TOTAL'),';');
+                // Query data from database
+               // $results = $this->connection->query($qb);
 
-        $id=$request->get('id');
-        $empresa=$request->get('empresa_id');
-        $desde=$request->get('desde');
-        $hasta=$request->get('hasta');
+                // Add the data queried from database
+               foreach ($productos as $prod){
+                   if($prod['iva']=='1')
+                   {
+                       $iva=$iva;
+                   }else{
+                       $iva=0;
+                   }
+
+                   fputcsv(
+                       $handle, // The file pointer
+                       array($prod['id'], $prod['nombreDep'], $prod['nombreProducto'],$iva, $prod['total']), // The fields
+                       ';' // The delimiter
+                   );
 
 
-
-        $response = new StreamedResponse();
-        $response->setCallback(function() use ($empresa,$hasta,$desde,$id){
-            $em = $this->getDoctrine()->getManager();
-            $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
-            $iva=$iva->getValor();
-            /* @var $qb \Doctrine\ORM\QueryBuilder */
-            $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
-            $qb->from('WsunBundle:DetallePedido', 'dp');
-            $qb->select('prod.id,prod.nombreProducto,dpt.nombreDep,prod.iva,sum(dp.cantidad) total');
-            $qb->innerJoin('dp.idProducto', 'emProd');
-            $qb->innerJoin('emProd.producto', 'prod');
-            $qb->innerJoin('dp.idPedido', 'ped');
-            $qb->innerJoin('ped.idUsuario', 'u');
-            $qb->innerJoin('u.departamento', 'dpt');
-            $qb->innerJoin('dpt.idEmpresa', 'e');
-            $qb->andWhere('e.id = :empresa');
-            $qb->setParameter('empresa', $empresa);
-            if($id>0) {
-               $qb->andWhere('dpt.id = :dep');
-                $qb->setParameter('dep', $id);
-            }
-            $qb->andWhere('ped.fechaCreacion >= :desde');
-            $qb->setParameter('desde', $desde);
-            $qb->andWhere('ped.fechaCreacion <= :hasta');
-            $qb->setParameter('hasta', $hasta);
-            $qb->addGroupBy('prod.id,prod.nombreProducto,dpt.nombreDep, prod.iva,total');
-            $qb->addOrderBy('prod.nombreProducto', 'ASC');
-
-            $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-            $handle = fopen('php://output', 'w+');
-
-            // Add the header of the CSV file
-            fputcsv($handle, array('No.', 'DEPARTAMENTO', 'PRODUCTO', 'IVA%','TOTAL'),';');
-            // Query data from database
-           // $results = $this->connection->query($qb);
-
-            // Add the data queried from database
-           foreach ($productos as $prod){
-               if($prod['iva']=='1')
-               {
-                   $iva=$iva;
-               }else{
-                   $iva=0;
+                   /*fputcsv(
+                       $handle, // The file pointer
+                       array($prod['id'], $prod['nombreDep'], $prod['nombreProducto'], $iva,$prod['total']), // The fields
+                       ';' // The delimiter
+                   );*/
                }
+               fclose($handle);
+            });
 
-               fputcsv(
-                   $handle, // The file pointer
-                   array($prod['id'], $prod['nombreDep'], $prod['nombreProducto'],$iva, $prod['total']), // The fields
-                   ';' // The delimiter
-               );
+            $response->setStatusCode(400);
+            $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+            $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
 
-
-               /*fputcsv(
-                   $handle, // The file pointer
-                   array($prod['id'], $prod['nombreDep'], $prod['nombreProducto'], $iva,$prod['total']), // The fields
-                   ';' // The delimiter
-               );*/
-           }
-
-
-            fclose($handle);
-        });
-
-        $response->setStatusCode(200);
-        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
-
-        return $response;
+            return $response;
+          
     }
+   public function ListaPedidosAction(Request $request){
+       
+   } 
 }

@@ -111,6 +111,10 @@ class PedidoController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            
+            $pedido->setUpdateBy($this->getUser()->getId());
+            $em->persist($pedido);
+            //$em->flush();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('pedido_edit', array('id' => $pedido->getId()));
