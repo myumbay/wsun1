@@ -1,0 +1,6 @@
+"N°";"DEPARTAMENTO";"USUARIO";"NOMBRE PRODUCTO";"GRABA IVA";"TOTAL ORDENES"
+{% set contador= 1%}
+{% for productos in pagination %}"{{ contador }}";"{{ productos.nombreDep}}";"{{ productos.username }}";"{{ productos.nombreProducto }}";"{% if (productos.iva==1) %}{{ iva }}{% else %}0{% endif %}";"{{ productos.total }}"
+{% set contador= contador+1%}
+{% endfor %}
+   

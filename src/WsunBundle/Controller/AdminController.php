@@ -13,6 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class AdminController extends Controller
 {
@@ -114,6 +119,7 @@ class AdminController extends Controller
             array('pagination' => $pagination));
     }
     public function consultaProductosAction(Request $request) {
+       
         $id=$request->get('id');
         $empresa=$request->get('empresa_id');
         $desde=$request->get('desde');
@@ -152,6 +158,19 @@ class AdminController extends Controller
             $request->query->getInt('page', 1),
             $limite
         );
+
+        if ($request->get('exportar') == 'csv') {
+                $response = new Response();
+                $response->headers->set('Content-Type', "text/csv");
+                $response->headers->set('Content-Disposition', 'attachment; filename="reporte.csv"');
+                $response->headers->set('Pragma', "public");
+                $response->headers->set('Expires', "0");
+                $response->headers->set('Content-Transfer-Encoding', "binary");
+                $response->prepare($request);
+                $response->sendHeaders();
+                return $this->render('WsunBundle:Admin:lista_productos.csv.twig', array('pagination' => $pagination,'iva'=>$iva));
+                die;
+            }
 
         return $this->render('WsunBundle:Admin:lista_productos.html.twig',
             array('pagination' => $pagination,'iva'=>$iva));

@@ -56,8 +56,8 @@
             <th>{{ knp_pagination_sortable(pagination, 'EMPRESA', '') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'DEPARTAMENTO', '') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'ESTADO', '') }}</th>
-           {# <th>{{ knp_pagination_sortable(pagination, 'TOTAL DE PEDIDO', '') }}</th>#}
-            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+           <th>{{ knp_pagination_sortable(pagination, 'FECHA CREACIÓN', '') }}</th>
+           <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
         </tr> 
          {% set contador= 1%}
         {% for pedido in pagination %}
@@ -67,7 +67,7 @@
                 <td>{{ pedido.nombreEmp }}</td>
                 <td>{{ pedido.nombreDep }}</td>
                 <td>{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</td>
-               {# <td>{{ pedido.totalPedido }}</td> #}
+                <td>{{ pedido.fechaCreacion }}</td> 
                 <td>
                     <div class="row">
                         <div class="col-md-3">

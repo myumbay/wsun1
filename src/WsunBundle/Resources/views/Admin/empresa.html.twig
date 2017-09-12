@@ -82,7 +82,8 @@
                 <a class="btn btn-primary" href="{{ path('admin_reportes') }}">Atras</a>
             </div>
         </div>
-        <input type="text" id="id_departamento"/>
+        <input type="hidden" id="id_departamento"/>
+         <input type="hidden" id="exportar"/>
         <div class="form-group">
             <div class="col-xs-12" id="form_productos">
 
@@ -97,7 +98,7 @@
      {{ parent() }}
      <script type="text/javascript">
          $(document).ready(function () {
-             
+             $('#exportar').val('');
              $("#btnMasVendido").click(function(){
                  var id =$('#id_departamento').val();
                  var desde =$('#form_desde').val();
@@ -113,29 +114,31 @@
                  });
              });
              $("#btnExportar").click(function(){
-
+                $('#exportar').val('csv');
+                var op = $('#exportar').val();
                  var id =$('#id_departamento').val();
                  var desde =$('#form_desde').val();
                  var hasta =$('#form_hasta').val();
                  var empresa_id = $('#selector_empresa').val();
                  $.ajax({
                      method: 'POST',
-                     data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },
-                     url: "{{ path('admin_generar_csv') }}",
+                     data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta,exportar:op },
+                     url: "{{ path('wsun_reporte_consulta_pedido') }}",
                      context: document.body
                  }).done(function(data) {
                      $('#form_productos').html(data);
                  });
              });
              $("#btnBuscar").click(function(){
-
-                 var id =0;
+                 $('#exportar').val('');
+                 var op = $('#exportar').val();
+                 var id =$('#id_departamento').val();
                  var desde =$('#form_desde').val();
                  var hasta =$('#form_hasta').val();
                  var empresa_id = $('#selector_empresa').val();
                  $.ajax({
                      method: 'POST',
-                     data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },
+                     data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta,exportar:op },
                      url: "{{ path('wsun_reporte_consulta_pedido') }}",
                      context: document.body
                  }).done(function(data) {
