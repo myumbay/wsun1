@@ -11,13 +11,28 @@
         <div class="row">
             <div class="col-xs-6">
                 <div class="selector-empresa">
-                    <label class="col-sm-4 control-label">Empresas: </label>
+                    <label class="col-sm-4 control-label">Pedido: </label>
                     <div class="col-sm-8 form-control-static">
                         <select id="selector_empresa" name="selector_empresa" class="chosen-select" required="required" tabindex="2">
                             <option disabled selected value="0">Seleccione...</option>
-                            {% for key, e in pagination %}
-                                <option value="{{e.id}}" >{{ e.codigoPedido }}</option>
+                            {% for key, e in empresa %}
+                                <option value="{{e.id}}" >{{ e.nombreEmp }}</option>
                             {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="selector-empresa">
+                    <label class="col-sm-4 control-label">Estado: </label>
+                    <div class="col-sm-8 form-control-static">
+                        <select id="estado" name="estado" class="chosen-select" required="required" tabindex="2">
+                            <option disabled selected value="">Seleccione...</option>
+                            <option  value="0">Pendiente</option>
+                            <option  value="1">Aceptado</option>
+                            {#% for key, e in pagination %}
+                                <option value="{{e.id}}" >{{ e.codigoPedido }}({{ e.nombreEmp }})</option>
+                            {% endfor %#}
                         </select>
                     </div>
                 </div>
@@ -26,18 +41,22 @@
         
         <fieldset>
             <legend class="text-center header">LISTA DE PEDIDOS</legend>
+            <div id="tabla_lista">
              <div class="count">
                 <span class="label label-primary">
                 Total: {{ pagination.getTotalItemCount }}
                 </span>
             </div><br/>
+
         <table class="table table-bordered">
             <tr>
             {# sorting of properties based on query components #}
             <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'EMPRESA', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'DEPARTAMENTO', '') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'ESTADO', '') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'TOTAL DE PEDIDO', '') }}</th>
+           {# <th>{{ knp_pagination_sortable(pagination, 'TOTAL DE PEDIDO', '') }}</th>#}
             <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
         </tr> 
          {% set contador= 1%}
@@ -45,8 +64,10 @@
             <tr {% if loop.index is odd %}class="color"{% endif %}>
                 <td>{{ contador }}</td>
                 <td>{{ pedido.codigoPedido }}</td>
+                <td>{{ pedido.nombreEmp }}</td>
+                <td>{{ pedido.nombreDep }}</td>
                 <td>{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</td>
-                <td>{{ pedido.totalPedido }}</td>
+               {# <td>{{ pedido.totalPedido }}</td> #}
                 <td>
                     <div class="row">
                         <div class="col-md-3">
@@ -56,18 +77,57 @@
                          <a href= "{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
                         <div class="col-md-2">
-                         <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idUsuario.departamento.idEmpresa.id }) }}" class="btn btn-primary btn-sm">products</a>
+                             <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idEmpresa }) }}" class="btn btn-primary btn-sm">products</a>
                         </div>
                     </div>
                 </td>
             </tr>
             {% set contador= contador+1%}
         {% endfor %}
-    </table>    
+    </table>
+        </div>
 </fieldset>
   <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
-</div></div> 
-<script type="text/javascript" id="scriptPedido">
-      console.log('hola');      
+</div></div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+    $("#selector_empresa").click(function(){
+        var id=$(this).val();
+        var estado = $('#estado').val();
+
+        //var desde =$('#form_desde').val();
+        //var hasta =$('#form_hasta').val();
+       // var empresa_id = $('#selector_empresa').val();
+        $.ajax({
+            method: 'POST',
+           // data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },
+            data: {id:id,estado:estado },
+            url: "{{ path('wsun_reporte_consulta_pedido_empresa') }}",
+            context: document.body
+        }).done(function(data) {
+
+            $('#tabla_lista').html(data);
+        });
+    });
+    $("#estado").change(function(){
+        var estado=$(this).val();
+        var id = $('#selector_empresa').val();
+                //var hasta =$('#form_hasta').val();
+                // var empresa_id = $('#selector_empresa').val();
+                $.ajax({
+                    method: 'POST',
+                    // data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },
+                    data: {id:id,estado:estado },
+                    url: "{{ path('wsun_reporte_consulta_pedido_empresa') }}",
+                    context: document.body
+                }).done(function(data) {
+
+                    $('#tabla_lista').html(data);
+                });
+            });
+        });
     </script>  
 {% endblock %}

@@ -27,3 +27,6 @@ pedido_pdf:
     path:     /{id}/exportar
     defaults: { _controller: "WsunBundle:Pedido:exportarPdf" }
     methods:  GET
+wsun_reporte_consulta_pedido_empresa:
+    path:  /productosConsultaEmpresa
+    defaults: { _controller: WsunBundle:Pedido:consultaPorEmpresa }

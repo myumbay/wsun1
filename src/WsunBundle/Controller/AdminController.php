@@ -69,6 +69,7 @@ class AdminController extends Controller
             $response->headers->set('Content-Type', 'application/json');
             return $response; 
     }
+
     public function masVendidoAction(Request $request) {
         $id=$request->get('id');
         $empresa=$request->get('empresa_id');

@@ -18,9 +18,32 @@ class PedidoController extends Controller
      */
     public function indexAction(Request $request)
     {
-        
-        $em = $this->getDoctrine()->getManager();
-        $pedidos = $em->getRepository('WsunBundle:Pedido')->findAll();
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:Pedido', 'ped');
+        $qb->select('e.id,e.nombreEmp');
+        $qb->innerJoin('ped.idUsuario', 'u');
+        $qb->innerJoin('u.departamento', 'dpt');
+        $qb->innerJoin('dpt.idEmpresa', 'e');
+        $qb->addGroupBy('e.id,e.nombreEmp');
+        $qb->addOrderBy('e.nombreEmp', 'ASC');
+
+        $empresa = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+
+        //$em = $this->getDoctrine()->getManager();
+       //$pedidos = $em->getRepository('WsunBundle:Pedido')->findAll();
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:Pedido', 'ped');
+        $qb->select('e.id as idEmpresa,ped.id, ped.codigoPedido,ped.estadoPedido, dpt.nombreDep,e.nombreEmp');
+        $qb->innerJoin('ped.idUsuario', 'u');
+        $qb->innerJoin('u.departamento', 'dpt');
+        $qb->innerJoin('dpt.idEmpresa', 'e');
+       // $qb->andWhere('dpto.idEmpresa = :id');
+        //$qb->setParameter('id', $id);
+        $qb->addOrderBy('ped.codigoPedido', 'DESC');
+        $pedidos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
         $pagination = $paginator->paginate(
@@ -30,9 +53,44 @@ class PedidoController extends Controller
         );
  
         return $this->render('WsunBundle:pedido:index.html.twig', 
-            array('pagination' => $pagination));
+            array('pagination' => $pagination,'empresa'=>$empresa));
 
     }
+    public function consultaPorEmpresaAction(Request $request) {
+        $id=$request->get('id');
+        $estado=$request->get('estado');
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:Pedido', 'ped');
+        $qb->select('e.id as idEmpresa,ped.id, ped.codigoPedido,ped.estadoPedido, dpt.nombreDep,e.nombreEmp');
+        $qb->innerJoin('ped.idUsuario', 'u');
+        $qb->innerJoin('u.departamento', 'dpt');
+        $qb->innerJoin('dpt.idEmpresa', 'e');
+        if ($estado == '1') {
+                $qb->andWhere('ped.estadoPedido = :estado');
+                $qb->setParameter('estado', '1');
+        } elseif ($estado =='0') {
+                $qb->andWhere('ped.estadoPedido IS NULL');
+                // $qb->setParameter('estado', 0);}
+        }
+        if($id>0){
+            $qb->andWhere('e.id = :id');
+            $qb->setParameter('id', $id);
+        }
+        $qb->addOrderBy('ped.codigoPedido', 'DESC');
+        $pedidos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+            $pedidos,
+            $request->query->getInt('page', 1),
+            $limite
+        );
+
+        return $this->render('WsunBundle:pedido:index_filtro.html.twig',
+            array('pagination' => $pagination));
+
+        }
 
     /**
      * Creates a new pedido entity.

@@ -1,0 +1,58 @@
+
+<div class="panel panel-azul">
+    {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor%} 
+
+        <fieldset>
+
+             <div class="count">
+                <span class="label label-primary">
+                Total: {{ pagination.getTotalItemCount }}
+                </span>
+            </div><br/>
+        <div id="tabla_lista">
+        <table class="table table-bordered">
+            <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'EMPRESA', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'DEPARTAMENTO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'ESTADO', '') }}</th>
+           {# <th>{{ knp_pagination_sortable(pagination, 'TOTAL DE PEDIDO', '') }}</th>#}
+            <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
+        </tr> 
+         {% set contador= 1%}
+        {% for pedido in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ contador }}</td>
+                <td>{{ pedido.codigoPedido }}</td>
+                <td>{{ pedido.nombreEmp }}</td>
+                <td>{{ pedido.nombreDep }}</td>
+                <td>{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</td>
+               {# <td>{{ pedido.totalPedido }}</td> #}
+                <td>
+                    <div class="row">
+                        <div class="col-md-3">
+                         <a href= "{{ path('pedido_show', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">show</a>
+                        </div>
+                         <div class="col-md-2">
+                         <a href= "{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
+                        </div>
+                        <div class="col-md-2">
+                             <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idEmpresa }) }}" class="btn btn-primary btn-sm">products</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% set contador= contador+1%}
+        {% endfor %}
+    </table>
+        </div>
+</fieldset>
+  {#<a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>#}
+</div></div>
+
