@@ -1,16 +1,56 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-<div class="box">
-{% for label, flashes in app.session.flashbag.all %}
-    {% for flash in flashes %}
-        <div class="alert alert-{{ label }}">
-            {{ flash }}
+<div class="panel panel-azul">
+ {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-danger">
+            {{message}}
         </div>
-    {% endfor %}
-{% endfor %}
-
-
+    {% endfor%}
+<div class="row">
+    {#<div class="col-sm-2" >
+        <span class="text-success">Contacto:</span>
+    </div>
+    <div class="col-sm-2" >
+        Ing. Santiago Jimenez <br>
+        Presidente
+    </div>
+    <div class="col-sm-2 " >
+        <span class="text-success">Telefono:</span>
+    </div>
+     <div class="col-sm-2 " >
+        0983507302
+    </div>#}
+    </div>
+<br>
+{{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-sm-8" >
+                        {{ form_row(form.email, {'style': 'horizontal'}) }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-8" >
+                    {{ form_row(form.asunto, {'style': 'horizontal'} ) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8" >
+                    {{ form_row(form.detalle, {'style': 'horizontal'}) }}
+                        </div>
+                    </div>
+                       
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <button id='btnBuscar' class="btn btn-primary">Enviar</button>
+                        </div>
+                        {#<div class="col-sm-4">
+                            <a class="btn btn-danger" href="{{ path('sercop_sercop_bundle_admin_reportes_entidades') }}" >Reiniciar búsqueda</a>
+                        </div>#}
+                        
+                    </div>
+                    {{ form_end(form) }}
 </div>
  
 

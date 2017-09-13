@@ -5,17 +5,63 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\Session\Session;
 class DefaultController extends Controller
 {
+    private $session;
+    public function __construct() {
+        $this->session=new Session();
+    }
     public function indexAction()
     {
         return $this->render('WsunBundle:Default:index.html.twig');
     }
      public function contactosAction(Request $request)
     {
-        
-         
-        return $this->render('WsunBundle:Default:contactos.html.twig');
+        $form = $this->createFormBuilder(array(), array('attr' => array ( 'id' => 'frmFiltros'), 'method' => 'post'))
+                //->add('provincia', 'choice', array('choices' => $provincias, 'empty_value' => ' '))
+                ->add('email', EmailType::class, array('label' => 'Ingrese el correo '))
+                ->add('asunto',TextType::class, array('label' => 'Asunto'))
+                ->add('detalle',TextareaType::class, array('label' => 'Mensaje'))
+                ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $filtros = $form->getData();
+                 $email=$filtros['email'];
+                 $asunto=$filtros['asunto'];
+                 $detalle=$filtros['detalle'];
+                 
+                 $message = \Swift_Message::newInstance()
+                ->setSubject('Hello Email')
+                ->setFrom('sumecor75@gmail.com')
+                ->setTo($email)
+                ->setBody($detalle);
+            /*$this->renderView(
+                'HelloBundle:Hello:email.txt.twig',
+                array('name' => $name)
+            )
+        )*/
+                 
+            $enviar=$this->get('mailer')->send($message);
+             if($enviar=1 )
+                {      
+                $mensaje = 'El mensaje se ha enviado correctamente';
+                $this->session->getFlashBag()->add("status",$mensaje);
+                return $this->redirectToRoute('wsun_contactos');
+                }else {
+                 $mensaje = 'El mensaje no se ha enviado correctamente, existen datos incorrectos!!';
+                $this->session->getFlashBag()->add("status",$mensaje);
+                return $this->redirectToRoute('wsun_contactos');
+            }
+   
+             
+            }
+   
+        return $this->render('WsunBundle:Default:contactos.html.twig',array('form' => $form->createView()));
     }
     public function entradasAction(Request $request) {
         $em = $this->getDoctrine()->getEntityManager();
