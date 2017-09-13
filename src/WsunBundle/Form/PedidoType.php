@@ -28,11 +28,11 @@ class PedidoType extends AbstractType
         $builder->add('codigoPedido',TextType::class,array('label'=>'Codigo:'),array('class'=>'form-control'));
         $builder->add('fechaCreacion', DateType::class,array('label'=>'Fecha registro:'));
                 //->add('idDepartamento')
-        if($rol == '"ROLE_ACEPTAR_PEDIDO"')
+        if($rol =='ROLE_ACEPTAR_PEDIDO')
         {
         $builder->add('estadoPedido',  CheckboxType::class ,array('label'=>'Activar:','required' => false));
-        }
         $builder->add('updatedBy',HiddenType::class);
+        }
         $builder->add('totalPedido');   
     }
     

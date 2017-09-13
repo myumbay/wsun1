@@ -2,13 +2,20 @@
 
 {% block bloque1 %}
     
-<div class="box">
-     <div class="panel panel-azul">
 
- {% for detalle in det %}
-     
- {% endfor %}
-<table class="table table-bordered table-hover table-striped head-fixed table-condensed2">
+     <div class="panel panel-azul">
+<div class="row">
+    <div class="col-md-4">
+        <span class="input-group-btn">
+    <button id="btnGuardarEmpresa" class="btn btn-success" type="button" onclick="guardar();
+    return false;">Guardar</button></span>
+    </div>
+    <div class="col-md-4">
+        <a href="{{ path('pedido_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a>
+    </div>
+</div>
+         <br>
+         <table class="table table-bordered table-hover table-striped head-fixed table-condensed2">
     <thead>
     <tr>
         <th width="150" class="center"><input type="checkbox" id="seleccionarTodos"/>  Seleccionar</th>
@@ -63,20 +70,7 @@
             <td>
                 
                 <input type="text" class="form-control input-sm preciounit" id="iva{{ producto.id }}" name="productos[{{ producto.id }}][iva]" value="{{ iv }}" readonly />%
-                {#<SELECT class="selProducto" id="iva{{ producto.id }}" name="productos[{{ producto.id }}][iva]" size=1 onChange="calc(this.value,{{ producto.id }});"> 
-                    <OPTION value="">--</OPTION>
-                    {% if(iv=='')%}
-                    <OPTION value="0">0%</OPTION>
-                    <OPTION value="12">12</OPTION>
-                    {%else%}
-                        {% if (iv==0)%}
-                        <OPTION value="0" selected:selected>0%</OPTION>
-                        {% else%}
-                        <OPTION value="12" selected:selected>12</OPTION>
-                        {% endif %}
-                    {% endif%}
-                    
-                </SELECT>#}
+
             </td>
             <td><input type="text" class="form-control input-sm preciounit" id="valortotal{{ producto.id }}" name="productos[{{ producto.id }}][valortotal]" readonly value="{{vt}}" /></td>
            
@@ -98,11 +92,8 @@
                         
                     </tbody>
      </div>
-     <span class="input-group-btn">
-    <button id="btnGuardarEmpresa" class="btn btn-success" type="button" onclick="guardar();
-    return false;">Guardar</button></span> 
-    <a href="{{ path('pedido_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a>
-</div>
+
+
 {%endblock%}
 {% block javascripts %}
     {{ parent() }}

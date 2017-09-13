@@ -62,7 +62,7 @@ class PedidoController extends Controller
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->from('WsunBundle:Pedido', 'ped');
-        $qb->select('e.id as idEmpresa,ped.id, ped.codigoPedido,fechaCreacion,ped.estadoPedido, dpt.nombreDep,e.nombreEmp');
+        $qb->select('e.id as idEmpresa,ped.id, ped.codigoPedido,ped.fechaCreacion,ped.estadoPedido, dpt.nombreDep,e.nombreEmp');
         $qb->innerJoin('ped.idUsuario', 'u');
         $qb->innerJoin('u.departamento', 'dpt');
         $qb->innerJoin('dpt.idEmpresa', 'e');
@@ -169,11 +169,11 @@ class PedidoController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            
-            $pedido->setUpdateBy($this->getUser()->getId());
+            $pedido->setUpdatedBy($this->getUser()->getId());
+            $em = $this->getDoctrine()->getManager();
             $em->persist($pedido);
-            //$em->flush();
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
+            //$this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('pedido_edit', array('id' => $pedido->getId()));
         }
