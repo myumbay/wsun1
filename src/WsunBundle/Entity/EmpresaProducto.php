@@ -40,6 +40,13 @@ private $capacidad;
  /**
      * @var string
      *
+     * @ORM\Column(name="unidad", type="string", nullable=true, options={"comment" = "unidades de cada producto segun la empresa"})
+     */
+protected $unidad;
+
+ /**
+     * @var string
+     *
      * @ORM\Column(name="estado", type="string", length=1, nullable=true, options={"comment" = "Estado del registro 1 SUb Categoria, 0 Categoria Principal"})
      */
    
@@ -120,7 +127,29 @@ private $created;
 
         return $this;
     }
+    
+     /**
+     * Get unidad
+     *
+     * @return integer 
+     */
+    public function getUnidad()
+    {
+        return $this->unidad;
+    }
+    
+    /**
+     * Set unidad
+     *
+     * @param string $unidad
+     * @return EmpresaProducto
+     */
+    public function setUnidad($unidad)
+    {
+        $this->unidad = $unidad;
 
+        return $this;
+    }
     /**
      * Get estado
      *

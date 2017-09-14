@@ -67,7 +67,7 @@
                 <td>{{ pedido.nombreEmp }}</td>
                 <td>{{ pedido.nombreDep }}</td>
                 <td>{% if pedido.estadoPedido %}Aprobado{% else %}Pendiente{% endif %}</td>
-                <td>{{ pedido.fechaCreacion }}</td> 
+                <td>{{ pedido.fechaCreacion|date('Y-m-d')  }}</td> 
                 <td>
                     <div class="row">
                         <div class="col-md-3">

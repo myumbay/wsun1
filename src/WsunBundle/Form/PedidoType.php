@@ -33,7 +33,7 @@ class PedidoType extends AbstractType
         $builder->add('estadoPedido',  CheckboxType::class ,array('label'=>'Activar:','required' => false));
         $builder->add('updatedBy',HiddenType::class);
         }
-        $builder->add('totalPedido');   
+        $builder->add('ordenSap');   
     }
     
     /**

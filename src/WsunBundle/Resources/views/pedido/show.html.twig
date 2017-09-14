@@ -7,33 +7,39 @@
         <legend class="text-center header"><div class="encabezado" style="height: 100px;width: 70%;"></div> <br> Orden de pedidos de Sumnistros</legend>
         <div class="container-fluid">
         <div class="row text-left">
-          <div class="col-md-1"> </div>  
-          <label class="col-md-2 control-label">Razón Social:</label>
+          <label class="col-md-2 control-label">Nombre Empresa:</label>
           <div class="col-md-3">{{pedido.IdUsuario.Departamento.IdEmpresa.NombreEmp}}</div>
-          <label class="col-md-3 control-label">N°:</label>
-          <div class="col-md-3">{{ pedido.codigoPedido  }}</div>
+          <label class="col-md-2 control-label">Fecha:</label>
+          <div class="col-md-3">{{ pedido.fechaCreacion.date |date('Y-m-d')  }}</div>
+          <div class="col-md-2"></div>
+        </div> 
+          
+        <div class="row text-left">
+          <label class="col-md-2 control-label">Ruc:</label>
+          <div class="col-md-3">{{ pedido.IdUsuario.Departamento.IdEmpresa.ruc  }}</div>
+          <label class="col-md-2 control-label">Area:</label>
+          <div class="col-md-3">{{ pedido.IdUsuario.Departamento.nombreDep  }}</div>
+          <label class="col-md-1 control-label">Estado:</label>
+          <div class="col-md-1">{% if pedido.estadoPedido %}Aprobado{% else %}Iniciado{% endif %}</div>
+          
+          <div class="col-md-1"></div>
         </div> 
         <div class="row text-left">
-          <div class="col-md-1"> </div>  
+          
           <label class="col-md-2 control-label">Dir. Cliente:</label>
           <div class="col-md-3">{{ pedido.IdUsuario.Departamento.IdEmpresa.DireccionEmp  }}</div>
-          <label class="col-md-3 control-label">Fecha:</label>
-          <div class="col-md-3">{{ pedido.fechaCreacion.date |date('Y-m-d')  }}</div>
-        </div> 
-        <div class="row text-left">
-          <div class="col-md-1"> </div>  
           <label class="col-md-2 control-label">Responsable</label>
           <div class="col-md-3">{{ pedido.IdUsuario.Departamento.Responsable  }} </div>
-          <label class="col-md-3 control-label">Area:</label>
-          <div class="col-md-3">{{ pedido.IdUsuario.Departamento.nombreDep  }}</div>
+          <div class="col-md-1"></div>
+           <div class="col-md-1"></div>
         </div> 
         
         <div class="row text-left">
-          <div class="col-md-1"> </div>  
+         <label class="col-md-2 control-label">Tel&eacute;fono:</label>
+          <div class="col-md-3">{{ pedido.IdUsuario.Departamento.IdEmpresa.telefonoEmp  }}</div>
           <label class="col-md-2 control-label">Orden Compra Sap</label>
-          <div class="col-md-3">{{ pedido.ordenCompra }} </div>
-          <label class="col-md-3 control-label">Estado:</label>
-          <div class="col-md-3">{% if pedido.estadoPedido %}Aprobado{% else %}Iniciado{% endif %}</div>
+          <div class="col-md-3">{{ pedido.ordenSap }} </div>
+          <div class="col-md-1"><span class="h2 text-info">Proforma</span> <br> N°:{{ pedido.codigoPedido}} </div>
         </div> 
         <legend class="text-center header"></legend>
         <div class="count">

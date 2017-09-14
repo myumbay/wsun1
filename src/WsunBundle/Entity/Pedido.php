@@ -53,9 +53,23 @@ class Pedido
     /**
      * @var float
      *
-     * @ORM\Column(name="total_pedido", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="orden_sap", type="text",  nullable=true)
      */
-    private $totalPedido;
+    private $ordenSap;
+    
+      /**
+     * @var float
+     *
+     * @ORM\Column(name="tipo_credito", type="text",  nullable=true)
+     */
+    private $tipoCredito;
+    
+     /**
+     * @var float
+     *
+     * @ORM\Column(name="observaciones", type="text",  nullable=true)
+     */
+    private $observaciones;
     
      /**
     * @ORM\ManyToOne(targetEntity="Usuarios", inversedBy="Pedido")
@@ -106,7 +120,56 @@ class Pedido
         return $this->codigoPedido;
     }
 
+    
+    /**
+     * Set tipoCredito
+     *
+     * @param string $tipoCredito
+     *
+     * @return Pedido
+     */
+    public function setTipoCredito($tipoCredito)
+    {
+        $this->tipoCredito = $tipoCredito;
 
+        return $this;
+    }
+
+    /**
+     * Get tipoCredito
+     *
+     * @return string
+     */
+    public function getTipoCredito()
+    {
+        return $this->tipoCredito;
+    }
+    
+    
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Pedido
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+    
     /**
      * Set estadoPedido
      *
@@ -153,7 +216,7 @@ class Pedido
     }
 
     /**
-     * Set totalPedido
+     * Set fechaCreacion
      *
      * @param float $fechaCreacion
      *
@@ -201,26 +264,26 @@ class Pedido
     }
     
     /**
-     * Set totalPedido
+     * Set ordenSap
      *
-     * @param float $totalPedido
+     * @param string $ordenSap
      *
      * @return Pedido
      */
-    public function setTotalPedido($totalPedido)
+    public function setOrdenSap($ordenSap)
     {
-        $this->totalPedido = $totalPedido;
+        $this->ordenSap = $ordenSap;
 
         return $this;
     }
     /**
-     * Get totalPedido
+     * Get ordenSap
      *
-     * @return float
+     * @return string
      */
-    public function getTotalPedido()
+    public function getOrdenSap()
     {
-        return $this->totalPedido;
+        return $this->ordenSap;
     }
     
     /**
