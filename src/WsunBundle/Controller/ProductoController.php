@@ -10,6 +10,7 @@ use WsunBundle\Form\ProductoType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use WsunBundle\Entity\Parametro;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductoController extends Controller
 {
@@ -55,7 +56,7 @@ class ProductoController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-                if(!$em->getRepository('WsunBundle:Producto')->findByNombreProducto(trim($producto->getNombreProducto())))
+               if(!$em->getRepository('WsunBundle:Producto')->findByNombreProducto(trim($producto->getNombreProducto())))
                 {
                    $em = $this->getDoctrine()->getManager();
                    $em->persist($producto);
@@ -84,9 +85,25 @@ class ProductoController extends Controller
             'form' => $form->createView(),
         ));
     }
+  public function subcategoriaAction(Request $request)
+    {
+      $id=$request->request->get('id');
+    
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+            $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+            $qb->from('WsunBundle:Categoria', 'cat');
+            $qb->select('cat.id, cat.nombreCat');
+            $qb->andWhere('cat.padreId = :id');
+            $qb->setParameter('id', $id);
+            $qb->addOrderBy('cat.nombreCat', 'ASC');
+            $subcategoria= $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            $response = new Response(json_encode(array('data' => $subcategoria)));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response; 
+    }    
     public function showAction(Request $request,Producto $producto)
     {
-
+        
         $img= $producto->getId().'.'.$producto->getImagen();  
         $root = $this->get('kernel')->getRootDir();
         $url= '../Documentos/Productos/'.$img;
@@ -127,6 +144,7 @@ public function redimensionar($src, $ancho_forzado){
         $deleteForm = $this->createDeleteForm($producto);
         $editForm = $this->createForm('WsunBundle\Form\ProductoType', $producto);
         $editForm->handleRequest($request);
+        //var_dump($producto->getCategoria()->getPadreId());die;
         $img = $producto->getId().'.'.$producto->getImagen();
         $url= '../Documentos/Productos/'.$img;
         $em = $this->getDoctrine()->getManager();

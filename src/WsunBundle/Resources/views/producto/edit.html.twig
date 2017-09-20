@@ -1,5 +1,4 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
-
 {% block bloque1 %}
      
 <div class="box">
@@ -8,62 +7,131 @@
         <div class="alert alert-success">
             {{message}}
         </div>
-    {% endfor%} 
-    <div class="panel-body">
-    <div class="panel2">
-            <div class="panel-heading">
-                <h3> <strong><span>Nuevo</span> Producto</strong></h3>
-            </div> 
-      
-         {{ form_start(edit_form, { 'enctype':"multipart/form-data"}) }}
-        <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.nombreProducto)}} </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.nombreProducto) }}</div>
-    </div>    
-    <div id="img-location">
-            <img src="{{asset(url) }}" alt="Producto" class="img-thumbnail">
-    </div>    
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.imagen)}}  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(edit_form.imagen)}}</div>
-    </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.codigoProducto)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.codigoProducto)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.observacion)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.observacion)}}</div>
-      </div>
-       <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.precioProducto)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.precioProducto)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.estado)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.estado)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.iva)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.iva)}} {{iva}}%</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Categoria   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.categoria)}}</div>
-      </div>
-      <div class="row">
-          <input type="submit" value="Edit" />
-      </div>
-        
+    {% endfor%}
+        <div class="panel panel-azul">
+            <fieldest>
+                <legend class="text-center header"><strong><span>Nuevo</span> Producto</strong></legend>
+                {{ form_start(edit_form, { 'enctype':"multipart/form-data"}) }}
+                <div class="container-fluid">
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.nombreProducto)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.nombreProducto) }}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"> <div id="img-location">
+                            <img src="{{asset(url) }}" alt="Producto" class="img-thumbnail">
+                    </div> </div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.imagen)}}</label>
+                        <div class="col-md-4 right" >{{form_widget(edit_form.imagen)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.codigoProducto)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.codigoProducto)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.iva)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.iva)}} {{iva}}%</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.precioProducto)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.precioProducto)}} </div>
+                        <div class="col-md-1 "></div>
+                    </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.estado)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.estado)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.categoriaPadre)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.categoriaPadre)}}</div>
+                                           
+                        <div class="col-md-1 "></div>
+                    </div>
+                <div class="row   text-justify">    
+                    <div class="col-md-1"></div>
+                        <div class="selector-subcategoria">
+                            <label class="col-md-3 control-label">Subcategoria: </label>
+                            <div class="col-md-4 form-control-static">
+                                {{ form_widget(edit_form.categoria,{'label_attr': {'class': 'chosen-select','tabindex':2} })}}
+                               {# <select id="selector_subcategoria" class="chosen-select" tabindex="2">
+                                    <option disabled selected value="0">Seleccione...</option>
+                                </select>#}
+                               
+                            </div>
+                        </div>
+                    </div>   
+                        
+                </div>
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.observacion)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.observacion)}}</div>
+                        <div class="col-md-1 "></div>
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                        <div class="col-md-2"> <a href="{{ path('admin_producto_index') }}" class="btn btn-primary btn-sm">Atras</a></div>
+                    </div></div>
+
+                </fieldest>
         {{ form_end(edit_form) }}
-        <div class="row">
-        {{ form_start(delete_form) }}
-            <input type="submit"  class="btn btn-info" value="Borrar">
-        {{ form_end(delete_form) }}
-      </div>
-    </div> 
-    <a href="{{ path('admin_producto_index') }}">Back to the list</a>
-    </div> </div> </div>  
-        
+
+        </div>  </div>
         
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+        /*$("#wsunbundle_producto_edit_categoria").click(function() {
+            alert('hola');
+          });*/
+        $("#wsunbundle_producto_edit_categoriaPadre").click(function(){
+                 var id=$(this).val();
+
+                 $.ajax({
+                     async:false,
+                     complete: function(xhr, data)
+                     {
+                         if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != - 1){
+                             location.reload();
+                         }
+                     },
+                     method: 'POST',
+                     data: {'id':id},
+                     url: "{{ path('wsun_subcategoria')}}",
+                     context: document.body
+                 }).done(function(dataJson) {
+                     $(".selector-subcategoria select ").html('');
+                     $(".selector-subcategoria select").append('<option disabled selected value="0">Seleccione...</option>');
+                     $.each(dataJson.data, function(index,value){
+                         $(".selector-subcategoria select").append('<option style=" "    value="'+value.id+'">'+value.nombreCat+'</option>');
+                     });
+                     $("#selector_subcategoria").trigger("chosen:updated");
+
+                 });
+             });
+              $("#selector_subcategoria").click(function(){
+              var id=$(this).val();
+              $("#wsunbundle_producto_edit_categoria").val(id);
+              });
+             
+         });
+    </script>
+{%endblock%}    

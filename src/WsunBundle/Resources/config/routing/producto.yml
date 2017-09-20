@@ -22,3 +22,6 @@ admin_producto_delete:
     path:     /{id}/delete
     defaults: { _controller: "WsunBundle:Producto:delete" }
     methods:  DELETE
+wsun_subcategoria:
+    path:  /subcategoria
+    defaults: { _controller: WsunBundle:Producto:subcategoria }

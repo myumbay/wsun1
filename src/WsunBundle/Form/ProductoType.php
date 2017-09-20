@@ -17,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
 class ProductoType extends AbstractType
 {
     /**
@@ -50,15 +52,34 @@ class ProductoType extends AbstractType
                 ->add('observacion', TextareaType::class,array('label'=>'Descripcion:'))
                 ->add('estado',  CheckboxType::class,array('label'=>'Estado:','required' => false))
                 ->add('iva',  CheckboxType::class,array('label'=>'Graba iva:','required' => false))
+                ->add('categoriaPadre', EntityType::class, array(
+                    'class' => 'WsunBundle:Categoria',
+                     'empty_data' => 0,'attr' => array(
+                    'class' => 'select..'),
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('c')
+                            ->andWhere('c.padreId is NULL')
+                            //->andWhere('c.padreId =c.id')
+                            ->orderBy('c.nombreCat', 'ASC');
+                    },
+                    'empty_data' => 'Seleccionar Categoria..',
+                    'mapped' => false
+                            
 
-        ->add('categoria',EntityType::class, array(
-        'class' => 'WsunBundle:Categoria',
-        'attr'  =>  array('class' => 'form-group',
-        'style' => 'margin:5px 0;'),
-        'choice_value'=>'nombreCat',
-
-        'group_by' => 'padreId',
-    ));
+    ))
+       //                
+//        ->add('categoria',EntityType::class, array(
+//        'class' => 'WsunBundle:Categoria',
+//        'attr'  =>  array('class' => 'form-group',
+//        'style' => 'margin:5px 0;'),
+//        'choice_value'=>'nombreCat',
+//))
+//                             
+    ->add('categoria', EntityType::class, array('class' => 'WsunBundle:Categoria','attr' => array(
+                    'class' => 'selectpicker'
+            )))  ;
+                        
+                            ;
                /* ->add('categoria',EntityType::class, array(
                     'placeholder'       => '',
                     'class'             => 'WsunBundle:Categoria',
@@ -73,14 +94,6 @@ class ProductoType extends AbstractType
 
                 ));*/
 
-
-
-
-
-
-              //->add('child', EntityType::class, array('class' => 'WsunBundle:Categoria','label' => 'Categoria','multiple' => false,));
-        //->add('categoria', EntityType::class, array('class' => 'WsunBundle:Categoria','label' => 'categoria','multiple' => false,));
-//                $builder->addEventListener(FormEvents::PRE_SUBMIT, $validador);
     }
     
     /**

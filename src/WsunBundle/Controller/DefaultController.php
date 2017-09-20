@@ -31,15 +31,21 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             $filtros = $form->getData();
-                 $email=$filtros['email'];
-                 $asunto=$filtros['asunto'];
-                 $detalle=$filtros['detalle'];
+            $email=$filtros['email'];
+            $asunto=$filtros['asunto'];
+            $detalle=$filtros['detalle'];
+            /* @var $correo \Sercop\Bundle\ComunBundle\Services\Correo */
+            $correoE = $this->get('sistema_de_correos');
+            $correoE->enviarPrueba($correo);
+            return $this->render('SercopComunBundle:Correo:prueba.html.twig');
+            
                  
-                 $message = \Swift_Message::newInstance()
+                 
+                /* $message = \Swift_Message::newInstance()
                 ->setSubject('Hello Email')
                 ->setFrom('sumecor75@gmail.com')
                 ->setTo($email)
-                ->setBody($detalle);
+                ->setBody($detalle);*/
             /*$this->renderView(
                 'HelloBundle:Hello:email.txt.twig',
                 array('name' => $name)
