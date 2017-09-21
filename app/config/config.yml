@@ -35,8 +35,8 @@ framework:
     
         # handler_id set to null will use default session handler from php.ini nuevo para salir de sesion
         handler_id:  ~
-        cookie_lifetime: 3600
-        gc_maxlifetime: 3600
+        cookie_lifetime: 4500
+        gc_maxlifetime: 4500
         
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
@@ -76,13 +76,11 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    spool: { type: memory }
-
+    #transport: "%mailer_transport%"
+    #host:      "%mailer_host%"
+    #username:  "%mailer_user%"
+   # password:  "%mailer_password%"
+   # spool:     { type: memory }
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
@@ -169,9 +167,9 @@ knp_paginator:
 knp_snappy:
     pdf:
         enabled:    true
-        #binary:     %kernel.root_dir%/bin/wkhtmltox/bin/wkhtmltopdf.exe
-        #binary:     '../wkhtmltopdf' #linux
-        binary:      "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\""
+        
+        #binary:      "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"" windows
+        binary:     '../wkhtmltopdf'
         options:    
             print-media-type: true
     image:

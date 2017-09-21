@@ -41,6 +41,21 @@
           <div class="col-md-3">{{ pedido.ordenSap }} </div>
           <div class="col-md-1"><span class="h2 text-info">Proforma</span> <br> N°:{{ pedido.codigoPedido}} </div>
         </div> 
+        <div class="row">
+            <div class="col-md-3">
+                <a href="{{ path('detallepedido_show', { 'id': pedido.id }) }}" class="icon-backward btn btn-primary btn-sm">Back</a>
+            </div>
+            <div class="col-md-3">
+               <a href="{{ path('pedido_pdf',{ 'id': pedido.id }) }}" class=" btn btn-primary btn-sm">Exportar pdf</a> 
+            </div>
+             <div class="col-md-3">
+               <a href="#" onclick="alert('hola')" class=" btn btn-primary btn-sm">Aprobar Orden</a> 
+            </div>
+             <div class="col-md-3">
+               <a href="{{path('addpedido_index',{'idPedido':pedido.id,'id' :pedido.IdUsuario.Departamento.IdEmpresa.id |default('empresa')})}}" class=" btn btn-primary btn-sm">Editar</a> 
+            </div>
+        </div>
+        
         <legend class="text-center header"></legend>
         <div class="count">
                 <span class="label label-primary">
@@ -81,10 +96,7 @@
             </tr>
             {% set contador= contador+1%}
         {% endfor %}
-        <tr><td>
-            <div class="col-md-4"><a href="{{ path('pedido_index') }}" class="icon-backward btn btn-primary btn-sm">Back</a></div>
-            <div class="col-md-4"><a href="{{ path('pedido_pdf',{ 'id': pedido.id }) }}" class=" btn btn-primary btn-sm">Exportar pdf</a></div>
-            </td></tr> </table> 
+       </table> 
      {#     <div class="col-md-4"><a href="{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
      <div class="col-md-4">
         {{ form_start(delete_form) }}
