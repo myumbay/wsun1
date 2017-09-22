@@ -96,7 +96,24 @@ class DetallePedidoController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
+    
+    public function aceptarOrdenAction(Request $request)
+    {
+        $id=$request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $pedidos = $em->getRepository('WsunBundle:Pedido')->find($id);
+        $pedidos->setEstadoPedido(1);
+        $em->persist($pedidos);
+        $em->flush();
+        $response = new Response(json_encode(array(
+                            'mensaje' => 'Ud ha aceptado la orden',
+                                )
+                        )
+                );
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;            
+        //var_dump($pedidos);die;
+    }
     /**
      * Displays a form to edit an existing detallePedido entity.
      *

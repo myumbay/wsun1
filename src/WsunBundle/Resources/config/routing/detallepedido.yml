@@ -7,7 +7,10 @@ detallepedido_show:
     path:     /{id}/show
     defaults: { _controller: "WsunBundle:DetallePedido:show" }
     methods:  GET
- 
+wsun_aceptar_orden:
+    path:     /aceptarOrden
+    defaults: { _controller: "WsunBundle:DetallePedido:aceptarOrden" }
+    #methods:  GET
 detallepedido_list:
     path:     /list
     defaults: { _controller: "WsunBundle:DetallePedido:list" }

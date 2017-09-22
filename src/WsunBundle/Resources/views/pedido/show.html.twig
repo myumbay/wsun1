@@ -49,12 +49,17 @@
                <a href="{{ path('pedido_pdf',{ 'id': pedido.id }) }}" class=" btn btn-primary btn-sm">Exportar pdf</a> 
             </div>
              <div class="col-md-3">
-               <a href="#" onclick="alert('hola')" class=" btn btn-primary btn-sm">Aprobar Orden</a> 
+                {% if( pedido.estadoPedido=='1')%}
+                 <input type="button" id="btnAprobar" disabled="true" class="btn btn-primary btn-sm" value="Aprobar Orden" >
+                 {%else%}
+                <input type="button" id="btnAprobar" class="btn btn-primary btn-sm" value="Aprobar Orden" onClick="AprobarOrden({{pedido.id}})">
+                {%endif%}
             </div>
              <div class="col-md-3">
                <a href="{{path('addpedido_index',{'idPedido':pedido.id,'id' :pedido.IdUsuario.Departamento.IdEmpresa.id |default('empresa')})}}" class=" btn btn-primary btn-sm">Editar</a> 
             </div>
         </div>
+            <div id="mensaje"></div>
         
         <legend class="text-center header"></legend>
         <div class="count">
@@ -109,5 +114,38 @@
         </fieldest>
     
       </div> </div>
-   
+{%endblock%}
+{% block javascripts %}
+    {{ parent() }} 
+<script type="text/javascript">
+    $(document).ready(function(){
+   // alert(Ingreso);//código a ejecutar cuando el DOM está listo para recibir instrucciones.
+    });
+ 
+    function AprobarOrden(id) {
+        var agree=confirm("¿Esta seguro de Aprobar la orden? ");
+        if (agree){ 
+          $.ajax({
+                complete: function(xhr,data)
+                {
+                    if(xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">')  != -1 ){
+                        location.reload();
+                    }
+                },
+                data: {'id': id},
+                //type: "POST",
+                url: "{{ path('wsun_aceptar_orden')}}"
+
+            }).success(function(dataJSON) {
+                
+                $('#mensaje').html(dataJSON.mensaje).addClass('text-info');
+                $('#btnAprobar').attr("disabled", true);
+            })  
+        //return true ;
+       }else return false ;
+
+       }
+    
+       
+</script>
 {% endblock %}

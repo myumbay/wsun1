@@ -34,25 +34,15 @@ class DefaultController extends Controller
             $email=$filtros['email'];
             $asunto=$filtros['asunto'];
             $detalle=$filtros['detalle'];
-            /* @var $correo \Sercop\Bundle\ComunBundle\Services\Correo */
-            $correoE = $this->get('sistema_de_correos');
-            $correoE->enviarPrueba($correo);
-            return $this->render('SercopComunBundle:Correo:prueba.html.twig');
             
+            /* @var $correo \WsunBundle\Services\Correo */
+            $correoE = $this->get('sistema_de_correos');
+            $correoE->enviarPrueba($email);
+            return $this->render('WsunBundle:Default:prueba.html.twig');
+            
+          
                  
-                 
-                /* $message = \Swift_Message::newInstance()
-                ->setSubject('Hello Email')
-                ->setFrom('sumecor75@gmail.com')
-                ->setTo($email)
-                ->setBody($detalle);*/
-            /*$this->renderView(
-                'HelloBundle:Hello:email.txt.twig',
-                array('name' => $name)
-            )
-        )*/
-                 
-            $enviar=$this->get('mailer')->send($message);
+           /* $enviar=$this->get('mailer')->send($message);
              if($enviar=1 )
                 {      
                 $mensaje = 'El mensaje se ha enviado correctamente';
@@ -62,7 +52,7 @@ class DefaultController extends Controller
                  $mensaje = 'El mensaje no se ha enviado correctamente, existen datos incorrectos!!';
                 $this->session->getFlashBag()->add("status",$mensaje);
                 return $this->redirectToRoute('wsun_contactos');
-            }
+            }*/
    
              
             }

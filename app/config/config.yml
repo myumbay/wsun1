@@ -75,12 +75,7 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
-swiftmailer:
-    #transport: "%mailer_transport%"
-    #host:      "%mailer_host%"
-    #username:  "%mailer_user%"
-   # password:  "%mailer_password%"
-   # spool:     { type: memory }
+
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
@@ -91,28 +86,7 @@ assetic:
             node_paths: [/usr/lib/node_modules]
             #apply_to: "\.less$"
         cssrewrite: ~
-#    fontawesome_css:
-#      inputs:
-#        - %kernel.root_dir%/../vendor/fontawesome/fontawesome/less/font-awesome.less
-#      filters:
-#        - less
-#        - cssrewrite
-#      output: css/fontawesome.css
-#    fontawesome_IE7_css:
-#      inputs:
-#        - %kernel.root_dir%/../vendor/fontawesome/fontawesome/less/font-awesome-ie7.less
-#      filters:
-#        - less
-#        - cssrewrite
-#      output: css/fontawesome_IE7.css  
 
-#fos_user:
- #   db_driver: orm # other valid values are 'mongodb' and 'couchdb'
-  #  firewall_name: main
-  #  user_class: WsunBundle\Entity\Usuario
-   # from_email:
-   #     address: "carolyumbay@gmail.com"
-    #    sender_name: "Carolina"
 
 # liip_imagine Configuration
 liip_imagine :
