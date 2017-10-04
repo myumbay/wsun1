@@ -74,35 +74,39 @@
             </div>
            
             <div class="col-sm-2">
-                <a id='btnExportar' class="btn btn-info" href="#" >Exportar(CSV)</a>
-                {#<a class="btn btn-info" href="{{ path('admin_generar_csv') }}" >Exportar(CSV)</a>#}
+{#                <a id='btnExportar' class="btn btn-info" href="#" >Exportar(CSV)</a>#}
+               <button id='btnExportar' class="btn btn-warning">Exportar a CSV</button>
+{#                <a class="btn btn-info" href="{{ path('wsun_reporte_consulta_pedido') }}" >Exportar(CSV)</a>#}
             </div>
 
             <div class="col-sm-2">
                 <a class="btn btn-primary" href="{{ path('admin_reportes') }}">Atras</a>
             </div>
         </div>
+            
         <input type="hidden" id="id_departamento"/>
-         <input type="hidden" id="exportar"/>
-        <div class="form-group">
+        
+         {{ form_end(form)}}
+         <div class="form-group">
             <div class="col-xs-12" id="form_productos">
 
             </div>
         </div>
     </div>
 
-    {{ form_end(form)}}
+   
 
 {% endblock %}
  {% block javascripts %}
      {{ parent() }}
      <script type="text/javascript">
          $(document).ready(function () {
-             $('#exportar').val('');
+              $('#form_exportar').val('');
              $("#btnMasVendido").click(function(){
                  var id =$('#id_departamento').val();
                  var desde =$('#form_desde').val();
                  var hasta =$('#form_hasta').val();
+                 
                  var empresa_id = $('#selector_empresa').val();
                  $.ajax({
                      method: 'POST',
@@ -114,8 +118,8 @@
                  });
              });
              $("#btnExportar").click(function(){
-                $('#exportar').val('csv');
-                var op = $('#exportar').val();
+                $('#form_exportar').val('csv');
+                /*var op = $('#exportar').val();
                  var id =$('#id_departamento').val();
                  var desde =$('#form_desde').val();
                  var hasta =$('#form_hasta').val();
@@ -123,11 +127,11 @@
                  $.ajax({
                      method: 'POST',
                      data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta,exportar:op },
-                     url: "{{ path('wsun_reporte_consulta_pedido') }}",
+                     url: "{#{ path('wsun_reporte_consulta_pedido') }#}",
                      context: document.body
                  }).done(function(data) {
                      $('#form_productos').html(data);
-                 });
+                 });*/
              });
              $("#btnBuscar").click(function(){
                  $('#exportar').val('');
@@ -150,7 +154,7 @@
 
              $("#selector_empresa").click(function(){
                  var id=$(this).val();
-
+                 $('#form_idEmpresa').val(id);
                  $.ajax({
                      async:false,
                      complete: function(xhr, data)
@@ -175,10 +179,12 @@
              });
 
              $("#selector_departamento").chosen().change(function(){
-                 var id = $(this).val();
+                 var id = $(this).val(id);
+                 $('#form_exportar').val('');
                  var desde =$('#form_desde').val();
                  var hasta =$('#form_hasta').val();
-                 var empresa_id = $('#selector_empresa').val();
+                 var empresa_id = $('#form_idEmpresa').val();
+                 
                  $.ajax({
                      method: 'POST',
                      data: {id:id,empresa_id:empresa_id,desde:desde,hasta:hasta },

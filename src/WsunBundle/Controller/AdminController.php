@@ -45,11 +45,14 @@ class AdminController extends Controller
         $time = new \DateTime();
         $hoy=$time->format('Y-m-d');
         $form = $this->createFormBuilder(array(), array('attr' => array ( 'id' => 'frmFiltros'), 'method' => 'post'))
+                ->setAction($this->generateUrl('wsun_admin_reportes_productos_empresa'))
                 //->add('nombre', null, array('attr'=>array('class'=>'typeahead empresa form-control input-sm')))
                 //->add('provincia', ChoiceType::class , array('choices' => $provincias))
                 ->add('desde', TextType::class,array('data' => $hoy,'attr' => array('class' => 'form_datetime','readonly' => true)))
                 ->add('hasta', TextType::class,array('data' => $hoy,'attr' => array('class' => 'form_datetime','readonly' => true)))
                 ->add('idEmpresa', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
+                ->add('idDepartamento', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
+                ->add('exportar', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
                 ->getForm();
         $em = $this->getDoctrine()->getManager();
         /* @var $qb Doctrine\ORM\QueryBuilder */
@@ -57,6 +60,63 @@ class AdminController extends Controller
         $qb->from('WsunBundle:Empresa', 'e');
         $qb->select('e.id,e.ruc,e.nombreEmp');
         $empresa = $qb->getQuery()->getResult();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+        $filtros = $form->getData();
+        $id=$filtros['idDepartamento'];//$request->get('id');
+        $empresa=$filtros['idEmpresa'];//$request->get('empresa_id');
+        $desde=$filtros['desde'];
+        $hasta=$filtros['hasta'];
+        $em = $this->getDoctrine()->getManager();
+        $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
+        $iva=$iva->getValor();
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:DetallePedido', 'dp');
+        $qb->select('prod.id,prod.nombreProducto,dpt.nombreDep,prod.iva,u.username,sum(dp.cantidad) total');
+        $qb->innerJoin('dp.idProducto', 'emProd');
+        $qb->innerJoin('emProd.producto', 'prod');
+        $qb->innerJoin('dp.idPedido', 'ped');
+        $qb->innerJoin('ped.idUsuario', 'u');
+        $qb->innerJoin('u.departamento', 'dpt');
+        $qb->innerJoin('dpt.idEmpresa', 'e');
+        $qb->andWhere('e.id = :empresa');
+        $qb->setParameter('empresa', $empresa);
+        if($id>0) {
+            $qb->andWhere('dpt.id = :dep');
+            $qb->setParameter('dep', $id);
+        }
+        $qb->andWhere('ped.fechaCreacion >= :desde');
+        $qb->setParameter('desde', $desde);
+        $qb->andWhere('ped.fechaCreacion <= :hasta');
+        $qb->setParameter('hasta', $hasta);
+        $qb->addGroupBy('prod.id,prod.nombreProducto,dpt.nombreDep, prod.iva,u.username');
+        $qb->addOrderBy('prod.nombreProducto', 'ASC');
+
+        $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+            $productos,
+            $request->query->getInt('page', 1),
+            $limite
+        );
+        if ($filtros['exportar'] == 'csv') {
+                $response = new Response();
+                $response->headers->set('Content-Type', "text/csv");
+                $response->headers->set('Content-Disposition', 'attachment; filename="reporte.csv"');
+                $response->headers->set('Pragma', "public");
+                $response->headers->set('Expires', "0");
+                $response->headers->set('Content-Transfer-Encoding', "binary");
+                $response->prepare($request);
+                $response->sendHeaders();
+                return $this->render('WsunBundle:Admin:lista_productos.csv.twig', array('pagination' => $pagination,'iva'=>$iva));
+                die;
+            }else if ($filtros['exportar'] == ''){
+                return $this->render('WsunBundle:Admin:lista_productos.html.twig',
+                array('pagination' => $pagination,'iva'=>$iva));
+            }
+        }
         return $this->render('WsunBundle:Admin:empresa.html.twig', array('empresa' => $empresa, 'form' => $form->createView()));
       
     }

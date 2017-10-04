@@ -77,7 +77,8 @@
                          <a href= "{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
                         <div class="col-md-2">
-                             <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idEmpresa }) }}" class="btn btn-primary btn-sm">products</a>
+                            <div class="col-md-3"><a href ="{{path('addpedido_index',{'idPedido':pedido.id,'id' :pedido.idEmpresa |default('empresa')})}}" class="btn btn-primary btn-sm">Productos</a></div>
+{#                             <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idEmpresa }) }}" class="btn btn-primary btn-sm">products</a>#}
                         </div>
                     </div>
                 </td>

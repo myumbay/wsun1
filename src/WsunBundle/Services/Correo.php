@@ -1,5 +1,6 @@
 <?php
 namespace WsunBundle\Services;
+
 class Correo {
 
     private $remitente = null;
@@ -29,7 +30,27 @@ class Correo {
         $this->remitente_nombre = isset($this->remitente[1]) ? $this->remitente[0] : '';
         //$this->remitente = $this->remitente[1];
     }
-
+   public function enviarOrden($correo,$codigo) {
+  
+        $mail = \Swift_Message::newInstance();
+        $mail->setTo($correo);
+        $mail->setSubject('GENERACION DE ORDEN');
+        $mail->setFrom($this->remitente, $this->remitente_nombre);
+        $mail->setBody("sdsd");
+     
+        $this->mailer->send($mail);
+    }	
+ public function aceptarOrden($correo,$codigo) {
+        
+        $mail = \Swift_Message::newInstance();
+        //$mail->addBcc($correo);
+        $mail->setTo($this->remitente);
+        $mail->setSubject('ORDEN APROBADA');
+        $mail->setFrom($this->remitente, $this->remitente_nombre);
+        $mail->setBody("De: ".$correo." Mensaje: Se ha aprobado la orden N° ".$codigo);
+        $this->mailer->send($mail);
+    }
+	
     public function enviarPrueba($correo) {
         $mail = \Swift_Message::newInstance();
         $mail->setTo($correo);
@@ -38,7 +59,16 @@ class Correo {
         $mail->setBody('PRUEBA');
         $this->mailer->send($mail);
     }
-
+   public function enviarContacto($correo,$asunto,$detalle) {
+        
+        $mail = \Swift_Message::newInstance();
+        //$mail->addBcc($correo);
+        $mail->setTo($this->remitente);
+        $mail->setSubject($asunto);
+        $mail->setFrom($this->remitente, $this->remitente_nombre);
+        $mail->setBody("De: ".$correo." Mensaje: ".$detalle);
+        $this->mailer->send($mail);
+    }
     public function extensionConvenio($correosProveedores, $codigoConvenio, $nombreConvenio, $fechaNueva) {
         $mail = \Swift_Message::newInstance();
         foreach ($correosProveedores as $correosProveedor) {
@@ -56,14 +86,14 @@ class Correo {
 
     public function nuevaOrden($rucProveedor, $nombreProveedor, $correoProveedor, $codOrden) {
         $mail = \Swift_Message::newInstance();
-        foreach ($correoProveedor as $correo) {
+       /* foreach ($correoProveedor as $correo) {
             $mail->addTo($correo);
-        } 
-        //$mail->setTo($correoProveedor);
+        } */
+        $mail->setTo($correoProveedor);
         $mail->setSubject("Se ha generado una nueva orden a su nombre ({$codOrden})");
         $mail->setFrom($this->remitente, $this->remitente_nombre);
         $mail->setBody($this->twig->render(
-                        'SercopComunBundle:Correo:nueva_orden.html.twig', array('rucProveedor' => $rucProveedor, 'nombreProveedor' => $nombreProveedor, 'codOrden' => $codOrden)
+                        'WsunBundle:correo:nueva_orden.html.twig', array('rucProveedor' => $rucProveedor, 'nombreProveedor' => $nombreProveedor, 'codOrden' => $codOrden)
                 ), 'text/html'
         );
         $this->mailer->send($mail);

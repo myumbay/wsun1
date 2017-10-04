@@ -17,7 +17,8 @@ class DefaultController extends Controller
     }
     public function indexAction()
     {
-        return $this->render('WsunBundle:Default:index.html.twig');
+       return $this->render('WsunBundle:Default:index.html.twig');
+        //return $this->render('WsunBundle:detallepedido:mail.html.twig');
     }
      public function contactosAction(Request $request)
     {
@@ -35,15 +36,13 @@ class DefaultController extends Controller
             $asunto=$filtros['asunto'];
             $detalle=$filtros['detalle'];
             
-            /* @var $correo \WsunBundle\Services\Correo */
+            /* @var $correo \WsunBundle\ComunBundle\Services\Correo */
             $correoE = $this->get('sistema_de_correos');
-            $correoE->enviarPrueba($email);
-            return $this->render('WsunBundle:Default:prueba.html.twig');
-            
-          
-                 
-           /* $enviar=$this->get('mailer')->send($message);
-             if($enviar=1 )
+            //$correoE->enviarPrueba($email);
+            $enviar=$correoE->enviarContacto($email,$asunto,$detalle);
+            //return $this->render('WsunBundle:Default:prueba.html.twig');
+           
+             if($enviar=true )
                 {      
                 $mensaje = 'El mensaje se ha enviado correctamente';
                 $this->session->getFlashBag()->add("status",$mensaje);
@@ -52,7 +51,7 @@ class DefaultController extends Controller
                  $mensaje = 'El mensaje no se ha enviado correctamente, existen datos incorrectos!!';
                 $this->session->getFlashBag()->add("status",$mensaje);
                 return $this->redirectToRoute('wsun_contactos');
-            }*/
+            }
    
              
             }

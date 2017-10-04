@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 /**
 * @Security("has_role('ROLE_USER')")
 */
@@ -100,11 +101,21 @@ class DetallePedidoController extends Controller
     public function aceptarOrdenAction(Request $request)
     {
         $id=$request->get('id');
+        $user = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $pedidos = $em->getRepository('WsunBundle:Pedido')->find($id);
         $pedidos->setEstadoPedido(1);
+        $pedidos->setUpdatedBy($user);
         $em->persist($pedidos);
         $em->flush();
+        
+        $userId=$pedidos->getUpdatedBy();
+        $usuario = $em->getRepository('WsunBundle:Usuarios')->find($userId);
+        $correo=$usuario->getCorreo();
+        /* @var $correo \WsunBundle\ComunBundle\Services\Correo */
+        $correoE = $this->get('sistema_de_correos');
+        //$correoE->enviarPrueba($email);
+        $enviar=$correoE->aceptarOrden($correo,$pedidos->getCodigoPedido());
         $response = new Response(json_encode(array(
                             'mensaje' => 'Ud ha aceptado la orden',
                                 )
@@ -125,7 +136,7 @@ class DetallePedidoController extends Controller
         $editForm = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array('action'=>$this->generateUrl('detallepedido_edit',array('id'=>$detallePedido->getId()))));
         $editForm->handleRequest($request);
          if ($editForm->isSubmitted()) {
-            
+           
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('detallepedido_index', array('id' => $detallePedido->getIdPedido()->getId()));
         }
@@ -244,9 +255,24 @@ class DetallePedidoController extends Controller
         $productos = 0;
         $em = $this->getDoctrine()->getManager();
         $pedido=$em->getRepository('WsunBundle:Pedido')->find($pedido_id);
+        $us=$pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getId();
+        $codigo=$pedido->getCodigoPedido();
+        $sql = " 
+        SELECT correo
+          FROM usuarios u inner join user_role ur on u.id=ur.user_id
+          inner join departamento d on d.id=u.id_departamento
+          inner join empresa e on e.id=d.id_empresa
+          where ur.role_id=3 and e.id=".$us." limit 1
+        ";
+
+    $em = $this->getDoctrine()->getManager();
+    $stmt = $em->getConnection()->prepare($sql);
+    $stmt->execute();
+    $r=$stmt->fetchAll();
     
-        if (is_array($idsProductos) && count($idsProductos) > 0) {
-        
+    $mailManager=$r[0]['correo'];
+    if (is_array($idsProductos) && count($idsProductos) > 0) {
+       
             for($i=0;$i<count($idsProductos);$i++)
             {
                 $detallePedido = $em->getRepository('WsunBundle:DetallePedido')->findBy(array('idProducto' => $idsProductos[$i],'idPedido' =>$pedido_id));
@@ -269,7 +295,6 @@ class DetallePedidoController extends Controller
                         $em->flush();
                     }
                 }
-               
                     $prod= $em->getRepository('WsunBundle:EmpresaProducto')->find($idsProductos[$i]);
                     $empPr = new DetallePedido();
                     $empPr->setIdPedido($pedido);
@@ -284,30 +309,18 @@ class DetallePedidoController extends Controller
                     $em->persist($empPr);
 
             }
-            $correo=$this->getParameter('correo_remitente'); 
-            
             $em->flush();
+            $mensaje='Lista de orden Guardada';
+        /* @var $correo \WsunBundle\Services\Correo */
+        $correoE = $this->get('sistema_de_correos');
+        //$correoE->enviarPrueba($email);
+        $enviar=$correoE->nuevaOrden('1','2',$mailManager,$codigo);
             
-            $message = \Swift_Message::newInstance()
-            ->setSubject('Nuevo Pedido')
-            ->setFrom($correo)
-            ->setTo('misterio182@yahoo.es')
-            ->setBody('WsunBundle:DetallePedido:mail.html.twig', 'text/html');
-            # Send the message
-            $this->get('mailer')
-            ->send($message);
             
-                $mensaje = 'Pedido Guardado';
-                $this->session->getFlashBag()->add("status",$mensaje);
-                $response = new Response(json_encode(array('error' => 0,'mensaje' => $mensaje)));
-                $response->headers->set('Content-Type', 'application/json');
-                return $response;
-//                return $this->redirectToRoute('detallepedido_index',array('id'=>$pedido->getId()));
-                
         }
            
          } catch (\Exception $e) {
-            $mensaje = "Error al Guardar los datos.";
+            $mensaje = "Error al Guardar los datos.".$e->getMessage().$e->getLine();
         }    
                
         $response = new Response(json_encode(array('error' => 1,'mensaje' => $mensaje)));

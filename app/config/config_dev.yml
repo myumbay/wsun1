@@ -38,6 +38,6 @@ swiftmailer:
     #host:      %dev_mailer_host%
     #username:  %dev_mailer_user%
     #password:  %dev_mailer_password%
-    #spool:     { type: memory }
+    spool:     { type: memory }
 #    delivery_addresses: ['me@example.com']
 

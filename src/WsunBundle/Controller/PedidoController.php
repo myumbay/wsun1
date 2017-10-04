@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Dompdf\Dompdf;
 /**
  * @Security("has_role('ROLE_USER')")
  */
@@ -115,6 +116,7 @@ class PedidoController extends Controller
             
             $em = $this->getDoctrine()->getManager();
             $pedido->setCodigoPedido($codigo);
+            $pedido->setUpdatedBy(-1);
             $em->persist($pedido);
             $em->flush();
 
@@ -146,6 +148,7 @@ class PedidoController extends Controller
                 $limite
         );
         return $this->render('WsunBundle:pedido:show.html.twig', array(
+            'id'=>$pedido->getId(),
             'pedido' => $pedido,
             'pagination' => $pagination,
             'delete_form' => $deleteForm->createView(),
@@ -235,13 +238,13 @@ class PedidoController extends Controller
             ->getForm()
         ;
     }
-        public function indexPedidoAction(Request $request,Pedido $pedido){
-        $id=$pedido->getId();
-        $em = $this->getDoctrine()->getManager();
+    public function indexPedidoAction(Request $request,Pedido $pedido){
+    $id=$pedido->getId();
+    $em = $this->getDoctrine()->getManager();
 
-        $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findById($id);
+    $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findById($id);
 
-       return $this->render('WsunBundle:pedido:indexPedido.html.twig', array(
+   return $this->render('WsunBundle:pedido:indexPedido.html.twig', array(
             'pedidosDet' => $pedidosDet,
         ));
     }
@@ -264,14 +267,21 @@ class PedidoController extends Controller
             'pagination' => $pagination
             )
         );
-
-        return new Response(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+       $dompdf = new Dompdf();
+       $dompdf->loadHtml($html);
+       // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+        // Render the HTML as PDF
+        $dompdf->render();
+        // Output the generated PDF to Browser
+        $dompdf->stream();
+        return new Response($dompdf->stream()
+           /* $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
             200,
             array(
                 'Content-Type'          => 'application/pdf',
                 'Content-Disposition'   => 'attachment; filename="fichero.pdf"'
-            )
+            )*/
         );
 
 

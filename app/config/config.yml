@@ -144,8 +144,8 @@ knp_snappy:
         
         #binary:      "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\"" windows
         binary:     '../wkhtmltopdf'
-        options:    
-            print-media-type: true
+        #binary:     '/home/sumecorcom/public_html/wkhtmltopdf'
+        options:    []
     image:
         enabled:    true
         binary:     'wkhtmltoimage'
