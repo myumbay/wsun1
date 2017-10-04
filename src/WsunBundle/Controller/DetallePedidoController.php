@@ -88,9 +88,8 @@ class DetallePedidoController extends Controller
      */
     public function showAction(Request $request,DetallePedido $detallePedido)
     {
-         $id=$request->get('id');
+        $id=$request->get('id');
         $deleteForm = $this->createDeleteForm($detallePedido);
-
         return $this->render('WsunBundle:detallepedido:show.html.twig', array(
             'id'=>$id,
             'detallePedido' => $detallePedido,
@@ -132,8 +131,9 @@ class DetallePedidoController extends Controller
     public function editAction(Request $request, DetallePedido $detallePedido)
     {
         $id=$request->get('id');
+        $id_empresa=$detallePedido->getIdProducto()->getEmpresa()->getId();
         $deleteForm = $this->createDeleteForm($detallePedido);
-        $editForm = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array('action'=>$this->generateUrl('detallepedido_edit',array('id'=>$detallePedido->getId()))));
+        $editForm = $this->createForm('WsunBundle\Form\DetallePedidoType', $detallePedido,array($id_empresa,'action'=>$this->generateUrl('detallepedido_edit',array('id'=>$detallePedido->getId()))));
         $editForm->handleRequest($request);
          if ($editForm->isSubmitted()) {
            
@@ -320,7 +320,7 @@ class DetallePedidoController extends Controller
         }
            
          } catch (\Exception $e) {
-            $mensaje = "Error al Guardar los datos.".$e->getMessage().$e->getLine();
+            $mensaje = "Error al Guardar los datos.";//.$e->getMessage().$e->getLine();
         }    
                
         $response = new Response(json_encode(array('error' => 1,'mensaje' => $mensaje)));

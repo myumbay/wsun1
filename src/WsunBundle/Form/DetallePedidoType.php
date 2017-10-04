@@ -30,10 +30,10 @@ class DetallePedidoType extends AbstractType
         
         $builder->add('codigo')
                 ->add('cantidad')
-                ->add('valorUnitario')
+                ->add('valorUnitario',  NumberType::class)
                 ->add('valorTotal')
                 ->add('observaciones',  \Symfony\Component\Form\Extension\Core\Type\TextareaType::class)
-                //->add('idProducto',  HiddenType::class);
+                /*->add('idProducto', TextType::class);*/
                 ->add('idProducto', EntityType::class, array(
                     'class' => 'WsunBundle:EmpresaProducto',
                     'query_builder' => function(EntityRepository $er) use ($id_empresa) {
@@ -45,7 +45,7 @@ class DetallePedidoType extends AbstractType
                             ->setParameter('id', $id_empresa);
                             //->orderBy('c.nombreCat', 'ASC');
                     },'choice_label' => 'producto',  'placeholder' => 'Seleccione..',
-                ));
+                ));  
          
                // ->add('idProducto');
         

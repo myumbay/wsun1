@@ -19,15 +19,16 @@
     <div class="panel panel-azul">
         <fieldset>
             <legend class="text-center header">DETALLE DE PEDIDO</legend>
-             <div class="count">
+            <div class="col-md-6">
+                <a href ="{{path('addpedido_index',{'idPedido':id,'id' :idEmpresa |default('empresa')})}}" class="btn btn-primary btn-sm">Editar Productos</a>
+                </div>
+           <div class="col-md-6">
+            <a href="{{ path('pedido_index') }}" class="icon-backward btn btn-primary btn-sm "><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back</a> </div>
+     <div class="count">
                 <span class="label label-primary">
                 Total: {{ pagination.getTotalItemCount }}
                 </span>
-            </div><br/>
-            <div class="col-md-3"><a href ="{{path('addpedido_index',{'idPedido':id,'id' :idEmpresa |default('empresa')})}}"><span class="btn-primary">Seleccionar Productos</span></a></div>
-           <div class="col-md-3">
-            <a href="{{ path('pedido_index') }}" class="icon-backward btn btn-primary btn-sm "><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back</a> </div>
-    
+            </div>
        <table class="table table-bordered">
         <tr>
             {# sorting of properties based on query components #}

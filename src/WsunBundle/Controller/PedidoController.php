@@ -19,6 +19,9 @@ class PedidoController extends Controller
      */
     public function indexAction(Request $request)
     {
+        
+        $user = $this->getUser();
+        $idEmpresa=$user->getDepartamento()->getIdEmpresa()->getId();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->from('WsunBundle:Pedido', 'ped');
@@ -26,6 +29,8 @@ class PedidoController extends Controller
         $qb->innerJoin('ped.idUsuario', 'u');
         $qb->innerJoin('u.departamento', 'dpt');
         $qb->innerJoin('dpt.idEmpresa', 'e');
+        $qb->andWhere('e.id = :id');
+        $qb->setParameter('id', $idEmpresa);
         $qb->addGroupBy('e.id,e.nombreEmp');
         $qb->addOrderBy('e.nombreEmp', 'ASC');
 
@@ -136,10 +141,12 @@ class PedidoController extends Controller
      */
     public function showAction(Request $request,Pedido $pedido)
     {
-        //var_dump($pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getNombreEmp());die;
+        $empresa=$pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getId();
         $deleteForm = $this->createDeleteForm($pedido);
         $em = $this->getDoctrine()->getManager();
+        
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
+        
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
         $pagination = $paginator->paginate(
@@ -149,6 +156,7 @@ class PedidoController extends Controller
         );
         return $this->render('WsunBundle:pedido:show.html.twig', array(
             'id'=>$pedido->getId(),
+            'empresa'=>$empresa,
             'pedido' => $pedido,
             'pagination' => $pagination,
             'delete_form' => $deleteForm->createView(),
