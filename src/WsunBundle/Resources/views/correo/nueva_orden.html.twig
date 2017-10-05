@@ -1,10 +1,10 @@
 {% extends 'WsunBundle:correo:base_correo.html.twig'%}
-{% block titulo %}Se ha generado una nueva orden a su nombre ({{ codOrden }})
+{% block titulo %}Se ha generado una nueva orden ({{ codOrden }}) para su aprobación
 {% endblock %}
 {% block cuerpo %}
     <h3>Se ha generado una nueva orden a su nombre</h3>
-    <b>Proveedor:</b> {{ nombreProveedor }}<br/>
-    <b>RUC:</b> {{ rucProveedor }}<br/>
+    <b>Responsable:</b> {{ nombreProveedor }}<br/>
+    <b>Departamento:</b> {{ rucProveedor }}<br/>
     <b>Código de la orden:</b> {{ codOrden }}<br/><br/>
     
 {% endblock %}

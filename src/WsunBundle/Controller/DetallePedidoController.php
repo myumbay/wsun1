@@ -232,7 +232,7 @@ class DetallePedidoController extends Controller
                     $response->headers->set('Content-Type', 'application/json');
                     return $response;
                 }
-        
+       
          if ($pedido_id == '') {
                 $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'NO EXISTE EL PEDIDO')));
                 $response->headers->set('Content-Type', 'application/json');
@@ -244,6 +244,7 @@ class DetallePedidoController extends Controller
         $pu = explode(',', $pu);
         $vt = explode(',', $vt);
         $contador = 0;
+		
         foreach ($idsProductos as $ids) {
                     $capacidadProducto[$ids] = $capacidades[$contador];
                     $ivasProducto[$ids] = $ivas[$contador];
@@ -256,21 +257,31 @@ class DetallePedidoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $pedido=$em->getRepository('WsunBundle:Pedido')->find($pedido_id);
         $us=$pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getId();
+        $responsable=$pedido->getIdUsuario()->getDepartamento()->getResponsable();
+        $departamento=$pedido->getIdUsuario()->getDepartamento()->getNombreDep();
+       
         $codigo=$pedido->getCodigoPedido();
-        $sql = " 
+		
+     	$sql = " 
         SELECT correo
           FROM usuarios u inner join user_role ur on u.id=ur.user_id
+          inner join roles r on r.id=ur.role_id
           inner join departamento d on d.id=u.id_departamento
-          inner join empresa e on e.id=d.id_empresa
-          where ur.role_id=3 and e.id=".$us." limit 1
-        ";
-
+          inner join empresa e on e.id=d.id_empresa 
+          where r.nombre='ROLE_ACEPTAR_PEDIDO' and e.id=".$us." limit 1";
     $em = $this->getDoctrine()->getManager();
     $stmt = $em->getConnection()->prepare($sql);
     $stmt->execute();
     $r=$stmt->fetchAll();
+    if(count($r)>0){
+        $mailManager=$r[0]['correo'];
     
-    $mailManager=$r[0]['correo'];
+    }else{
+        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'No existe una manager Registrado en la empresa ')));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+        }
+ 
     if (is_array($idsProductos) && count($idsProductos) > 0) {
        
             for($i=0;$i<count($idsProductos);$i++)
@@ -281,7 +292,7 @@ class DetallePedidoController extends Controller
                 {
                     $detallePedido = $detallePedido[0];
                     if($pedido->getEstadoPedido() ==true){
-                    //if($Emproductos->getCapacidad()>$capacidades[$i]){
+                   
                         $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'No guardados!! El pedido ya fue autorizado no puede cambiar la orden ')));
                         $response->headers->set('Content-Type', 'application/json');
                         return $response;
@@ -310,17 +321,18 @@ class DetallePedidoController extends Controller
 
             }
             $em->flush();
+			
             $mensaje='Lista de orden Guardada';
         /* @var $correo \WsunBundle\Services\Correo */
         $correoE = $this->get('sistema_de_correos');
         //$correoE->enviarPrueba($email);
-        $enviar=$correoE->nuevaOrden('1','2',$mailManager,$codigo);
+        $enviar=$correoE->nuevaOrden($departamento,$responsable,$mailManager,$codigo);
             
             
         }
            
          } catch (\Exception $e) {
-            $mensaje = "Error al Guardar los datos.";//.$e->getMessage().$e->getLine();
+            $mensaje = "Error al Guardar los datos.".$e->getMessage().$e->getLine();
         }    
                
         $response = new Response(json_encode(array('error' => 1,'mensaje' => $mensaje)));
@@ -328,3 +340,4 @@ class DetallePedidoController extends Controller
         return $response;
     }
 }
+

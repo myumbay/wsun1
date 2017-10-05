@@ -232,7 +232,10 @@
                         $('#respuesta').html('<strong style="color:green;">'+dataJson['mensaje']+'</strong>');
                         errores=1;
                     } else if(dataJson['error']==0){
-                        $('#respuesta').html('<strong style="color:red;">'+dataJson['mensaje']+'</strong>');
+                        $("#respuesta").html('');
+                        $('#respuesta').show();
+                        $('#respuesta').append('<strong style="color:red;">'+dataJson['mensaje']+'</strong>');
+                        $("#respuesta").delay(7000).hide(600);
                         window.location = "{{path('detallepedido_index',{'id':idPedido})}}"
                         //$('#respuesta').append('<tr><td width="100">'+contador+'</td><td><div>'+dataJson['mensaje']+'</div></td></tr>');
                     }   

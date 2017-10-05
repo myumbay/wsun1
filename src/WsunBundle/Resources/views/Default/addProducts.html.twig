@@ -165,26 +165,56 @@
                 return false;
             }
 
-            if ($('#form_area input[type=checkbox]:checked').length ==0){
+            if ($('#form_area input[type=checkbox].selProducto:checked').length ==0){
                 alert('Seleccione un producto');
                 return false;
             }
-
-            return true;
+            banCapacidadproductiva = true;
+            $('#form_area input[type=checkbox].selProducto:checked').each(function () {
+                var idProducto = $(this).val();
+                if ($('#capacidad' + idProducto).val() == '') {
+                    alert('Ingrese Total productos');
+                    $('#capacidad' + idProducto).focus();
+                    banCapacidadproductiva = false;
+                    return false;
+                } else if (isNaN($('#capacidad' + idProducto).val()) || $('#capacidad' + idProducto).val() % 1 != 0) {
+                    alert('Total productos invalida, ingrese solo números enteros.');
+                    $('#capacidad' + idProducto).focus();
+                    banCapacidadproductiva = false;
+                    return false;
+                } else if (!parseInt($('#capacidad' + idProducto).val())) {
+                    alert('Ingrese el total de productos');
+                    $('#capacidad' + idProducto).val('');
+                    $('#capacidad' + idProducto).focus();
+                    banCapacidadproductiva = false;
+                    return false;
+                }
+            });   
+            if (!banCapacidadproductiva) {
+                    return false;
+                }else{
+                return true;
+                }
         };
         var guardar = function () {
             if (!validarProductos()){
                 return false;
             }
+            $('#respuesta').html('');
             var empresa_id = $('#empresaId').val();
-
             var producto = '';
+            var capacidades= '';
             $('#form_area input[type=checkbox]:checked').each(function () {
                 var idProducto = $(this).val();
+                var capacidad = $('#capacidad' + idProducto).val();
                 producto +=  idProducto+',';
+                capacidades+= (capacidad?capacidad:'--')+',';
             });
+            
             producto = producto.slice(0,-1);
-            console.log(producto);
+            capacidades = capacidades.slice(0,-1);
+            alert(capacidades);
+            //console.log(producto,capacidades);
             var contador = 1;
             var errores=0;
             $.ajax({

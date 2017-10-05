@@ -76,7 +76,6 @@ class EmpresaController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
     /**
      * @Security("has_role('ROLE_ADMIN')")
      */
@@ -98,7 +97,6 @@ class EmpresaController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
    /**
      * @Security("has_role('ROLE_ADMIN')")
      */

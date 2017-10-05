@@ -144,9 +144,7 @@ class PedidoController extends Controller
         $empresa=$pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getId();
         $deleteForm = $this->createDeleteForm($pedido);
         $em = $this->getDoctrine()->getManager();
-        
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
-        
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
         $pagination = $paginator->paginate(
