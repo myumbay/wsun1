@@ -189,9 +189,10 @@ class EmpresaController extends Controller
                 if(count($empresaProducto)>0) {
                     foreach ($empresaProducto as $k => $val) {
                         if ((integer)$ids == $val->getProducto()->getId()) {
-                            var_dump($ids,'=',$val->getProducto()->getId());
+                            
                             $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id' => $val->getId()));
                             $ep = $ep[0];
+                            $ep->setCapacidad($capacidadProducto[$ids]);
                             $ep->setEstado(1);
                             $em->persist($ep);
                             $prod = 1;
@@ -201,10 +202,10 @@ class EmpresaController extends Controller
             if($prod==0){
                 
                 $hoy = new \DateTime("now");
-                $prod= $em->getRepository('WsunBundle:Producto')->find($productos);
+                $product= $em->getRepository('WsunBundle:Producto')->find($ids);
                 $empPr = new EmpresaProducto();
                 $empPr->setEmpresa($empresa);
-                $empPr->setProducto($prod);
+                $empPr->setProducto($product);
                 $empPr->setCapacidad($capacidadProducto[$ids]);
                 $empPr->setCreated($hoy);
                 $empPr->setEstado(1);
