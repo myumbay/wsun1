@@ -175,15 +175,21 @@ class EmpresaController extends Controller
             }
             $em->flush();
         }
-        $productos=$request->get('ids_productos');
-        
-        for($i=1;$i<=count($productos);$i++){
-       // foreach ($request->get('productos') as $key => $valor){
-                $prod=0;
-
+        $productos = trim(trim(trim($request->request->get('ids_productos')), ','));
+        $capacidades = trim($request->request->get('capacidades'));
+        $idsProductos = explode(',', $productos);
+        $capacidades = explode(',', $capacidades);
+   
+        $contador = 0;
+        foreach ($idsProductos as $ids) {
+            $capacidadProducto[$ids] = $capacidades[$contador];
+            $contador ++;
+             $prod=0;
+             
                 if(count($empresaProducto)>0) {
                     foreach ($empresaProducto as $k => $val) {
-                        if ((integer)$productos == $val->getProducto()->getId()) {
+                        if ((integer)$ids == $val->getProducto()->getId()) {
+                            var_dump($ids,'=',$val->getProducto()->getId());
                             $ep = $em->getRepository('WsunBundle:EmpresaProducto')->findBy(array('id' => $val->getId()));
                             $ep = $ep[0];
                             $ep->setEstado(1);
@@ -192,7 +198,6 @@ class EmpresaController extends Controller
                         }
                     }
                 }
-
             if($prod==0){
                 
                 $hoy = new \DateTime("now");
@@ -200,7 +205,7 @@ class EmpresaController extends Controller
                 $empPr = new EmpresaProducto();
                 $empPr->setEmpresa($empresa);
                 $empPr->setProducto($prod);
-                //$empPr->setCapacidad($capacidades[$i]);
+                $empPr->setCapacidad($capacidadProducto[$ids]);
                 $empPr->setCreated($hoy);
                 $empPr->setEstado(1);
                 
@@ -208,7 +213,7 @@ class EmpresaController extends Controller
                 }
             }
             $em->flush();
-            $mensaje = 'Datos Guardados';
+            $mensaje = 'Datos Guardados';  
             //$this->session->getFlashBag()->add("status", $mensaje);
            //return $this->redirectToRoute('admin_productos_empresa_index');
             $response = new Response(json_encode(array('error' => 0,'mensaje' => $mensaje)));
@@ -217,7 +222,7 @@ class EmpresaController extends Controller
         }
 
     } catch (\Exception $e) {
-            $mensaje = "Error al Guardar los datos.";
+            $mensaje = "Error al Guardar los datos.".$e->getMessage().$e->getLine();
     }
         $response = new Response(json_encode(array('error' => 0,'mensaje' => $mensaje)));
         $response->headers->set('Content-Type', 'application/json');

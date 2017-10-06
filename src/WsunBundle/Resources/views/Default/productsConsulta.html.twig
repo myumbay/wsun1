@@ -1,68 +1,66 @@
 
     <div class="panel panel-azul">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="panel-heading">
-                    <strong><span class="icon-list"> Productos</span></strong>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel-heading">
-                     <button onclick="guardar();return false;" class="btn btn-primary btn-sm">
-                        <span class="icon-save"> Guardar</span>
-                    </button>
-                </div>
-            </div>
-            
+        <div class="panel-heading">
+            <strong><span class="icon-list"> Productos</span></strong>
         </div>
-        <div class="col-xs-10" id="respuesta">
-        </div> 
-        <div class="row">
-                <div  class="col-md-5"> 
-                </div>
-                <div  class="col-md-3">
-                     <b>Total Productos </b>
-                </div>
-                <div div class="col-md-3">
-                    <input class="selProducto " type="checkbox" id="seleccionarTodos" /> <b>Seleccionar todos </b>
-                </div>
-        </div>
-        {% set contador=0 %}
-         <div class="col-xs-12" id="form_area">
-        <ul class="list-unstyled">
-
-            {% for key, prod in productos %}
-                {% set contador=contador+1 %}
-                    <li>
-                        <div class="row">
-                        <div div class="col-md-5"> 
-                            {{prod.nombreProducto}} 
-                        </div>
-
-                            {% set valor=''%}
-                            {% for pe in pem %}
-                                {{pe.producto.id}}
-                                {{prod.id}}
-                                {%if(pe.producto.id ==prod.id) %}
-                                    {% set valor='checked'%}
-                                {% endif %}
-                            {%endfor%}
-                            <div div class="col-md-3"> 
-                            <input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ prod.id }}" name="productos[{{ prod.id }}][capacidad]" /></td>
-                            </div>
-                             <div div class="col-md-3"> 
-                            <input class="selProducto" type="checkbox"  name="productos[{{ prod.id }}][id]" value="{{ prod.id }}" {{valor}}>
-                             </div>
-
-                        </div>
-                        <div style="padding-bottom: 10px; display: block; width: 100%;overflow:auto;">
-                        </div>
-                        </li>
-
-                        {% endfor %}
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 ">
+                    <table id= "tablaProductos" class="table table-bordered table-condensed table-striped table-hover head-fixed">
+                        <thead>
+                        <div class="col-xs-2">
+                        <span class="input-group-btn">
+                        <button onclick="guardar();return false;" class="btn btn-primary btn-sm">
+                            <span class="icon-save"> Guardar</span>
+                        </button></div> <div class="col-xs-10" id="respuesta">
+                                </div> 
+                        </thead>
+                        <tbody>
+                            <tbody>
+                                {% set contador=0 %}
+                                <div class="row">
+                                                <div div class="col-md-9"> 
+                                                
+                                                </div>
+                                                <div div class="col-md-3">
+                                                    <input class="selProducto " type="checkbox" id="seleccionarTodos" /> <b>Seleccionar todos </b>
+                                                </div>
+                                            </div>
+                                <div class="col-xs-12" id="form_area">
+                                        <ul class="list-unstyled">
+                                            
+                                            {% for key, prod in productos %}
+                                                {% set contador=contador+1 %}
+                                                    <li>
+                                                        <div class="row">
+                                                        <div div class="col-md-9"> 
+                                                            {{prod.nombreProducto}} 
+                                                        </div>
+                                                        <div div class="col-md-3"> 
+                                                            {% set valor=''%}
+                                                            {% for pe in pem %}
+                                                                {%if(pe.producto.id ==prod.id) %}
+                                                                    {% set valor='checked'%}
+                                                                {% endif %}
+                                                            {%endfor%}
+                                                            
+                                                            <input class="selProducto" type="checkbox"  name="productos[{{ prod.id }}][id]" value="{{ prod.id }}" {{valor}}>
+                                                            </div>
+                                                            <input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ prod.id }}" name="productos[{{ prod.id  }}
+                                                        </div>
+                                                        <div style="padding-bottom: 10px; display: block; width: 100%;overflow:auto;">
+                                                        </div>
+                                                        </li>
+                                                           
+                                                        {% endfor %}
                                 
-                    </ul>   
-         </div> 
+                                        </ul>   </div>  
+                                </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
   <script>
     $(window).ready(function() {

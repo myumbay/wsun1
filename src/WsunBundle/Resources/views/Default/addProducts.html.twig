@@ -169,8 +169,8 @@
                 alert('Seleccione un producto');
                 return false;
             }
-            banCapacidadproductiva = true;
-            $('#form_area input[type=checkbox].selProducto:checked').each(function () {
+             banCapacidadproductiva = true;
+           $('#form_area input[type=checkbox].selProducto:checked').each(function () {
                 var idProducto = $(this).val();
                 if ($('#capacidad' + idProducto).val() == '') {
                     alert('Ingrese Total productos');
@@ -200,21 +200,19 @@
             if (!validarProductos()){
                 return false;
             }
-            $('#respuesta').html('');
             var empresa_id = $('#empresaId').val();
+
             var producto = '';
             var capacidades= '';
-            $('#form_area input[type=checkbox]:checked').each(function () {
+            $('#form_area input[type=checkbox].selProducto:checked').each(function () {
                 var idProducto = $(this).val();
                 var capacidad = $('#capacidad' + idProducto).val();
                 producto +=  idProducto+',';
                 capacidades+= (capacidad?capacidad:'--')+',';
             });
-            
-            producto = producto.slice(0,-1);
-            capacidades = capacidades.slice(0,-1);
             alert(capacidades);
-            //console.log(producto,capacidades);
+            producto = producto.slice(0,-1);
+            console.log(producto);
             var contador = 1;
             var errores=0;
             $.ajax({
@@ -227,8 +225,8 @@
                 },
 
                 method: 'POST',
-                {#                    data: { 'ids_productos':producto,  'empresa_id':empresa_id, 'capacidades':capacidades },#}
-                data: { 'ids_productos':producto,  'empresa_id':empresa_id },
+                data: { 'ids_productos':producto,  'empresa_id':empresa_id, 'capacidades':capacidades },
+{#                data: { 'ids_productos':producto,  'empresa_id':empresa_id },#}
                 url: "{{ path('admin_guarda_producto_empresa')}}",
                 context: document.body
             }).done(function(dataJson) {
