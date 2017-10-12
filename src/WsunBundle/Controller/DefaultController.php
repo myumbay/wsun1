@@ -144,11 +144,7 @@ class DefaultController extends Controller
         $pem=$in->getQuery()->getResult();
 
       return $this->render('WsunBundle:Default:productsConsulta.html.twig', array('productos' =>$productos,'pem'=>$pem));
-      
-//      $producto = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-//      $response = new Response(json_encode(array('data' => $producto)));
-//      $response->headers->set('Content-Type', 'application/json');
-//      return $response;
+
   }
   public function productsListAction(Request $request){
       $em = $this->getDoctrine()->getManager();

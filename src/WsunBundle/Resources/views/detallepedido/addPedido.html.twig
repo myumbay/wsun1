@@ -70,8 +70,12 @@
             <td style="vertical-align: middle;"><strong>{{ contador }}.- </strong>  {{ producto.producto.nombreProducto }} {{ (producto.producto.estado == '0') ? '<span class="text-danger"><strong>(INACTIVO)</strong></span>' : '' }}</td>
             <td><input type="text" class="form-control input-sm cantidad" id="cantidad{{ producto.id }}" name="productos[{{ producto.id }}][cantidad]" value="{{cantidad}}" onkeyup="calc({{iv}},{{ producto.id }});"/></td>
             <td style="vertical-align: middle;"> 
-            <input type="text" class="form-control input-sm preciounit" id="preciounit{{ producto.id }}" name="productos[{{ producto.id }}][preciounit]" value="{{ producto.producto.PrecioProducto }}" readonly/>
-            </td>
+                {%if (producto.capacidad=='')%}
+                <input type="text" class="form-control input-sm preciounit" id="preciounit{{ producto.id }}" name="productos[{{ producto.id }}][preciounit]" value="{{ producto.producto.PrecioProducto }}" readonly/>
+            {%else%}
+                <input type="text" class="form-control input-sm preciounit" id="preciounit{{ producto.id }}" name="productos[{{ producto.id }}][preciounit]" value="{{ producto.capacidad }}" readonly/>
+                {%endif%}
+                </td>
             <td>
                 
                 <input type="text" class="form-control input-sm preciounit" id="iva{{ producto.id }}" name="productos[{{ producto.id }}][iva]" value="{{ iv }}" readonly />%

@@ -177,8 +177,9 @@
                     $('#capacidad' + idProducto).focus();
                     banCapacidadproductiva = false;
                     return false;
-                } else if (isNaN($('#capacidad' + idProducto).val()) || $('#capacidad' + idProducto).val() % 1 != 0) {
-                    alert('Total productos invalida, ingrese solo números enteros.');
+                //} else if (isNaN($('#capacidad' + idProducto).val()) || $('#capacidad' + idProducto).val() % 1 != 0) {
+                } else if (isNaN($('#capacidad' + idProducto).val())) {    
+                    alert('Total productos invalida, ingrese solo números.');
                     $('#capacidad' + idProducto).focus();
                     banCapacidadproductiva = false;
                     return false;
@@ -210,7 +211,7 @@
                 producto +=  idProducto+',';
                 capacidades+= (capacidad?capacidad:'--')+',';
             });
-            alert(capacidades);
+          
             producto = producto.slice(0,-1);
             console.log(producto);
             var contador = 1;

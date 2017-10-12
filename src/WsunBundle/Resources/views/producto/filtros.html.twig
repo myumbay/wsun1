@@ -1,0 +1,27 @@
+<div class="panel filtros">
+    {% for lista in producto %}
+        
+    <div class="row">
+             <ul class="list-inline">
+                 <div class="col-sm-6">
+                     {%set url = '../Documentos/Productos/'~lista.id~'.'~lista.imagen%}
+                  <img src="{{asset(url) }}" alt="Producto" style="width: 100px;height: 100px;">
+                 </div>
+                 <div class="col-sm-6 bordered">
+                     
+                     <li><a href="{{ path('admin_producto_show', { 'id': lista.id }) }}"><span class="text">{{ lista.nombreProducto }}</span></a></li>
+                 </div>
+                 
+                 
+            </ul>
+    </div>
+    {% endfor %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="list-unstyled">
+                <li class="text-center"><a class="btn btn-danger" href="?reiniciar=1&pag=1">Reiniciar filtros</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

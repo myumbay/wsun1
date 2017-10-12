@@ -19,11 +19,14 @@
                             <tbody>
                                 {% set contador=0 %}
                                 <div class="row">
-                                                <div div class="col-md-9"> 
+                                                <div div class="col-xs-1"> 
                                                 
                                                 </div>
-                                                <div div class="col-md-3">
+                                                <div div class="col-xs-5">
                                                     <input class="selProducto " type="checkbox" id="seleccionarTodos" /> <b>Seleccionar todos </b>
+                                                </div>
+                                                 <div div class="col-xs-4">
+                                                     <b>Precio del Producto </b>
                                                 </div>
                                             </div>
                                 <div class="col-xs-12" id="form_area">
@@ -33,22 +36,26 @@
                                                 {% set contador=contador+1 %}
                                                     <li>
                                                         <div class="row">
-                                                        <div div class="col-md-9"> 
+                                                        <div div class="col-xs-6"> 
                                                             {{prod.nombreProducto}} 
                                                         </div>
-                                                        <div div class="col-md-3"> 
+                                                        <div div class="col-xs-1"> 
                                                             {% set valor=''%}
+                                                            {% set cantidad=''%}
                                                             {% for pe in pem %}
                                                                 {%if(pe.producto.id ==prod.id) %}
                                                                     {% set valor='checked'%}
+                                                                    {% set cantidad=pe.capacidad%}
                                                                 {% endif %}
                                                             {%endfor%}
                                                             
                                                             <input class="selProducto" type="checkbox"  name="productos[{{ prod.id }}][id]" value="{{ prod.id }}" {{valor}}>
                                                             </div>
-                                                            <input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ prod.id }}" name="productos[{{ prod.id  }}
-                                                        </div>
-                                                        <div style="padding-bottom: 10px; display: block; width: 100%;overflow:auto;">
+                                                            <div  class="col-xs-3"> 
+                                                            <input type="text" class="form-control input-sm capacidadProducto" id="capacidad{{ prod.id }}" value="{{cantidad}}" name="productos[{{ prod.id  }}">
+                                                            </div>        
+                                                      
+                                                        <div  <div  class="col-xs-2" style="padding-bottom: 10px; display: block; width: 100%;overflow:auto;">
                                                         </div>
                                                         </li>
                                                            

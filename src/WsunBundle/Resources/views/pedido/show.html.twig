@@ -83,6 +83,9 @@
         </tr> 
         {% set contador= 1%}
         {% set total= 0 %}
+        {% set iva= 0 %}
+        {% set subtotal= 0 %}
+        {% set sumasubtotal= 0 %}
         {% for pd in pagination %}
             <tr {% if loop.index is odd %}class="color"{% endif %}>
                 <td>{{ contador }}</td>    
@@ -92,23 +95,19 @@
                 <td>${{pd.valorUnitario|number_format(2,'.',',')}}</td>
                 <td>${{pd.valorTotal|number_format(2,'.',',')}}</td>
                 {% set total= total+ pd.valorTotal%}
+                {% set subtotal= pd.cantidad* pd.valorUnitario%}
+                {% set sumasubtotal= sumasubtotal+subtotal%}
                  <td>
                     <div class="row">
-                       {#                      <div class="col-md-3">#}
                         <a   href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>
-{#                         <a  data-toggle="modal" data-target="#Edit" data-backdrop="static" href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>#}
-                       {# </div>    
-                        
-                        {#<div class="col-md-3">
-                         <a href= "{{ path('detallepedido_show', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">show</a>
-                        </div>#}
-                       
-                        
                     </div>
                 </td>
             </tr>
             {% set contador= contador+1%}
         {% endfor %}
+        <tr><td></td><td colspan="4"><strong>Subtotal</strong></td><td><strong>{{sumasubtotal}}</strong></td></tr>  
+        <tr><td></td><td colspan="4"><strong>Iva 12%</strong></td><td><strong>{{total-sumasubtotal}}</strong></td></tr>
+        <tr><td></td><td colspan="4"><strong>Total</strong></td><td><strong>{{total}}</strong></td></tr> 
        </table> 
      {#     <div class="col-md-4"><a href="{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">Edit</a></div>
      <div class="col-md-4">

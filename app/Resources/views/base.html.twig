@@ -2,21 +2,23 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Sumecor{% endblock %}</title>
+        <title>{% block title %}Sumecor!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        {% stylesheets  output='css/*.css'
-            '@WsunBundle/Resources/public/css/bootstrap.min.css'  
-            '@WsunBundle/Resources/public/css/datepicker.less.css'
-            '@WsunBundle/Resources/public/css/main.css'                       
-            '@WsunBundle/Resources/public/css/font-awesome.min.css'
-            '@WsunBundle/Resources/public/css/datepicker.css'
-            '@WsunBundle/Resources/public/css/font-awesome.css'
-            '@WsunBundle/Resources/public/css/font-awesome-ie7.css'
-            '@WsunBundle/Resources/public/js/chosen/chosen.css'
-             
-            filter='cssrewrite' output='css/compiled/app.css' %}
-            <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
+{{ asset('favicon.ico') }}
+        {% stylesheets
+            'bundles/wsun/css/bootstrap.min.css'  
+            'bundles/wsun/css/datepicker.less.css'
+            'bundles/wsun/css/main.css'                       
+            'bundles/wsun/css/font-awesome.min.css'
+            'bundles/wsun/css/datepicker.css'
+            'bundles/wsun/css/font-awesome.css'
+            'bundles/wsun/css/font-awesome-ie7.css'
+            'bundles/wsun/js/chosen/chosen.css'
+
+            output='bundles/wsun/css/'         
+            filter='cssrewrite'%}
+            <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
         
     </head>
@@ -27,16 +29,27 @@
         
             {% javascripts    
             
-            '@WsunBundle/Resources/public/js/jquery-2.1.4.min.js'
-            '@WsunBundle/Resources/public/js/bootstrap.min.js' 
-            '@WsunBundle/Resources/public/js/jQuery-Autocomplete-1.2.9/dist/jquery.autocomplete.min.js'
-            '@WsunBundle/Resources/public/js/bootstrap-datepicker.js'
-            '@WsunBundle/Resources/public/js/chosen/chosen.jquery.js'
+            'bundles/wsun/js/jquery-2.1.4.min.js'
+            'bundles/wsun/js/bootstrap.min.js'
+	    'bundles/wsun/js/bootstrap.js'  
+            'bundles/wsun/js/jQuery-Autocomplete-1.2.9/dist/jquery.autocomplete.min.js'
+            'bundles/wsun/js/bootstrap-datepicker.js'
+            'bundles/wsun/js/chosen/chosen.jquery.js'
 
-            %}
+            output='bundles/wsun/js/' %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        {% endblock %}
         
+        {% endblock %}
+<script type="text/javascript">
+        buscar_global = function() {
+        if ($('#buscar_input').val() !== '') {
+            window.location = '{{ path('wsun_buscar') }}?valor=' + $('#buscar_input').val();
+        } else {
+            window.location = '{{ path('wsun_buscar') }}';
+        }
+        return false;
+    };
+</script>
     </body>
 </html>

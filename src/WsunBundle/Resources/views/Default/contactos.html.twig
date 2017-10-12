@@ -7,7 +7,61 @@
             {{message}}
         </div>
     {% endfor%}
-<div class="row">
+
+    <div class="col-md-6" >
+        
+        <div class="form-group">
+          <label for="mail" class="col-lg-2 control-label">Contacto:</label>
+          <div class="col-lg-10">
+              <span class="info">Ing. Santiago Jimenez <br>ggeneral@sumecor.com.ec <br>
+                  Presidente</span></div>
+          </div>
+        <br>
+           <div class="form-group">
+          <label for="mail" class="col-lg-2 control-label">Tel&eacute;fono:</label>
+          <div class="col-lg-10">
+               <ul>
+              <li>2268403</li>
+              <li>2920660</li>
+              <li>2921385</li>
+              <li>2264129</li>
+              <li>2269486</li>
+              <li>2268029</li>
+            </ul>
+
+          </div>
+          </div>
+
+        </div>
+     <div class="col-md-6" >
+        {{ form_start(form,{'class':'form-horizontal'}) }}
+        <div class="form-group">
+          <label for="mail" class="col-lg-2 control-label">Email</label>
+          <div class="col-lg-10">
+           
+            {{ form_widget(form.email, {'class': 'form-control'}) }}
+          </div>
+        </div>
+  <div class="form-group">
+    <label for="asunto" class="col-lg-2 control-label">Asunto</label>
+    <div class="col-lg-10">
+      {{ form_widget(form.asunto, {'class': 'form-control'} ) }}
+    </div>
+  </div>
+   <div class="form-group">
+    <label for="asunto" class="col-lg-2 control-label">Detalle</label>
+    <div class="col-lg-10">
+       {{ form_widget(form.detalle, {'class': 'form-control'}) }}
+    </div>
+  </div>  
+ 
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <button id='btnBuscar' class="btn btn-primary">Enviar</button>
+    </div>
+  </div>
+ {{ form_end(form) }}
+    </div>
     {#<div class="col-sm-2" >
         <span class="text-success">Contacto:</span>
     </div>
@@ -21,36 +75,9 @@
      <div class="col-sm-2 " >
         0983507302
     </div>#}
-    </div>
-<br>
-{{ form_start(form) }}
-                    <div class="row">
-                        <div class="col-sm-8" >
-                        {{ form_row(form.email, {'style': 'horizontal'}) }}
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-sm-8" >
-                    {{ form_row(form.asunto, {'style': 'horizontal'} ) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-8" >
-                    {{ form_row(form.detalle, {'style': 'horizontal'}) }}
-                        </div>
-                    </div>
-                       
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <button id='btnBuscar' class="btn btn-primary">Enviar</button>
-                        </div>
-                        {#<div class="col-sm-4">
-                            <a class="btn btn-danger" href="{{ path('sercop_sercop_bundle_admin_reportes_entidades') }}" >Reiniciar búsqueda</a>
-                        </div>#}
-                        
-                    </div>
-                    {{ form_end(form) }}
+   
+
+
 </div>
  
 

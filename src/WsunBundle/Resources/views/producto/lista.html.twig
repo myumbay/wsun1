@@ -1,15 +1,11 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 {% block bloque1 %}
     <div class="panel panel-azul">
-    {% for key, prod in producto %}
-       <div class="lbl1">
-           {{555 }}
-
-        <div class="lbl2 ">
-         {{ key }}: {{ prod.nombreProducto|e }}   
-           
+        <div class="col-md-12">
+            {% include 'WsunBundle:producto:filtros.html.twig' %}
         </div>
-       </div>
-        {% endfor %}
+    </div>    
+    <div class="panel panel-azul">
+   
     </div>
 {% endblock %}

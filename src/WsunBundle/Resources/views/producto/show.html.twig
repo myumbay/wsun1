@@ -1,82 +1,53 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 {% block bloque1 %}
-    <div class="box">
+   
     <div class="panel panel-azul">
     <fieldest>
     <legend class="text-center header">Producto</legend>
         <div class="container-fluid">
-         <div class="row   text-justify">
-          <div class="col-sm-2"></div>
-          <label class="col-sm-4 control-label">Imagen:</label>
-          <div class="col-sm-2 right" ><img src="{{asset(url) }}" alt="Producto" class="img-thumbnail"></div>
-          <div class="col-sm-3 "></div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 b"><b>Imagen:</b></div>
+          <div class="col-md-4 right" ><img src="{{asset(url) }}" alt="Producto" class="img-thumbnail"></div>
+          <div class="col-md-2"></div>
         </div>
-            
-        <div class="row   text-justify">
-          <div class="col-sm-2"></div>
-          <label class="col-sm-4 control-label">Nombre producto:</label>
-          <div class="col-sm-4 right" >{{ producto.nombreProducto }}</div>
-          <div class="col-sm-2"></div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4"><b>Nombre producto:</b></div>
+          <div class="col-md-4">{{ producto.nombreProducto }}</div>
+          <div class="col-md-2"></div>
         </div>
-        
-         <div class="row   text-justify">
-          <div class="col-sm-2"></div>
-          <label class="col-sm-4 control-label">Nombre producto:</label>
-          <div class="col-sm-4 right" >{{ producto.nombreProducto }}</div>
-          <div class="col-sm-2"></div>
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 "><b>Código Producto:</b></div>
+          <div class="col-md-4">{{ producto.codigoProducto }}</div>
+          <div class="col-md-2"></div>
+        </div> 
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 "><b>Observaciones</b></div>
+          <div class="col-md-4">{{ producto.observacion }}</div>
+          <div class="col-md-2"></div>
         </div>
-          
-        <div class="row   text-justify">
-          <div class="col-sm-2"></div>
-          <label class="col-sm-4 control-label">Código Producto::</label>
-          <div class="col-sm-4 right" >{{ producto.codigoProducto }}</div>
-          <div class="col-sm-2"></div>
-        </div>
-        <div class="row   text-justify">
-          <div class="col-sm-2"></div>
-          <label class="col-sm-4 control-label">Precio:</label>
-          <div class="col-sm-4 right" >{{ producto.precioProducto }}</div>
-          <div class="col-sm-2"></div>
-        </div>
-        <div class="row   text-justify">
-          <div class="col-sm-2"></div>
-          <label class="col-sm-4 control-label">Observaciones:</label>
-          <div class="col-sm-4 right" >{{ producto.observacion }}</div>
-          <div class="col-sm-2"></div>
-        </div>
-        <div class="row   text-justify">
-          <div class="col-sm-2"></div>
-          <label class="col-sm-4 control-label">Observaciones:</label>
-          <div class="col-sm-4 right" >{{ producto.observacion }}</div>
-          <div class="col-sm-2"></div>
-        </div>
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Precio: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.precioProducto }}</div>
-    </div>
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Observaciones: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.observacion }}</div>
-    </div>
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-4 text-left">Estado: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.estado }}</div>
-    </div>                
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Categoria: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ producto.categoria }}</div>
-    </div>  
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Graba Iva: </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">
-            {%if (producto.iva==true)%}
+        <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 "><b>Categoria: </b></div>
+          <div class="col-md-4">{{ producto.categoria }}</div>
+          <div class="col-md-2"></div>
+        </div>  
+         <div class="row text-justify">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 "><b>Graba Iva: </b></div>
+          <div class="col-md-4">{%if (producto.iva==true)%}
                 {{iva}}%
                 {%else%}
                     0%
-            {% endif %}
-            </div>
-    </div> 
-    <br>
+            {% endif %}</div>
+          <div class="col-md-2"></div>
+        </div> 
+          <br>
+          </div>
+           </fieldest>
      <div class="row">
         <div class="col-md-2"> <a href="{{ path('admin_producto_index') }}" class="btn btn-primary btn-sm">Atras</a></div>
          {% if is_granted('ROLE_ADMIN')%}
@@ -88,8 +59,8 @@
         </div>
          {% endif %}
     </div>
-    </fieldset>
-    </div>
+    
+    
 </div>
        
 

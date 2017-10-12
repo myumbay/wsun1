@@ -245,14 +245,13 @@ public function redimensionar($src, $ancho_forzado){
         $qb->setParameter('valor', $valor);
         $qb->setParameter('estado', '1');
         $productos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-         
         foreach ($productos as $producto) {
             $ids[] = $producto['id'];
             
         }
        
         //$path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
-      return $this->render('WsunBundle:producto:lista.html.twig', array('buscar' => $valorOrig, 'producto'=> $productos, 'listas' => array()));
+      return $this->render('WsunBundle:producto:lista.html.twig', array('buscar' => $valorOrig, 'producto'=> $productos, 'listas' => array(), 'filtros' => array()));
     }
     
     public function carruselAction($tipo, $id = 0) {
