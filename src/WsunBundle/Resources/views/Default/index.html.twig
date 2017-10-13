@@ -101,9 +101,11 @@
         });
     
     function Calc(){
+        
         var cant = $('#detallepedido_cantidad').val();
         var valunit = $('#detallepedido_valorUnitario').val();
-        var total=cant*valunit;
+        var n=valunit.replace(",",".");
+        var total=cant*n;
         $('#detallepedido_valorTotal').val(total);
     }
     buscar_global = function() {

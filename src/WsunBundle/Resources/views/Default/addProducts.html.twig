@@ -157,7 +157,37 @@
 
             }
         }
+        function NumCheck(e, field) {
+            key = e.keyCode ? e.keyCode : e.which
 
+            if (key == 8) return true
+
+            // 0-9 a partir del .decimal
+
+            if (field.value != "") {
+                if ((field.value.indexOf(".")) > 0) {
+                    //si tiene un punto valida dos digitos en la parte decimal
+                    if (key > 47 && key < 58) {
+                        if (field.value == "") return true
+                        //regexp = /[0-9]{1,10}[\.][0-9]{1,3}$/
+                        regexp = /[0-9]{4}$/ //total de valores decimales
+                        return !(regexp.test(field.value))
+                    }
+                }
+            }
+            if (key > 47 && key < 58) {
+                if (field.value == "") return true
+                //regexp = /.[0-9]{4}$/ //numero de decimales
+                regexp = /[0-9]{20}///total de valores enteros
+                return !(regexp.test(field.value))
+            }
+            if (key == 46) {
+                if (field.value == "") return false
+                regexp = /^[0-9]+$/
+                return regexp.test(field.value)
+            }
+            return false
+        }
         var validarProductos = function () {
             var banCapacidadproductiva = true;
             if ($('#empresaId').val() =='' ){
@@ -170,26 +200,29 @@
                 return false;
             }
              banCapacidadproductiva = true;
+             decallowed = 2;
            $('#form_area input[type=checkbox].selProducto:checked').each(function () {
                 var idProducto = $(this).val();
                 if ($('#capacidad' + idProducto).val() == '') {
-                    alert('Ingrese Total productos');
+                    alert('Ingrese el valor unitario del producto');
                     $('#capacidad' + idProducto).focus();
                     banCapacidadproductiva = false;
                     return false;
                 //} else if (isNaN($('#capacidad' + idProducto).val()) || $('#capacidad' + idProducto).val() % 1 != 0) {
-                } else if (isNaN($('#capacidad' + idProducto).val())) {    
-                    alert('Total productos invalida, ingrese solo números.');
+                } 
+                /*else if (isNaN($('#capacidad' + idProducto).val()) || $('#capacidad' + idProducto).val() == "") {
+                    alert('Valor unitario del producto, ingrese solo números.');
                     $('#capacidad' + idProducto).focus();
                     banCapacidadproductiva = false;
                     return false;
-                } else if (!parseInt($('#capacidad' + idProducto).val())) {
-                    alert('Ingrese el total de productos');
+                } 
+                else if (!parseInt($('#capacidad' + idProducto).val()) ) {
+                    alert('Ingrese el valor unitario del producto');
                     $('#capacidad' + idProducto).val('');
                     $('#capacidad' + idProducto).focus();
                     banCapacidadproductiva = false;
                     return false;
-                }
+                }*/
             });   
             if (!banCapacidadproductiva) {
                     return false;

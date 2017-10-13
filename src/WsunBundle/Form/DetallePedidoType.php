@@ -30,8 +30,8 @@ class DetallePedidoType extends AbstractType
         
         $builder->add('codigo')
                 ->add('cantidad')
-                ->add('valorUnitario',  NumberType::class)
-                ->add('valorTotal')
+                ->add('valorUnitario',  NumberType::class,array('attr' => array('readonly' => true)))
+                ->add('valorTotal',NumberType::class,array('attr' => array('readonly' => true)))
                 ->add('observaciones',  \Symfony\Component\Form\Extension\Core\Type\TextareaType::class)
                 /*->add('idProducto', TextType::class);*/
                 ->add('idProducto', EntityType::class, array(

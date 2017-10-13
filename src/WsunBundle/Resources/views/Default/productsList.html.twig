@@ -32,16 +32,24 @@
         {% for acat in array_cat %}
         <div class="tab-pane fade " id="cat{{acat}}"> 
            
-            <table border="1" table-striped head-fixed width="400"> <tr>
+            <table border="1" table-striped head-fixed width="400"> 
+                <ul class="col-sm-12">
+                    {%set total= productos| length%}
+                    {%set i= 1%}
             {% for producto in productos %}
-                 {% if(acat==producto.categoria.padreId)%}
-                     
-                         <td class="text-center " width="200">
+                
+                <div class="col-sm-3">
+                     {% if(acat==producto.categoria.padreId)%}
+                 
                              <div class="crsl-wrap"><img width="80" height="80" src="{{ asset('../Documentos/Productos/' ~  producto.id ~ '.' ~producto.imagen ) }}"/>
                              <a href="{{path('admin_producto_show',{'id':producto.id})}}">{{ producto.codigoProducto }}:{{ producto.nombreProducto }}</a>
                              </div>
+                </div>    
+                
+                        
                  {% endif %}
-            {% endfor %} 
+            {% endfor %}
+                </ul>
             </tr>   
 
              </table>

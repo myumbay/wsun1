@@ -70,7 +70,7 @@ class DetallePedidoController extends Controller
              $detallePedido->setIdPedido($pedido); 
              $em->persist($detallePedido);
              $em->flush();
-             return $this->redirectToRoute('detallepedido_index', array('id' => $detallePedido->getIdPedido()->getId()));
+                return $this->redirectToRoute('detallepedido_index', array('id' => $detallePedido->getIdPedido()->getId()));
             //return $this->redirectToRoute('detallepedido_show', array('id' => $detallePedido->getId()));
         }
 
@@ -155,6 +155,7 @@ class DetallePedidoController extends Controller
      */
     public function deleteAction(Request $request, DetallePedido $detallePedido)
     {
+        $id=$detallePedido->getIdPedido()->getId();
         $form = $this->createDeleteForm($detallePedido);
         $form->handleRequest($request);
 
@@ -163,8 +164,8 @@ class DetallePedidoController extends Controller
             $em->remove($detallePedido);
             $em->flush();
         }
-
-        return $this->redirectToRoute('detallepedido_index');
+        return $this->redirectToRoute('detallepedido_index', array('id' => $id));
+       // return $this->redirectToRoute('detallepedido_index');
     }
 
     /**
