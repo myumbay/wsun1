@@ -16,11 +16,14 @@
                         <select id="selector_empresa" name="selector_empresa" class="chosen-select" required="required" tabindex="2">
                             <option disabled selected value="0">Seleccione...</option>
                             {% for key, e in empresa %}
-                                <option value="{{e.id}}" >{{ e.nombreEmp }}</option>
+                                <option value="{{e.id}}" >{{ e.nombreEmp }} - Cod: {{e.codigoPedido}}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
+            {% if is_granted('ROLE_USER') %}
+            <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+            {% endif %}      
             </div>
             <div class="col-xs-6">
                 <div class="selector-empresa">
@@ -88,7 +91,8 @@
     </table>
         </div>
 </fieldset>
-  <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+ 
+  
 </div></div>
 {% endblock %}
 {% block javascripts %}

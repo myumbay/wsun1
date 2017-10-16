@@ -21,21 +21,32 @@ class PedidoController extends Controller
     {
         
         $user = $this->getUser();
+        
+            $ActivarNuevo=0;
+             $admin=0;
+            if(in_array('ROLE_USER', $this->getUser()->getRoles())){
+                $ActivarNuevo=1;    
+            }else if(in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+                $admin=1;
+            }
         $idEmpresa=$user->getDepartamento()->getIdEmpresa()->getId();
+        //var_dump($idEmpresa);die;
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->from('WsunBundle:Pedido', 'ped');
-        $qb->select('e.id,e.nombreEmp');
+        $qb->select('e.id,e.nombreEmp,ped.codigoPedido');
         $qb->innerJoin('ped.idUsuario', 'u');
         $qb->innerJoin('u.departamento', 'dpt');
         $qb->innerJoin('dpt.idEmpresa', 'e');
-        $qb->andWhere('e.id = :id');
+        if($admin!= '1'){
+        $qb->andWhere('e.id = :id');    
         $qb->setParameter('id', $idEmpresa);
-        $qb->addGroupBy('e.id,e.nombreEmp');
+        }
+        $qb->addGroupBy('e.id,e.nombreEmp,ped.codigoPedido');
         $qb->addOrderBy('e.nombreEmp', 'ASC');
 
         $empresa = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
+       
 
         //$em = $this->getDoctrine()->getManager();
        //$pedidos = $em->getRepository('WsunBundle:Pedido')->findAll();
@@ -46,8 +57,8 @@ class PedidoController extends Controller
         $qb->innerJoin('ped.idUsuario', 'u');
         $qb->innerJoin('u.departamento', 'dpt');
         $qb->innerJoin('dpt.idEmpresa', 'e');
-       // $qb->andWhere('dpto.idEmpresa = :id');
-        //$qb->setParameter('id', $id);
+        $qb->andWhere('e.id = :id');
+        $qb->setParameter('id', $idEmpresa);
         $qb->addOrderBy('ped.codigoPedido', 'DESC');
         $pedidos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         $paginator = $this->get('knp_paginator');
@@ -59,7 +70,7 @@ class PedidoController extends Controller
         );
  
         return $this->render('WsunBundle:pedido:index.html.twig', 
-            array('pagination' => $pagination,'empresa'=>$empresa));
+            array('pagination' => $pagination,'empresa'=>$empresa,'activarNuevo'=>$ActivarNuevo));
 
     }
     public function consultaPorEmpresaAction(Request $request) {
@@ -75,7 +86,7 @@ class PedidoController extends Controller
         if ($estado == '1') {
                 $qb->andWhere('ped.estadoPedido = :estado');
                 $qb->setParameter('estado', '1');
-        } elseif ($estado =='0') {
+        } elseif (empty($estado)) {
                 $qb->andWhere('ped.estadoPedido IS NULL');
                 // $qb->setParameter('estado', 0);}
         }
@@ -109,7 +120,11 @@ class PedidoController extends Controller
         if($this->getUser())
             $rol=$this->getUser()->getRoles()[0]->getName();
         $pedido = new Pedido();
+        $pedido->setFechaCreacion(new \DateTime('now'));
         $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
+        
+        
+        
         $form->handleRequest($request);
         $pedidos = $em->getRepository('WsunBundle:Pedido')->findOneBy(array(),array('id' => 'DESC'));
         if(count($pedidos)>0){
@@ -118,9 +133,12 @@ class PedidoController extends Controller
             $codigo=100;
         }
         if ($form->isValid()){//$form->isSubmitted() && $form->isValid()) {
-            
+            //$fc=$form->getData()->getFechaCreacion();
+            //$date = new \DateTime($fc);
             $em = $this->getDoctrine()->getManager();
+            
             $pedido->setCodigoPedido($codigo);
+           // $pedido->setFechaCreacion($date);
             $pedido->setUpdatedBy(-1);
             $em->persist($pedido);
             $em->flush();
@@ -142,8 +160,17 @@ class PedidoController extends Controller
     public function showAction(Request $request,Pedido $pedido)
     {
         $empresa=$pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getId();
-        $deleteForm = $this->createDeleteForm($pedido);
         $em = $this->getDoctrine()->getManager();
+        if($pedido->getUpdatedBy()==-1)
+        {
+            $aprobador='Orden Pendiente';
+        }else if($pedido->getUpdatedBy()>0)
+        {
+            $usuarioAprobado = $em->getRepository('WsunBundle:Usuarios')->find($pedido->getUpdatedBy());
+            $aprobador=$usuarioAprobado->getUsername();
+        }
+        $deleteForm = $this->createDeleteForm($pedido);
+        
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
@@ -155,6 +182,7 @@ class PedidoController extends Controller
         return $this->render('WsunBundle:pedido:show.html.twig', array(
             'id'=>$pedido->getId(),
             'empresa'=>$empresa,
+            'aprobador'=>$aprobador,
             'pedido' => $pedido,
             'pagination' => $pagination,
             'delete_form' => $deleteForm->createView(),
@@ -168,7 +196,6 @@ class PedidoController extends Controller
     public function editAction(Request $request, Pedido $pedido)
     {
         $rol='';
-       // var_dump($this->getUser()->getRoles()[0]->getName()   );die;
         if($this->getUser()){
                 $rol=$this->getUser()->getRoles()[0]->getName();
         }
@@ -176,7 +203,8 @@ class PedidoController extends Controller
         $deleteForm = $this->createDeleteForm($pedido);
         $editForm = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
         $editForm->handleRequest($request);
-
+   
+        //var_dump($editForm->getData()->getFechaCreacion());die;
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $pedido->setUpdatedBy($this->getUser()->getId());
             $em = $this->getDoctrine()->getManager();
@@ -258,6 +286,16 @@ class PedidoController extends Controller
         $id=$request->get('id');
         $em = $this->getDoctrine()->getManager();
         $pedido = $em->getRepository('WsunBundle:Pedido')->find($id);
+        
+        if($pedido->getUpdatedBy()==-1)
+        {
+            $aprobador='Orden Pendiente';
+        }else if($pedido->getUpdatedBy()>0)
+        {
+            $usuarioAprobado = $em->getRepository('WsunBundle:Usuarios')->find($pedido->getUpdatedBy());
+            $aprobador=$usuarioAprobado->getUsername();
+        }
+        
         $pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
@@ -270,6 +308,7 @@ class PedidoController extends Controller
         
         $html = $this->renderView('WsunBundle:detallepedido:mail.html.twig', array(
             'pedido' => $pedido,
+            'aprobador'=>$aprobador,
             'pagination' => $pagination
             )
         );

@@ -4,6 +4,9 @@
     
 
 <div class="panel panel-azul">
+     <div id="respuesta" style="border:1px red  ">
+       
+     </div> 
   <div class="row">
             <div class="col-md-3">
                 <span class="input-group-btn">
@@ -11,12 +14,13 @@
                 return false;">Guardar</button>
                 </span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-5">
+                <p class="text-info">Recuerde para realizar un pedido, debe existir un manager registrado!!!</p>
             </div>
              <div class="col-md-3">
                 <a href="{{ path('pedido_index') }}" class="icon-backward btn btn-primary btn-sm">Back</a> 
             </div>
-             <div class="col-md-3">
+             <div class="col-md-1">
             </div>
         </div>   
 
@@ -95,9 +99,7 @@
     {% endfor %}
     </tbody>
 </table>
-     <div id="respuesta" style="border:1px red  ">
        
-     </div>    
                         
                     </tbody>
      </div>

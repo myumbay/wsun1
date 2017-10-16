@@ -1,97 +1,92 @@
 {% extends 'WsunBundle:correo:base_correo.html.twig'%}
 {% block cuerpo %}
     <fieldest>
-        <legend class="text-center header">
-{#            <img src="/var/www/html/wsun/web/bundles/wsun/images/cabecera.png" alt="" /> funciona#}
-{#            <img src="{{ asset('bundles/wsun/images/cabecera.png') }}" alt="Symfony!" />f#}
-            <br> Orden de pedidos de Sumnistros</legend>
-        <div class="container-fluid">
-        <table class="table table-bordered">
-           
-            <tr>
-                <td></td> 
-                <td><b>Nombre Empresa:</b></td>
-                <td > {{pedido.IdUsuario.Departamento.IdEmpresa.NombreEmp}}</td>
-                <td width="20"></td>
-                <td><b>Fecha:</b></td>
-                <td >{{ pedido.fechaCreacion.date |date('Y-m-d')  }}</td>
-            </tr>
-            <tr>
-                <td></td> 
-                <td><b>Ruc:</b></td>
-                <td > {{ pedido.IdUsuario.Departamento.IdEmpresa.ruc   }}</td>
-                <td width="20"></td>
-                <td><b>Area:</b></td>
-                <td >{{ pedido.IdUsuario.Departamento.nombreDep  }}</td>
-                <td ><b>Estado:</b></td>
-                <td >{% if pedido.estadoPedido %}Aprobado{% else %}Iniciado{% endif %}  </td>
-            </tr>
-            <tr>
-                <td></td> 
-                <td><b>Dir. Cliente:</b></td>
-                <td > {{ pedido.IdUsuario.Departamento.IdEmpresa.DireccionEmp  }}</td>
-                <td width="20"></td>
-                <td><b>Responsable</b></td>
-                <td >{{ pedido.IdUsuario.Departamento.Responsable  }}</td>
-            </tr>
-            <tr>
-                <td></td> 
-                <td><b>Tel&eacute;fono:</b></td>
-                <td > {{ pedido.IdUsuario.Departamento.IdEmpresa.telefonoEmp  }}  </td>
-                <td width="20"></td>
-                <td><b>Orden Compra Sap</b></td>
-                <td >{{ pedido.ordenSap }}</td>
-                <td><span class="h2 text-info">Orden Compra</span> <br> N°:{{ pedido.codigoPedido}} </td>
-               
-            </tr>
-        </table>
-        
-          <legend class="text-center header"></legend>
-        <div class="count">
-                <span class="label label-primary">
-                Total: {{ pagination.getTotalItemCount }}
-                </span>
-            </div><br/>
-    <table class="table table-bordered">
+        <legend>Orden de pedidos de Sumnistros</legend>
+    </fieldest>    
+    <table width="900px" >
         <tr>
-            {# sorting of properties based on query components #}
-            <th>{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'DESCRIPCIÓN', '') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'CANTIDAD', '') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'VAL. UNIT', '') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'VAL. TOTAL', '') }}</th>
-            
+            <td width="20px"></td>
+            <td width="150px"><strong>Nombre Empresa:</strong></td>
+            <td width="200px">{{pedido.IdUsuario.Departamento.IdEmpresa.NombreEmp}}</td>
+            <td width="20px"></td>
+            <td width="100px"><b>Fecha:</b></td>
+            <td width="200px">{{ pedido.fechaCreacion.date |date('Y-m-d')  }}</td>
+        </tr>
+        <tr>
+            <td width="20px"></td>
+            <td width="150px"><strong>Ruc:</strong></td>
+            <td width="200px">{{ pedido.IdUsuario.Departamento.IdEmpresa.ruc   }}</td>
+            <td width="20px"></td>
+            <td width="100px"><strong>Area:</strong></td>
+            <td width="200px">{{ pedido.IdUsuario.Departamento.nombreDep  }}</td>
+            <td width="100px"><strong>Estado:</strong></td>
+            <td width="100px">{% if pedido.estadoPedido %}Aprobado{% else %}Iniciado{% endif %}</td>
+        </tr>
+         <tr>
+            <td width="20px"></td>
+            <td width="150px"><strong>Direcci&oacute;n Cliente:</strong></td>
+            <td width="200px">{{ pedido.IdUsuario.Departamento.IdEmpresa.DireccionEmp  }}</td>
+            <td width="20px"></td>
+            <td width="100px"><strong>Responsable:</strong></td>
+            <td width="200px">{{ pedido.IdUsuario.Departamento.Responsable  }}</td>
+            <td width="100px"><strong>Tel&eacute;fono:</strong></td>
+            <td width="100px">{{ pedido.IdUsuario.Departamento.IdEmpresa.telefonoEmp  }}</td>
         </tr> 
+        <tr>
+            <td width="20px"></td>
+            <td width="150px"><strong>Orden Compra Sap:</strong></td>
+            <td width="200px">{{ pedido.ordenSap }}</td>
+            <td width="20px"></td>
+            <td width="100px"><strong>Aprobado por:</strong></td>
+            <td width="200px">{{aprobador}}</td>
+            <td width="100px"><strong>Orden Compra:</strong></td>
+            <td width="100px">N°:{{ pedido.codigoPedido}} </td>
+        </tr>
+    </table>
+    <span class="label label-primary">
+    Total: {{ pagination.getTotalItemCount }}
+    </span>
+    <table border="1">
+         <tr>
+            {# sorting of properties based on query components #}
+            <th  width="50px">{{ knp_pagination_sortable(pagination, 'N°', '') }}</th>
+            <th width="150px">{{ knp_pagination_sortable(pagination, 'CÓDIGO', '') }}</th>
+            <th width="300px">{{ knp_pagination_sortable(pagination, 'DESCRIPCIÓN', '') }}</th>
+            <th width="150px">{{ knp_pagination_sortable(pagination, 'CANTIDAD', '') }}</th>
+            <th width="150px">{{ knp_pagination_sortable(pagination, 'VAL. UNIT', '') }}</th>
+            <th width="150px">{{ knp_pagination_sortable(pagination, 'VAL. TOTAL', '') }}</th>
+        </tr>
         {% set contador= 1%}
         {% set total= 0 %}
         {% set iva= 0 %}
         {% set subtotal= 0 %}
         {% set sumasubtotal= 0 %}
+        {% set sumaiva0= 0 %}
         {% for pd in pagination %}
-            <tr {% if loop.index is odd %}class="color"{% endif %}>
-                <td>{{ contador }}</td>    
-                <td>{{ pd.codigo }}</td>
-                <td>{{ pd.idProducto }}</td>
-                <td>{{ pd.cantidad }}</td>
-                <td>${{pd.valorUnitario|number_format(2,'.',',')}}</td>
-                <td>${{pd.valorTotal|number_format(2,'.',',')}}</td>
+        <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td width="50px">{{ contador }}</td>    
+                <td width="150px">{{ pd.codigo }}</td>
+                <td width="300px">{{ pd.idProducto }}</td>
+                <td width="150px">{{ pd.cantidad }}</td>
+                <td width="150px">${{pd.valorUnitario|number_format(2,'.',',')}}</td>
+                <td width="150px">${{pd.valorTotal|number_format(2,'.',',')}}</td>
                 {% set total= total+ pd.valorTotal%}
                 {% set subtotal= pd.cantidad* pd.valorUnitario%}
                 {% set sumasubtotal= sumasubtotal+subtotal%}
-                 <td>
-            
-                </td>
-            </tr>
+                {%if(pd.idProducto.producto.iva is empty)%} 
+                    sumaiva0=sumaiva0+(pd.cantidad*pd.valorUnitario)
+                {% endif%}
+        </tr>
             {% set contador= contador+1%}
         {% endfor %}
         <tr><td></td><td colspan="4"><strong>Subtotal</strong></td><td><strong>{{sumasubtotal}}</strong></td></tr>  
         <tr><td></td><td colspan="4"><strong>Iva 12%</strong></td><td><strong>{{total-sumasubtotal}}</strong></td></tr>
+        <tr><td></td><td colspan="4"><strong>Iva 0%</strong></td><td><strong>{{sumaiva0}}</strong></td></tr>
         <tr><td></td><td colspan="4"><strong>Total</strong></td><td><strong>{{total}}</strong></td></tr> 
-        
-    </table> 
-        
-        </div>
-            </fieldest>
+    </table>
+    <br><br><br>
+    <hr style="width:250px;float:left;">
+    <center><strong >SUMECOR Cia. Ltda</strong></span></center>
+    
          {% endblock %}
      
