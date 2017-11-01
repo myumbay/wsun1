@@ -1,0 +1,43 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    <div class="panel panel-azul">
+    <fieldest>
+    <legend class="text-center header">Datos del Departamento</legend>
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-md-1">
+        </div> 
+        <div class="col-md-2">
+            {{ form_label(form.nombreDepartamento)}}
+        </div> 
+        <div class="col-md-3">
+            {{ form_widget(form.nombreDepartamento)}}
+        </div> 
+    </div>
+      <div class="row">
+        <div class="col-md-1">
+        </div> 
+        <div class="col-md-2">
+            {{ form_label(form.observaciones)}}
+        </div> 
+        <div class="col-md-3">
+            {{ form_widget(form.observaciones)}}
+        </div> 
+    </div>   
+        <div class="row">
+            <div class="col-md-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>  
+     {{ form_end(form) }}
+    </fieldest>
+    
+    <div class="row">
+            <div class="col-md-2">
+                <a href="{{ path('parametrodepartamento_index') }}" class="btn btn-primary" >Atras</a>
+            </div>
+        </div> 
+    </div>
+{% endblock %}

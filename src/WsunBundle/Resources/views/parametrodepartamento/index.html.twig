@@ -1,0 +1,54 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+     <div class="panel panel-azul">
+        <fieldset>
+             <div class="panel-heading">
+                <strong><span>Lista</span> de Departamentos</strong>
+            </div> 
+            <div class="count">
+                <span class="label label-primary">
+               Total: {{ parametroDepartamentos.getTotalItemCount }}
+                </span>
+            </div><br/>
+ <div class="row">
+    <div class="col-md-3">
+     <a href="{{ path('parametrodepartamento_new') }}"><span class="glyphicon glyphicon-file"> Nuevo</span></a>
+    </div>
+                         
+</div> 
+    <table class="table table-bordered">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(parametroDepartamentos, 'ID', '') }}</th>
+            <th>{{ knp_pagination_sortable(parametroDepartamentos, 'NOMBRE DEPARTAMENTO', '') }}</th>
+            {#<th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}#}
+            </th>
+            <th>{{ knp_pagination_sortable(parametroDepartamentos, 'OBSERVACIONES', '') }}</th>
+            <th>{{ knp_pagination_sortable(parametroDepartamentos, 'ACCIONES', '') }}</th>
+        </tr>
+           
+        {% set contador= 1%}
+         <tbody>
+        {% for parametroDepartamento in parametroDepartamentos %}
+            <tr>
+                <td><a href="{{ path('parametrodepartamento_show', { 'id': parametroDepartamento.id }) }}">{{ parametroDepartamento.id }}</a></td>
+                <td>{{ parametroDepartamento.nombreDepartamento }}</td>
+                <td>{{ parametroDepartamento.observaciones }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('parametrodepartamento_show', { 'id': parametroDepartamento.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('parametrodepartamento_edit', { 'id': parametroDepartamento.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+</table>
+
+{% endblock %}

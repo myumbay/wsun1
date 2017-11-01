@@ -13,12 +13,7 @@
             <legend class="text-center header"><strong><span>Nuevo</span> de Departamentos</strong></legend>
                 {{ form_start(form, { 'enctype':"multipart/form-data"}) }}
                 <div class="container-fluid">
-                    <div class="row   text-justify">
-                        <div class="col-md-2"></div>
-                        <label class="col-sm-4 control-label">{{ form_label(form.nombreDep)}}</label>
-                        <div class="col-sm-2 right" >{{ form_widget(form.nombreDep) }}</div>
-                        <div class="col-sm-3 "></div>
-                    </div>
+                  
                     <div class="row   text-justify">
                         <div class="col-md-2"></div>
                         <label class="col-sm-4 control-label">{{ form_label(form.responsable)}}</label>
@@ -43,10 +38,21 @@
                         <div class="col-sm-2 right" >{{ form_widget(form.idEmpresa)}}  </div>
                         <div class="col-sm-3 "></div>
                     </div>
-
+                     <div class="row   text-justify">
+                        <div class="col-md-2"></div>
+                        <label class="col-sm-4 control-label">Departamento </label>
+                        <div class="col-sm-2 right" >{{ form_widget(form.departamento)}}  </div>
+                        <div class="col-sm-3 "></div>
+                    </div>    
+                      <div class="row   text-justify">
+                        <div class="col-md-2"></div>
+                        <label class="col-sm-4 control-label">{{ form_label(form.nombreDep)}}</label>
+                        <div class="col-sm-2 right" >{{ form_widget(form.nombreDep) }}</div>
+                        <div class="col-sm-3 "></div>
+                    </div>
                     <br>
                     <div class="row">
-                        <input type="submit" value="Create" class="btn btn-primary btn-sm" />
+                        <input type="submit" value="Crear" class="btn btn-primary" />
                     </div></div>
                 </fieldset>
      {{ form_end(form) }}

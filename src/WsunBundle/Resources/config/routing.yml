@@ -108,6 +108,9 @@ wsun_admin_user:
 wsun_admin_role:
         resource: "@WsunBundle/Resources/config/routing/role.yml"
         prefix:   /admin/role
+wsun_parametrodepartamento:
+        resource: "@WsunBundle/Resources/config/routing/parametrodepartamento.yml"
+        prefix:   /parametrodepartamento
 
 WsunAnnotations:
     resource: "@WsunBundle/Controller/"
@@ -121,3 +124,7 @@ wsun_reporte_consulta_departamento:
 wsun_reporte_consulta_pedido:
     path:  /productosConsulta  
     defaults: { _controller: WsunBundle:Admin:consultaProductos }
+
+wsun_consulta_departamento:
+    path:  /departamentoConsulta  
+    defaults: { _controller: WsunBundle:Departamento:consultaDepartamento }

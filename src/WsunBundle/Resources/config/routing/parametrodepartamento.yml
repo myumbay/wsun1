@@ -1,0 +1,24 @@
+parametrodepartamento_index:
+    path:     /
+    defaults: { _controller: "WsunBundle:ParametroDepartamento:index" }
+    methods:  GET
+
+parametrodepartamento_show:
+    path:     /{id}/show
+    defaults: { _controller: "WsunBundle:ParametroDepartamento:show" }
+    methods:  GET
+
+parametrodepartamento_new:
+    path:     /new
+    defaults: { _controller: "WsunBundle:ParametroDepartamento:new" }
+    methods:  [GET, POST]
+
+parametrodepartamento_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WsunBundle:ParametroDepartamento:edit" }
+    methods:  [GET, POST]
+
+parametrodepartamento_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WsunBundle:ParametroDepartamento:delete" }
+    methods:  DELETE

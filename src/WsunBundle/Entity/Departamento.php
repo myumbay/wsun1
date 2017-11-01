@@ -57,7 +57,16 @@ class Departamento
      * })
      */
     private $idEmpresa;
-  
+    
+     /**
+     * @var \ParametroDepartamento
+     *
+     * @ORM\ManyToOne(targetEntity="ParametroDepartamento", inversedBy="departamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_departamento", referencedColumnName="id")
+     * })
+     */
+    private $parametroDepartamento;
 
 
     /**
@@ -188,6 +197,33 @@ class Departamento
     public function getIdEmpresa()
     {
         return $this->idEmpresa;
+    }
+    
+    /*
+     * parametroDepartamento
+     */
+    /**
+     * Set parametroDepartamento
+     *
+     * @param \WsunBundle\Entity\ParametroDepartamento parametroDepartamento
+     *
+     * @return parametroDepartamento
+     */
+    public function setParametroDepartamento(\WsunBundle\Entity\ParametroDepartamento $parametroDepartamento = null)
+    {
+        $this->parametroDepartamento = $parametroDepartamento;
+
+        return $this;
+    }
+
+    /**
+     * Get departamento
+     *
+     * @return \WsunBundle\Entity\ParametroDepartamento
+     */
+    public function getParametroDepartamento()
+    {
+        return $this->parametroDepartamento;
     }
     
      public function __toString() {

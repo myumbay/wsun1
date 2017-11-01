@@ -83,8 +83,9 @@ class UserController extends Controller
         $editForm = $this->createForm('WsunBundle\Form\UsuariosType', $user);
         $current_pass = $user->getPassword();
         $editForm->handleRequest($request);
-
+        
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            //var_dump($editForm->getData());die;
             //evalua si la contraseña fue modificada: ------------------------
             if ($current_pass != $user->getPassword()) {
                 $this->setSecurePassword($user);

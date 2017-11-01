@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Response;
 /**
 * @Security("has_role('ROLE_ADMIN')")
 */
@@ -48,7 +49,12 @@ class DepartamentoController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $empresa = $em->getRepository('WsunBundle:Empresa')->find($form->getData()->getIdEmpresa());
-            
+            $depart = $em->getRepository('WsunBundle:Departamento')->findBy(array('idEmpresa'=>$form->getData()->getIdEmpresa(),'departamento'=>$form->getData()->getDepartamento()));
+             if(count($depart)>0){
+                    $mensaje = 'El departamento ya se encuentra registrado!!';
+                    $this->session->getFlashBag()->add("status",$mensaje);
+                    return $this->redirectToRoute('admin_departamento_new');
+                }
             /* @var $qb \Doctrine\ORM\QueryBuilder */
             $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
             $qb->from('WsunBundle:Departamento', 'dep');
@@ -163,5 +169,21 @@ class DepartamentoController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+     public function consultaDepartamentoAction(Request $request) {
+          $id=$request->request->get('id');
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+           $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+            $qb->from('WsunBundle:Departamento', 'dpto');
+            $qb->select('pd.id, pd.nombreDepartamento');
+            $qb->innerJoin('dpto.parametroDepartamento', 'pd');
+            $qb->andWhere('dpto.idEmpresa = :id');
+            $qb->setParameter('id', $id);
+            $qb->addOrderBy('dpto.nombreDep', 'ASC');
+            $departamento = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+           
+            $response = new Response(json_encode(array('data' => $departamento)));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response; 
     }
 }

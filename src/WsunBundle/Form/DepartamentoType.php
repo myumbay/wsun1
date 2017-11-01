@@ -15,11 +15,12 @@ class DepartamentoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('nombreDep',  TextType::class,array('label'=>'Nombre Departamento:'))
+                ->add('nombreDep',  TextType::class,array('label'=>'Detalle:'))
                 ->add('responsable' ,  TextType::class,array('label'=>'Nombre Responsable:'))//, array("attr"=>array("class"=>"form form-control")))
                 ->add('telefono', TextType::class,array('label'=>'Telf.:'))
                 ->add('valor', TextType::class,array('label'=>'Valor:'))
-                ->add('idEmpresa');
+                ->add('idEmpresa')
+                ->add('departamento')
                 ;
         
         

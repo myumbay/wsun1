@@ -1,37 +1,56 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    
-    <fieldest>
-     <legend class="text-center header">Edición de Usuario</legend>
-    
-
-    {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"})}}
-    <table  width="90%" cellpadding="10"  > 
-         <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.username)}}</td>
-                <td> {{ form_widget(edit_form.username) }}</td>
-        </tr>
-        <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.password)}}</td>
-                <td> {{ form_widget(edit_form.password) }}</td>
-        </tr> 
-        <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.ruc)}}</td>
-                <td> {{ form_widget(edit_form.ruc   ) }}</td>
-        </tr>
-        <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.correo)}}</td>
-                <td> {{ form_widget(edit_form.correo) }}</td>
-        </tr>
-        <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.departamento)}}</td>
-                <td> {{ form_widget(edit_form.departamento) }}</td>
-        </tr>
-        <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.user_roles)}}</td>
-                <td> {{ form_widget(edit_form.user_roles) }}</td>
-        </tr>
+    <div class="panel panel-azul">
+        <fieldset>
+            <legend class="text-center header">LISTA DE CATEGORIAS</legend>
+        </fieldset>
+         {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"})}}
+        <div class="row">
+             <div class="col-md-1">
+             </div>
+             <div class="col-md-2">{{ form_label(edit_form.username)}}  </div>
+             <div class="col-md-2">{{ form_widget(edit_form.username) }} </div>
+        </div>
+        <div class="row">
+             <div class="col-md-1">
+             </div>
+             <div class="col-md-2">{{ form_label(edit_form.password)}}  </div>
+             <div class="col-md-2">{{ form_widget(edit_form.password) }} </div>
+        </div>
+         <div class="row">
+             <div class="col-md-1">
+             </div>
+             <div class="col-md-2">{{ form_label(edit_form.ruc)}}  </div>
+             <div class="col-md-2">{{ form_widget(edit_form.ruc   ) }} </div>
+        </div>
+         <div class="row">
+             <div class="col-md-1">
+             </div>
+             <div class="col-md-2">{{ form_label(edit_form.correo)}}  </div>
+             <div class="col-md-2">{{ form_widget(edit_form.correo   ) }} </div>
+        </div>
+         <div class="row">
+             <div class="col-md-1">
+             </div>
+            
+             <div class="col-md-2">{{ form_label(edit_form.empresa)}}  </div>
+            <div class="col-md-2">{{ form_widget(edit_form.empresa, {'value' : user.departamento.idEmpresa.id} )}} </div>
+        </div>
+         <div class="row">
+             <div class="col-md-1">
+             </div>
+             <div class="col-md-2">{{ form_label(edit_form.departamento)}}  </div>
+             <div class="col-md-2">{{ form_widget(edit_form.departamento   ) }} </div>
+        </div>
+          <div class="row">
+             <div class="col-md-1">
+             </div>
+             <div class="col-md-2">{{ form_label(edit_form.user_roles)}}  </div>
+             <div class="col-md-2">{{ form_widget(edit_form.user_roles   ) }} </div>
+        </div>
+        
+        
         <div class="row">
             <div class="col-md-3">
             <input class="btn btn-info" type="submit" value="Edit" />
@@ -40,9 +59,7 @@
                 <a class="btn btn-info" href="{{ path('admin_user_index') }}">Regresar</a>
             </div>
              </div>
-
-    </table>
-        
+   
     {{ form_end(edit_form) }}
             
     <div class="col-md-3">
@@ -50,4 +67,40 @@
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
      </div>
+    </div>        
+{%endblock%}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+$(document).ready(function () {
+            
+
+    $("#wsunbundle_usuarios_empresa").change(function(){
+    var id=$(this).val();
+    $.ajax({
+        async:false,
+        complete: function(xhr, data)
+        {
+            if (xhr.responseText.search('<head class="login">') < 50 && xhr.responseText.search('<head class="login">') != - 1){
+                location.reload();
+            }
+        },
+        method: 'POST',
+        data: {'id':id},
+        url: "{{ path('wsun_consulta_departamento')}}",
+        context: document.body
+        }).done(function(dataJson) {
+            console.log(dataJson);
+            $("#wsunbundle_usuarios_departamento").html('');
+            $("#wsunbundle_usuarios_departamento").append('<option disabled selected value="0">Seleccione...</option>');
+            $.each(dataJson.data, function(index,value){
+                $("#wsunbundle_usuarios_departamento").append('<option style=" "    value="'+value.id+'">'+value.nombreDepartamento+'</option>');
+            });
+            $("#wsunbundle_usuarios_departamento").trigger("chosen:updated");
+
+        });
+        }); 
+});
+        </script>
 {% endblock %}

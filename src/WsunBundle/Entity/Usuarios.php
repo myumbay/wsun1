@@ -260,4 +260,28 @@ class Usuarios implements UserInterface
         return $this->correo;
     }
 
+
+    /**
+     * Add userRole
+     *
+     * @param \WsunBundle\Entity\Role $userRole
+     *
+     * @return Usuarios
+     */
+    public function addUserRole(\WsunBundle\Entity\Role $userRole)
+    {
+        $this->user_roles[] = $userRole;
+
+        return $this;
+    }
+
+    /**
+     * Remove userRole
+     *
+     * @param \WsunBundle\Entity\Role $userRole
+     */
+    public function removeUserRole(\WsunBundle\Entity\Role $userRole)
+    {
+        $this->user_roles->removeElement($userRole);
+    }
 }

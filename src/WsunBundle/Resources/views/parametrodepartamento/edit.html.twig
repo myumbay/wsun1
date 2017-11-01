@@ -1,0 +1,52 @@
+{% extends 'WsunBundle:Default:index.html.twig'%}
+
+{% block bloque1 %}
+    <div class="panel panel-azul">
+    <fieldest>
+    <legend class="text-center header">Edición de Departamento</legend>
+     {{ form_start(edit_form) }}
+    <div class="row">
+        <div class="col-md-1">
+        </div> 
+        <div class="col-md-2">
+            {{ form_label(edit_form.nombreDepartamento)}}
+        </div> 
+        <div class="col-md-3">
+            {{ form_widget(edit_form.nombreDepartamento)}}
+        </div> 
+    </div>
+      <div class="row">
+        <div class="col-md-1">
+        </div> 
+        <div class="col-md-2">
+            {{ form_label(edit_form.observaciones)}}
+        </div> 
+        <div class="col-md-3">
+            {{ form_widget(edit_form.observaciones)}}
+        </div> 
+    </div>   
+        <div class="row">
+            <div class="col-md-2">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </div>  
+     {{ form_end(edit_form) }}
+   
+
+    <div class="row">
+            <div class="col-md-2">
+                <a href="{{ path('parametrodepartamento_index') }}" class="btn btn-primary" >Atras</a>
+            </div>
+        </div> 
+   
+     <div class="row">
+            <div class="col-md-2">
+               {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }} 
+                
+            </div>
+        </div> 
+   </div>
+    
+{% endblock %}

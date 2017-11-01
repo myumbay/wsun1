@@ -1,7 +1,7 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <div class="box">
+    <div class="panel panel-azul">
           {% for message in app.session.flashbag().get('status')%}
         <div class="alert alert-danger">
             {{message}}
@@ -13,10 +13,7 @@
                 <h3> <strong><span>Edicion</span> de Departamentos</strong></h3>
             </div> 
         {{ form_start(edit_form) }}    
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.nombreDep)}} </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.nombreDep) }}</div>
-    </div>        
+          
     <div class="row">
         <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.responsable)}}  </div>
         <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(edit_form.responsable)}}</div>
@@ -33,22 +30,31 @@
         <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Empresa   </div>
         <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.idEmpresa)}}</div>
       </div>
+       <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Departamento   </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.departamento)}}</div>
+      </div>
+       <div class="row">
+        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.nombreDep)}} </div>
+        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.nombreDep) }}</div>
+    </div> 
       <div class="row">
-           <input type="submit" value="Edit" />
+          <div class="col-md-2">
+              <input type="submit" value="Guardar" class="btn btn-primary" />
+          </div>    
       </div>
 
     {{ form_end(edit_form) }}
-     <table>
-    <tr><td> <a href="{{ path('admin_departamento_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Back to the list</a></td></tr>
-    
-            <tr><td>
+     <div class="row">
+          <div class="col-md-2">
+              <a href="{{ path('admin_departamento_index') }}" class="btn btn-primary" >Atras</a>
+          </div>
+        <div class="col-md-2">
         {{ form_start(delete_form) }}
-        <button type="submit" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Delete</button>
+        <button type="submit" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true" class="btn btn-primary"></i> Delete</button>
         {{ form_end(delete_form) }}
-                    
-        </td></tr>
-</table> 
-       
+        </div>
+      </div>
  </div> </div>
     </div>
 {% endblock %}

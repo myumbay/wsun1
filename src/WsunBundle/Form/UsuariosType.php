@@ -15,16 +15,27 @@ class UsuariosType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $id_empresa=$builder->getData()->getDepartamento()->getIdEmpresa()->getId();
         $builder
                 ->add('username',TextType::class,array('label'=>'Username: '))
                 ->add('password',TextType::class,array('label'=>'Password: '))
                 ->add('ruc',TextType::class,array('label'=>'Ruc: '))
-                ->add('correo',TextType::class,array('label'=>'Correo: '))
+                ->add('correo',TextType::class,array('label'=>'Correo: ','label'=>'Correo: '))
+                ->add('empresa', EntityType::class, array('mapped' => false,
+                'class' => 'WsunBundle:Empresa',
+                'query_builder' => function (\Doctrine\ORM\EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.id', 'ASC');
+                },
+                'choice_label' => 'nombreEmp',
+                ))   
                 ->add('departamento', EntityType::class, array(
                     'class' => 'WsunBundle:Departamento',
-                    'query_builder' => function(\Doctrine\ORM\EntityRepository $er) {
+                    'query_builder' => function(\Doctrine\ORM\EntityRepository $er)use ($id_empresa) {
                         return $er->createQueryBuilder('c')
-                            //->andWhere('c.padreId is NULL')
+                                
+                            ->andWhere('c.idEmpresa = :empresa')
+                            ->setParameter('empresa', $id_empresa)    
                             //->andWhere('c.padreId =c.id')
                             ->orderBy('c.nombreDep', 'ASC');
                     },
