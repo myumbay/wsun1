@@ -5,10 +5,12 @@
   <title>{% block titulo %}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
-    <body>
-{#        <img src="/var/www/html/wsun/web/bundles/wsun/images/cabecera.png" alt="" />#}
-        <img src="/home/sumecorcom/public_html/web/bundles/wsun/images/cabecera.png" alt="" />
-{#       <img src="http://www.sumecor.com.ec/bundles/wsun/images/cabecera.png" /> <br/>#}
+<body>
+<div id="header">
+    <h3 align="right">Ruc 1790963489001</h3>
+		 <img src="/var/www/html/wsun/web/bundles/wsun/images/cabecera.png" alt="" />
+	 <!--<img src="/home/sumecorcom/public_html/web/bundles/wsun/images/cabecera.png" alt="" /> -->
+ </div>
         {% block cuerpo %}
         {% endblock %}
     </body>

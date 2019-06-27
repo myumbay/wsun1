@@ -55,7 +55,8 @@
                <a href="{{ path('pedido_pdf',{ 'id': pedido.id }) }}" class=" btn btn-primary btn-sm">Exportar pdf</a> 
             </div>
              <div class="col-md-3">
-                {% if( pedido.estadoPedido=='1')%}
+			 
+                {% if( pedido.estadoPedido=='1' and is_granted('ROLE_ACEPTAR_PEDIDO'))%}
                  <input type="button" id="btnAprobar" disabled="true" class="btn btn-primary btn-sm" value="Aprobar Orden" >
                  {%else%}
                    {% if is_granted('ROLE_ACEPTAR_PEDIDO') %}
@@ -64,9 +65,12 @@
                 
                 {%endif%}
             </div>
+			
+			{% if is_granted('ROLE_ACEPTAR_PEDIDO') == false %}
              <div class="col-md-3">
                <a href ="{{path('addpedido_index',{'idPedido':pedido.id,'id' :pedido.IdUsuario.Departamento.IdEmpresa.id |default('empresa')})}}" class="btn btn-primary btn-sm">Editar Productos</a>
             </div>
+			 {%endif%}
         </div>
             <div id="mensaje"></div>
         
@@ -104,9 +108,11 @@
                 {% set subtotal= pd.cantidad* pd.valorUnitario%}
                 {% set sumasubtotal= sumasubtotal+subtotal%}
                  <td>
+				 {% if is_granted('ROLE_ACEPTAR_PEDIDO') == false %}
                     <div class="row">
                         <a   href= "{{ path('detallepedido_edit', { 'id': pd.id }) }}" class="btn btn-primary btn-sm">edit</a>
                     </div>
+					{% endif %}
                 </td>
             </tr>
             {% set contador= contador+1%}

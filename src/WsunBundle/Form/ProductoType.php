@@ -18,7 +18,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
+use Doctrine\ORM\EntityManager; 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+	
 class ProductoType extends AbstractType
 {
     /**
@@ -34,10 +36,10 @@ class ProductoType extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
+		//$idPadre = $options['idPadre'];  
+	 
         $builder
                 ->add('nombreProducto',  TextType::class,array('label'=>'Nombre Producto:'))
-               //->add('imagen' ,  TextType::class,array('label'=>'Imagen:'))//, array("attr"=>array("class"=>"form form-control")))
                 ->add('imagen', FileType::class, array('label' => 'Imagen del producto (254 x 270px.)','data_class' => NULL,
                         'label_attr' => array('class' => 'control-label col-lg-4'),
                         'required' => false,
@@ -47,13 +49,15 @@ class ProductoType extends AbstractType
                     "attr" => array(                                                        
                             "class" => "col-lg-8",                            
                         )))
-                ->add('codigoProducto', TextType::class,array('label'=>'Código Producto:')) 
+                ->add('codigoProducto', TextType::class,array('label'=>'Código Producto:'),array(
+        'read_only' => 'true')) 
                 ->add('precioProducto',  NumberType::class,array('label'=>'Precio:'))
                 ->add('observacion', TextareaType::class,array('label'=>'Descripcion:'))
                 ->add('estado',  CheckboxType::class,array('label'=>'Estado:','required' => false))
                 ->add('iva',  CheckboxType::class,array('label'=>'Graba iva:','required' => false))
                 ->add('categoriaPadre', EntityType::class, array(
                     'class' => 'WsunBundle:Categoria',
+					
                      'empty_data' => 0,'attr' => array(
                     'class' => 'select..'),
                     'query_builder' => function(EntityRepository $er) {
@@ -62,11 +66,12 @@ class ProductoType extends AbstractType
                             //->andWhere('c.padreId =c.id')
                             ->orderBy('c.nombreCat', 'ASC');
                     },
-                    'empty_data' => 'Seleccionar Categoria..',
+                    //'empty_data' => 'Seleccionar Categoria..',
+					'data' => 3,
                     'mapped' => false
-                            
-
+                           
     ))
+	
        //                
 //        ->add('categoria',EntityType::class, array(
 //        'class' => 'WsunBundle:Categoria',
@@ -95,7 +100,7 @@ class ProductoType extends AbstractType
                 ));*/
 
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -103,7 +108,13 @@ class ProductoType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'WsunBundle\Entity\Producto'
-        ));
+        //))
+		//->setRequired(array(
+		  //  'idPadre'
+		));
+		//->setAllowedTypes(array(
+		  //  'em' => 'Doctrine\Common\Persistence\ObjectManager',
+			//));
     }
 
     /**

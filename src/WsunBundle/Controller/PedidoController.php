@@ -6,6 +6,7 @@ use WsunBundle\Entity\Pedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Dompdf\Dompdf;
 /**
@@ -13,7 +14,11 @@ use Dompdf\Dompdf;
  */
 class PedidoController extends Controller
 {
-    /**
+    private $session;
+    public function __construct() {
+        $this->session=new Session();
+    }
+	/**
      * Lists all pedido entities.
      *
      */
@@ -29,8 +34,14 @@ class PedidoController extends Controller
             }else if(in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
                 $admin=1;
             }
-        $idEmpresa=$user->getDepartamento()->getIdEmpresa()->getId();
-        //var_dump($idEmpresa);die;
+			$idEmpresa=0;
+			
+			if (!is_null($user->getDepartamento())){
+				$idEmpresa=$user->getDepartamento()->getIdEmpresa()->getId();
+			}
+			
+       $idUser=$this->getUser()->getId();
+	  
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->from('WsunBundle:Pedido', 'ped');
@@ -38,10 +49,13 @@ class PedidoController extends Controller
         $qb->innerJoin('ped.idUsuario', 'u');
         $qb->innerJoin('u.departamento', 'dpt');
         $qb->innerJoin('dpt.idEmpresa', 'e');
-        if($admin!= '1'){
-        $qb->andWhere('e.id = :id');    
+        if($admin!= '1' and $idEmpresa>0){
+        $qb->andWhere('e.id = :id');
+		$qb->andWhere('ped.idUsuario = :idus');    
+        $qb->setParameter('idus', $idUser);
         $qb->setParameter('id', $idEmpresa);
         }
+		
         $qb->addGroupBy('e.id,e.nombreEmp,ped.codigoPedido');
         $qb->addOrderBy('e.nombreEmp', 'ASC');
 
@@ -57,10 +71,16 @@ class PedidoController extends Controller
         $qb->innerJoin('ped.idUsuario', 'u');
         $qb->innerJoin('u.departamento', 'dpt');
         $qb->innerJoin('dpt.idEmpresa', 'e');
+		if ($ActivarNuevo==1 and $idEmpresa>0 ){
         $qb->andWhere('e.id = :id');
+		$qb->andWhere('ped.idUsuario = :idus');    
+        $qb->setParameter('idus', $idUser);
         $qb->setParameter('id', $idEmpresa);
+		}
         $qb->addOrderBy('ped.codigoPedido', 'DESC');
-        $pedidos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        
+		$pedidos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+		
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
         $pagination = $paginator->paginate(
@@ -68,13 +88,13 @@ class PedidoController extends Controller
                 $request->query->getInt('page', 1),
                 $limite
         );
- 
+		
         return $this->render('WsunBundle:pedido:index.html.twig', 
             array('pagination' => $pagination,'empresa'=>$empresa,'activarNuevo'=>$ActivarNuevo));
 
     }
     public function consultaPorEmpresaAction(Request $request) {
-        $id=$request->get('id');
+        $id=$request->get('id'); 
         $estado=$request->get('estado');
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
@@ -96,6 +116,7 @@ class PedidoController extends Controller
         }
         $qb->addOrderBy('ped.codigoPedido', 'DESC');
         $pedidos = $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+		//var_dump($pedidos);die;
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
         $pagination = $paginator->paginate(
@@ -122,9 +143,7 @@ class PedidoController extends Controller
         $pedido = new Pedido();
         $pedido->setFechaCreacion(new \DateTime('now'));
         $form = $this->createForm('WsunBundle\Form\PedidoType', $pedido,array($rol));
-        
-        
-        
+                      
         $form->handleRequest($request);
         $pedidos = $em->getRepository('WsunBundle:Pedido')->findOneBy(array(),array('id' => 'DESC'));
         if(count($pedidos)>0){
@@ -159,7 +178,16 @@ class PedidoController extends Controller
      */
     public function showAction(Request $request,Pedido $pedido)
     {
-        $empresa=$pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getId();
+        $empresa=0;
+		if (!is_null($pedido->getIdUsuario()->getDepartamento())){
+				$empresa=$pedido->getIdUsuario()->getDepartamento()->getIdEmpresa()->getId();
+		}
+		if ($empresa==0){
+                    $mensaje = 'No existe una empresa asociado al usuario, Verifique!!';
+                    $this->session->getFlashBag()->add("status",$mensaje);
+                    return $this->redirectToRoute('pedido_new');
+		}
+		
         $em = $this->getDoctrine()->getManager();
         if($pedido->getUpdatedBy()==-1)
         {

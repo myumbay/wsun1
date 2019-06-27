@@ -342,24 +342,4 @@ class Empresa
     public function __toString() {
         return $this->nombreEmp;
     }
-
-    /**
-     * Remove empresaProducto
-     *
-     * @param \WsunBundle\Entity\EmpresaProducto $empresaProducto
-     */
-    public function removeEmpresaProducto(\WsunBundle\Entity\EmpresaProducto $empresaProducto)
-    {
-        $this->empresaProducto->removeElement($empresaProducto);
-    }
-
-    /**
-     * Get empresaProducto
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmpresaProducto()
-    {
-        return $this->empresaProducto;
-    }
 }

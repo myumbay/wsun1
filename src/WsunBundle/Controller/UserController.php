@@ -19,6 +19,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('WsunBundle:Usuarios')->findAll();
+		
+		//var_dump($users->getUserRoles());die;
+		
+		
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
         $pagination = $paginator->paginate(
@@ -50,7 +54,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('admin_user_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('admin_user_index', array('id' => $user->getId()));
         }
 
         return $this->render('WsunBundle:user:new.html.twig', array(
@@ -79,20 +83,35 @@ class UserController extends Controller
      */
     public function editAction(Request $request, Usuarios $user)
     {
-        $deleteForm = $this->createDeleteForm($user);
+        if (!$user) {
+         throw $this->createNotFoundException('Usuario No existe');
+		}
+		 $em = $this->getDoctrine()->getManager();
+		$originalPassword = $user->getPassword(); 
+		$deleteForm = $this->createDeleteForm($user);
         $editForm = $this->createForm('WsunBundle\Form\UsuariosType', $user);
+		//$editForm->get('empresa')->setData($em->getReference('WsunBundle:Empresa', 1));	
         $current_pass = $user->getPassword();
         $editForm->handleRequest($request);
-        
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            //var_dump($editForm->getData());die;
-            //evalua si la contraseña fue modificada: ------------------------
-            if ($current_pass != $user->getPassword()) {
-                $this->setSecurePassword($user);
+
+       if ($editForm->isSubmitted() && $editForm->isValid()) {
+			$plainPassword = $editForm->get('password')->getData();
+			  if (!empty($plainPassword))  {  
+                //encode the password   
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user); //get encoder for hashing pwd later
+                $tempPassword = $encoder->encodePassword($user->getPassword(), $user->getSalt()); 
+                $user->setPassword($tempPassword);                
             }
+            else {
+                $user->setPassword($originalPassword);
+            }
+            //evalua si la contraseña fue modificada: ------------------------
+            /*if ($current_pass != $user->getPassword()) {
+                $this->setSecurePassword($user);
+            }*/
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_user_edit', array('id' => $user->getId()));
+            return $this->redirectToRoute('admin_user_index', array('id' => $user->getId()));
         }
 
         return $this->render('WsunBundle:user:edit.html.twig', array(

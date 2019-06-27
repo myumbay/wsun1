@@ -1,60 +1,73 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <div class="panel panel-azul">
-          {% for message in app.session.flashbag().get('status')%}
-        <div class="alert alert-danger">
+<div class="panel panel-azul">
+    {% for message in app.session.flashbag().get('status')%}
+        <div class="alert alert-success">
             {{message}}
         </div>
     {% endfor%}
-    <div class="panel-body">
-    <div class="panel2">
-            <div class="panel-heading">
-                <h3> <strong><span>Edicion</span> de Departamentos</strong></h3>
-            </div> 
-        {{ form_start(edit_form) }}    
-          
-    <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.responsable)}}  </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{form_widget(edit_form.responsable)}}</div>
-    </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.telefono)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.telefono)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.valor)}}   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.valor)}}</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Empresa   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.idEmpresa)}}</div>
-      </div>
-       <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">Departamento   </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.departamento)}}</div>
-      </div>
-       <div class="row">
-        <div class="col-xs-4 col-sm-3 col-lg-5 text-left">{{ form_label(edit_form.nombreDep)}} </div>
-        <div class="col-xs-5 col-sm-6 col-lg-4 text-left">{{ form_widget(edit_form.nombreDep) }}</div>
-    </div> 
-      <div class="row">
-          <div class="col-md-2">
-              <input type="submit" value="Guardar" class="btn btn-primary" />
-          </div>    
+        <div class="panel panel-azul">
+            <fieldest>
+             <legend class="text-center header"><strong><span>Edición de</span> Departamentos</strong></legend>
+                {{ form_start(edit_form) }}
+			 <div class="container-fluid">
+                    <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.nombreDep)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.nombreDep) }}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+					<div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.responsable)}}</label>
+                        <div class="col-md-4 right" >{{form_widget(edit_form.responsable)}}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+					<div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.telefono)}}</label>
+                        <div class="col-md-4 right" >{{form_widget(edit_form.telefono)}}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+					 <div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">{{ form_label(edit_form.valor)}}</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.valor)}}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+					<div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">Empresa</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.idEmpresa)}}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+					<div class="row   text-justify">
+                        <div class="col-md-1"></div>
+                        <label class="col-md-3 control-label">Departamento</label>
+                        <div class="col-md-4 right" >{{ form_widget(edit_form.parametroDepartamento)}}</div>
+                        <div class="col-sm-1 "></div>
+                    </div>
+	  </div>
+
+                </fieldest>
+      	<div class="row">
+           <input type="submit" value="Edit" />
       </div>
 
     {{ form_end(edit_form) }}
-     <div class="row">
-          <div class="col-md-2">
-              <a href="{{ path('admin_departamento_index') }}" class="btn btn-primary" >Atras</a>
-          </div>
-        <div class="col-md-2">
+
+     <table>
+    <tr><td> <a href="{{ path('admin_departamento_index') }}" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Atras</a></td></tr>
+    
+            <tr><td>
         {{ form_start(delete_form) }}
-        <button type="submit" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true" class="btn btn-primary"></i> Delete</button>
+        <button type="submit" ><i class="fa fa-camera-retro fa-lg" aria-hidden="true"></i> Delete</button>
         {{ form_end(delete_form) }}
-        </div>
-      </div>
+                    
+        </td></tr>
+</table> 
+       
  </div> </div>
     </div>
 {% endblock %}

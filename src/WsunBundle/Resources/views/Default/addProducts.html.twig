@@ -1,5 +1,4 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
-
 {% block bloque1 %}
     <div class="box">
         <div class="panel panel-azul">
@@ -22,15 +21,12 @@
                             <button class="btn btn-warning btn-sm" type="button" onclick="limpiarEmpresa();
                                     return false;"><span class="glyphicon glyphicon-refresh"></span> Limpiar</button>
                         </span>
-                                    {#                                        <a href ="{{path('admin_productos_empresa_index',{'id' : '1'|default('1')})}}">Agregar Productos</a>#}
+                                   
                                     <span class="input-group-btn">
                             <button id="btnBuscarProductos" class="btn btn-primary btn-sm" type="button" onclick="aceptar();
                                     return false;">Buscar Productos</button>
                         </span>
-                                    {#<span class="input-group-btn">
-                                        <button id="btnGuardarEmpresa" class="btn btn-primary btn-sm" type="button" onclick="guardar();
-                                                return false;">Guardar</button>
-                                    </span>#}
+
                                     <input class="btn btn-primary btn-sm" type="submit" value="Guardar">
                                     <input type="hidden" name="empresaId" id="empresaId" />
                                 </div>

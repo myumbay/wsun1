@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
+use Dompdf\Dompdf;
 /**
 * @Security("has_role('ROLE_USER')")
 */
@@ -35,11 +35,7 @@ class DetallePedidoController extends Controller
                 $request->query->getInt('page', 1),
                 $limite
         );
-// 
-//        return $this->render('WsunBundle:pedido:index.html.twig', 
-//            array('pagination' => $pagination));
-//        
-//        
+       
         return $this->render('WsunBundle:detallepedido:index.html.twig', array(
            'id'=>$id,
            'idEmpresa'=>$idEmpresa,
@@ -109,7 +105,7 @@ class DetallePedidoController extends Controller
         $em->flush();
         
         $userId=$pedidos->getUpdatedBy();
-        $usuario = $em->getRepository('WsunBundle:Usuarios')->find($userId);
+        $usuario = $em->getRepository('WsunBundle:Usuarios')->findBy(array('ruc'=> '123456789'),1);
         $correo=$usuario->getCorreo();
         /* @var $correo \WsunBundle\ComunBundle\Services\Correo */
         $correoE = $this->get('sistema_de_correos');
@@ -122,7 +118,7 @@ class DetallePedidoController extends Controller
                 );
                 $response->headers->set('Content-Type', 'application/json');
                 return $response;            
-        //var_dump($pedidos);die;
+      
     }
     /**
      * Displays a form to edit an existing detallePedido entity.
@@ -193,8 +189,8 @@ class DetallePedidoController extends Controller
         $in = $em->createQueryBuilder()
             ->select('ep')
             ->from('WsunBundle:EmpresaProducto','ep')
-            ->where('ep.empresa=:slug')
-            ->setParameter('slug', $id);
+            ->where('ep.empresa=:id')
+            ->setParameter('id', $id);
         $pem=$in->getQuery()->getResult();
         
         $em = $this->getDoctrine()->getManager();
@@ -210,7 +206,7 @@ class DetallePedidoController extends Controller
         {
          for($i=0;$i< count($det);$i++)
          {
-             $idprod[]=$det[$i]->getIdProducto()->getProducto()->getId();
+             $idprod[$i]=$det[$i]->getIdProducto()->getProducto()->getId();
 
          }
         }
@@ -219,7 +215,8 @@ class DetallePedidoController extends Controller
     }
      public function DetalleGuardarAction(Request $request)
     {
-       try{
+		
+	  try{
         $mensaje = "";
         $pedido_id = $request->request->get('pedido_id');
         $idsProductos = $request->request->get('ids_productos');
@@ -227,7 +224,8 @@ class DetallePedidoController extends Controller
         $ivas = trim($request->request->get('ivas'));
         $pu = trim($request->request->get('pu'));
         $vt = trim($request->request->get('vt'));
-       
+		
+		$username = $this->getUser()->getUsername();
         if ($capacidades == '' || $idsProductos == '' || $ivas == '' || $pu == ''|| $vt == '') {
                     $response = new Response(json_encode(array('error' => 1, 'mensaje' => 'LOS DATOS PROPORCIONADOS SON INCORRECTOS')));
                     $response->headers->set('Content-Type', 'application/json');
@@ -264,7 +262,7 @@ class DetallePedidoController extends Controller
         $codigo=$pedido->getCodigoPedido();
 		
      	$sql = " 
-        SELECT correo
+         SELECT correo
           FROM usuarios u inner join user_role ur on u.id=ur.user_id
           inner join roles r on r.id=ur.role_id
           inner join departamento d on d.id=u.id_departamento
@@ -274,18 +272,21 @@ class DetallePedidoController extends Controller
     $stmt = $em->getConnection()->prepare($sql);
     $stmt->execute();
     $r=$stmt->fetchAll();
+	//var_dump($r);die;
     if(count($r)>0){
         $mailManager=$r[0]['correo'];
     
     }else{
-        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'No existe una manager Registrado en la empresa ')));
+        $response = new Response(json_encode(array('error' => 0, 'mensaje' => 'No existe un manager Registrado en la empresa ')));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
         }
- 
+
+		
     if (is_array($idsProductos) && count($idsProductos) > 0) {
        
-            for($i=0;$i<count($idsProductos);$i++)
+        
+			for($i=0;$i<count($idsProductos);$i++)
             {
                 $detallePedido = $em->getRepository('WsunBundle:DetallePedido')->findBy(array('idProducto' => $idsProductos[$i],'idPedido' =>$pedido_id));
              
@@ -326,9 +327,54 @@ class DetallePedidoController extends Controller
             $mensaje='Lista de orden Guardada';
         /* @var $correo \WsunBundle\Services\Correo */
         $correoE = $this->get('sistema_de_correos');
-        //$correoE->enviarPrueba($email);
-        $enviar=$correoE->nuevaOrden($departamento,$responsable,$mailManager,$codigo);
-            
+        //$correoE->enviarPrueba('carolyumbay@gmail.com');
+		
+/*******************Creación de pdf para envío de correo***********************/	
+/*Por: Ing. Carolina Yumbay****************************************************
+/*Fecha:05/06/2019*/
+		$em = $this->getDoctrine()->getManager(); 
+		/* @var $qb \Doctrine\ORM\QueryBuilder */	
+		$pedidosDet= $em->getRepository('WsunBundle:DetallePedido')->findBy(array('idPedido' => $pedido->getId()));
+	    //$pedidosDet = $em->getRepository('WsunBundle:DetallePedido')->findByIdPedido($pedido->getId());
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $pedidosDet, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+		
+        $aprobador='Orden Generada';
+		$html = $this->renderView('WsunBundle:detallepedido:mail.html.twig', array(
+            'pedido' => $pedido,
+            'aprobador'=>$aprobador,
+            'pagination' => $pagination
+            )
+        );	
+		
+		//if (file_exists('../Documentos/pedido/pedido'.date('YmdGis').'.pdf')) {
+			//unlink('../Documentos/pedido/pedido'.date('YmdGis').'.pdf');
+		//} 
+			
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		$dompdf->render();
+		$output = $dompdf->output();
+		file_put_contents("../Documentos/pedido/pedido".date('YmdGis').".pdf", $output);
+
+		/*******************Fin*******************************************************/
+		
+        $enviar=$correoE->nuevaOrden($departamento,$responsable,$mailManager,$codigo,'../Documentos/pedido/pedido'.date('YmdGis').'.pdf');
+        if($enviar=true )
+                {      
+                $mensaje = 'El mensaje se ha enviado correctamente';
+                $this->session->getFlashBag()->add("status",$mensaje);
+              
+                }else {
+                 $mensaje = 'El mensaje no se ha enviado correctamente, existen datos incorrectos!!';
+                $this->session->getFlashBag()->add("status",$mensaje);
+               
+            }    
             
         }
            

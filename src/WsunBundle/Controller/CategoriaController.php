@@ -18,7 +18,32 @@ class CategoriaController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $categorias = $em->getRepository('WsunBundle:Categoria')->findAll();
+        //$categorias = $em->getRepository('WsunBundle:Categoria')->findAll();
+		 
+		/* @var $qb \Doctrine\ORM\QueryBuilder */	
+		$qb = $em->createQueryBuilder();
+		$qb->from('WsunBundle:Categoria', 'c1');
+        $qb->select('c1.id,c1.padreId, c1.nombreCat nc1,c2.id idC2,c2.nombreCat nc2');
+        $qb->leftJoin('c1.padre', 'c2');
+        $qb->andWhere($qb->expr()->in('c2.estado', '\'1\',\'NULL\''));
+
+        //$qb->setParameter('estado', '1');
+		$qb->orderBy('nc2,nc1','ASC');
+		echo $qb->getQuery()->getSQL();
+        $categorias = $qb->getQuery()->getResult();
+		
+        //$categorias = $em->getRepository('WsunBundle:Categoria')->findAll();
+        $paginator = $this->get('knp_paginator');
+        $limite = $this->container->getParameter('limitePaginacion');
+        $pagination = $paginator->paginate(
+                $categorias, 
+                $request->query->getInt('page', 1),
+                $limite
+        );
+ 
+        return $this->render('WsunBundle:categoria:index.html.twig', 
+            array('pagination' => $pagination));
+		
         $paginator = $this->get('knp_paginator');
         $limite = $this->container->getParameter('limitePaginacion');
         $pagination = $paginator->paginate(
@@ -69,8 +94,7 @@ class CategoriaController extends Controller
         if($categorium->getPadre()!=null && $categorium->getEstado()=='1'){
             $cat=$categorium->getPadre()->getNombreCat();
         }
-
-        return $this->render('WsunBundle:categoria:show.html.twig', array(
+		return $this->render('WsunBundle:categoria:show.html.twig', array(
             'cat'=>$cat,
             'categorium' => $categorium,
             'delete_form' => $deleteForm->createView(),

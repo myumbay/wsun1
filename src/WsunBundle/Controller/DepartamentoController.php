@@ -172,6 +172,7 @@ class DepartamentoController extends Controller
     }
      public function consultaDepartamentoAction(Request $request) {
           $id=$request->request->get('id');
+		 // var_dump($id);die;
         /* @var $qb \Doctrine\ORM\QueryBuilder */
            $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
             $qb->from('WsunBundle:Departamento', 'dpto');

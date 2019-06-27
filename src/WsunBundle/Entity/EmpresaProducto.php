@@ -198,14 +198,4 @@ private $created;
       public function __toString() {
         return (string)$this->producto;
    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
 }

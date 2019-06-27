@@ -21,8 +21,10 @@
                         </select>
                     </div>
                 </div>
-            {% if is_granted('ROLE_USER') %}
-            <a href="{{ path('pedido_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+				{% set rol=app.user.roles[0].role %}
+					
+            {% if rol!='ROLE_ACEPTAR_PEDIDO' %}
+           	<a href="{{ path('pedido_new') }}"><ion-icon name="add-circle"><b>Nuevo</b></ion-icon></a>			
             {% endif %}      
             </div>
             <div class="col-xs-6">
@@ -76,13 +78,16 @@
                         <div class="col-md-3">
                          <a href= "{{ path('pedido_show', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">show</a>
                         </div>
+						{% if rol!='ROLE_ACEPTAR_PEDIDO' %}
                          <div class="col-md-2">
                          <a href= "{{ path('pedido_edit', { 'id': pedido.id }) }}" class="btn btn-primary btn-sm">edit</a>
                         </div>
+						
                         <div class="col-md-2">
                             <div class="col-md-3"><a href ="{{path('addpedido_index',{'idPedido':pedido.id,'id' :pedido.idEmpresa |default('empresa')})}}" class="btn btn-primary btn-sm">Productos</a></div>
-{#                             <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idEmpresa }) }}" class="btn btn-primary btn-sm">products</a>#}
+{#                           <a href= "{{ path('detallepedido_index',{ 'id':pedido.id,'idEmpresa':pedido.idEmpresa }) }}" class="btn btn-primary btn-sm">products</a>#}
                         </div>
+						{% endif %} 
                     </div>
                 </td>
             </tr>

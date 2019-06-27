@@ -1,6 +1,8 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 {% block bloque1 %}
 <div class="box">
+
+
     <div class="panel panel-azul">
         <fieldset>
             <legend class="text-center header">LISTA DE PRODUCTOS</legend>
@@ -17,7 +19,7 @@
             <th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}
             </th>
-            <th>{{ knp_pagination_sortable(pagination, 'ESTADO', 'e.Estado') }}</th>
+			<th>{{ knp_pagination_sortable(pagination, 'ESTADO', 'e.Estado') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'PRECIO', 'e.precioProducto') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
  
@@ -28,6 +30,8 @@
                 <td>{{ contador }}</td>
                 <td>{{ entry.codigoProducto }}</td>
                 <td>{{ entry.nombreProducto }}</td>
+	  
+				
                 <td>{% if (entry.Estado=='1') %}
                         <span class="text-success" > Habilidado</span>
                         {% else %}

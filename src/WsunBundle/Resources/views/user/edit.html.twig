@@ -1,56 +1,50 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
-    <div class="panel panel-azul">
-        <fieldset>
-            <legend class="text-center header">LISTA DE CATEGORIAS</legend>
-        </fieldset>
-         {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"})}}
-        <div class="row">
-             <div class="col-md-1">
-             </div>
-             <div class="col-md-2">{{ form_label(edit_form.username)}}  </div>
-             <div class="col-md-2">{{ form_widget(edit_form.username) }} </div>
-        </div>
-        <div class="row">
-             <div class="col-md-1">
-             </div>
-             <div class="col-md-2">{{ form_label(edit_form.password)}}  </div>
-             <div class="col-md-2">{{ form_widget(edit_form.password) }} </div>
-        </div>
-         <div class="row">
-             <div class="col-md-1">
-             </div>
-             <div class="col-md-2">{{ form_label(edit_form.ruc)}}  </div>
-             <div class="col-md-2">{{ form_widget(edit_form.ruc   ) }} </div>
-        </div>
-         <div class="row">
-             <div class="col-md-1">
-             </div>
-             <div class="col-md-2">{{ form_label(edit_form.correo)}}  </div>
-             <div class="col-md-2">{{ form_widget(edit_form.correo   ) }} </div>
-        </div>
-         <div class="row">
-             <div class="col-md-1">
-             </div>
-            
-             <div class="col-md-2">{{ form_label(edit_form.empresa)}}  </div>
-            <div class="col-md-2">{{ form_widget(edit_form.empresa, {'value' : user.departamento.idEmpresa.id} )}} </div>
-        </div>
-         <div class="row">
-             <div class="col-md-1">
-             </div>
-             <div class="col-md-2">{{ form_label(edit_form.departamento)}}  </div>
-             <div class="col-md-2">{{ form_widget(edit_form.departamento   ) }} </div>
-        </div>
-          <div class="row">
-             <div class="col-md-1">
-             </div>
-             <div class="col-md-2">{{ form_label(edit_form.user_roles)}}  </div>
-             <div class="col-md-2">{{ form_widget(edit_form.user_roles   ) }} </div>
-        </div>
-        
-        
+<div class="box">
+<div class="panel panel-azul">
+    <fieldest>
+    <legend class="text-center header"><strong><span>Edición</span> Usuario</strong></legend>
+    
+    {{ form_start(edit_form,{'class':"form-horizontal",'method':"POST"})}}
+    <table  width="90%" cellpadding="10"  > 
+         <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.username)}}</td>
+                <td> {{ form_widget(edit_form.username) }}</td>
+        </tr>
+		<div class="alert alert-info">
+		  <strong> Ingresar Password unicamente si necesita modificarlo.</strong>
+		</div>
+		<tr>
+			<td>{{form_label(edit_form.password.first)}}</td>
+			<td>{{ form_widget(edit_form.password.first) }}</td>
+		</tr>
+		<tr>
+			<td>{{form_label(edit_form.password.second)}}</td>
+			<td>{{ form_widget(edit_form.password.second) }}{{form_errors(edit_form.password.first)}}.</td>
+		</tr>
+	 
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.ruc)}}</td>
+                <td> {{ form_widget(edit_form.ruc   ) }}</td>
+        </tr>
+      
+	 <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.correo)}}</td>
+                <td> {{ form_widget(edit_form.correo) }}</td>
+        </tr>
+		<tr>{% set empresaId=user.departamento.idEmpresa.id %} 
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.empresa)}} </td>
+                <td> {{ form_widget(edit_form.empresa,{value:empresaId|trim })}}</td>
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.departamento)}}</td>
+                <td> {{ form_widget(edit_form.departamento) }}</td> 
+        </tr>
+        <tr>
+                <td > <span class="help-block text-muted text-center" > {{ form_label(edit_form.user_roles)}}</td>
+                <td> {{ form_widget(edit_form.user_roles) }}</td>
+        </tr>
         <div class="row">
             <div class="col-md-3">
             <input class="btn btn-info" type="submit" value="Edit" />
@@ -59,7 +53,9 @@
                 <a class="btn btn-info" href="{{ path('admin_user_index') }}">Regresar</a>
             </div>
              </div>
-   
+
+    </table>
+    </fieldest>    
     {{ form_end(edit_form) }}
             
     <div class="col-md-3">
@@ -67,8 +63,8 @@
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
      </div>
-    </div>        
-{%endblock%}
+	  </div>  </div>
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
 

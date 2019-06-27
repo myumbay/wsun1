@@ -5,6 +5,7 @@
     <div class="panel panel-azul">
         <fieldset>
             <legend class="text-center header">LISTA DE CATEGORIAS</legend>
+		   <a href="{{ path('admin_categoria_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
              <div class="count">
                 <span class="label label-primary">
                 Total: {{ pagination.getTotalItemCount }}
@@ -17,34 +18,61 @@
             <th>{{ knp_pagination_sortable(pagination, 'NOMBRE CATEGORIA', '') }}</th>
            {# <th{% if pagination.isSorted('e.nombreProducto') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'NOMBRE PRODUCTO', 'e.nombreProducto') }}</th>#}
-            <th>{{ knp_pagination_sortable(pagination, 'TIPO', '') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'SUBCATEGORIA', '') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'ACCIONES', '') }}</th>
         </tr> 
-        {% set contador= 1%}
-        {% for categorium in pagination %}
-            <tr {% if loop.index is odd %}class="color"{% endif %}>
-                <td>{{ contador }}</td>
-                <td><a href="{{ path('admin_categoria_show', { 'id': categorium.id }) }}">{{ categorium.nombreCat }}</a></td>
-                <td>{% if(categorium.estado=='1')%}
-                    Sub-Categoria
-                        {% else %}
-                        Categoria Principal
-                    {% endif %}
-                   </td>
-                <td>
-                    <div class="row">
-                        <div class="col-md-3">
-                         <a href= "{{ path('admin_categoria_show', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">show</a>
-                        </div>
-                         <div class="col-md-2">
-                         <a href= "{{ path('admin_categoria_edit', { 'id': categorium.id }) }}" class="btn btn-primary btn-sm">edit</a>
-                        </div>
-                    </div>
-                </td>
-           </tr>
-            {% set contador= contador+1%}
-        {% endfor %}
+	{% set contador= 1%}
+	{% if pagination|length > 0 %}
+		{% set idPadre = pagination[0].padreId %}
+		{% set idS = [] %}
+		{% for c in pagination %}
+			
+			{% if c.padreId not in idS %}
+				
+			{% set idS = idS|merge([c.padreId~'.'~c.nc2]) %}	
+			{% endif %}
+		{% endfor %}
+		{% for idMain in idS %}
+		{% set name = idMain|split('.') %}
+			<tr {% if loop.index is odd %}class="color"{% endif %}>
+			 <td>{{ contador }}</td>
+			 <td><a href="{{ path('admin_categoria_show', { 'id': name[0] }) }}">{{name[1] }}</a></td>
+			 <td></td><td>
+			<div class="row">
+							<div class="col-md-3">
+							 <a href= "{{ path('admin_categoria_show', { 'id': name[0] }) }}" class="btn btn-primary btn-sm">show</a>
+							</div>
+							 <div class="col-md-2">
+							 <a href= "{{ path('admin_categoria_edit', { 'id':name[0] }) }}" class="btn btn-primary btn-sm">edit</a>
+							</div>
+			 </div></td>
+			 <td>
+			{% for c in pagination %}
+				{% if name[0]==c.idC2%}
+					<tr style="border: 1px;"'><td></td><td></td><td>
+					<a href="{{ path('admin_categoria_show', { 'id': c.id }) }}">{{c.nc1}}</a>
+					
+					</td><td>
+					<div class="row">
+							<div class="col-md-3">
+							 <a href= "{{ path('admin_categoria_show', { 'id': c.id }) }}" class="btn btn-primary btn-sm">show</a>
+							</div>
+							 <div class="col-md-2">
+							 <a href= "{{ path('admin_categoria_edit', { 'id': c.id }) }}" class="btn btn-primary btn-sm">edit</a>
+							</div>
+						</div></td>
+					</tr>
+				{% endif%}
+			{% endfor %}
+			 {% set contador= contador+1%}
+			</td>
+			
+			</tr>
+	{% endfor %}
+	{%endif%}
+		
+	   
     </table>
-<a href="{{ path('admin_categoria_new') }}"> <span class="glyphicon glyphicon-file"> Nuevo</span></a>
+
                     </div></div>    
 {% endblock %}

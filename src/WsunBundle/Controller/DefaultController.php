@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\Query\Expr\Join;
 class DefaultController extends Controller
 {
     private $session;
@@ -79,15 +80,19 @@ class DefaultController extends Controller
     public function productsAction(Request $request)
     {
         $id=$request->get('id');
-        
-        $em = $this->getDoctrine()->getManager();
-
-        $categoria = $em->getRepository('WsunBundle:Categoria')
-          ->findBy(
-             array('padreId'=> null), 
-             array('nombreCat' => 'ASC')
-           );
-        
+       
+        $em = $this->getDoctrine()->getManager(); 
+		/* @var $qb \Doctrine\ORM\QueryBuilder */	
+		$qb = $em->createQueryBuilder();
+		$qb->from('WsunBundle:Categoria', 'c1');
+        $qb->select('c1.id,c1.padreId, c1.nombreCat nc1,c2.id idC2,c2.nombreCat nc2');
+        $qb->innerJoin('c1.padre', 'c2');
+       // $qb->andWhere('c2.estado = :estado'); // Es estado de Categoria, es decir habilitado si es categoria principal
+       // $qb->setParameter('estado', '1');
+		$qb->orderBy('nc2,nc1','ASC');
+        $categoria = $qb->getQuery()->getResult();
+		//var_dump($qb->getQuery()->getSQL());
+		//var_dump($categoria);die;
         return $this->render('WsunBundle:Default:products.html.twig',array('categoria'=>$categoria));
     }
     /**
@@ -146,6 +151,22 @@ class DefaultController extends Controller
       return $this->render('WsunBundle:Default:productsConsulta.html.twig', array('productos' =>$productos,'pem'=>$pem));
 
   }
+    private function crearCadena($n1, $n2, $n3, $n4) {
+        $r = $n1;
+        $s = '';
+        $ns = array($n4, $n3, $n2);
+        $ns2 = array();
+        foreach ($ns as $n) {
+            if ($n) {
+                $ns2[] = $n;
+            }
+        }
+        $s = implode(', ', $ns2);
+        if ($s) {
+            $s = "($s)";
+        }
+        return "$r $s";
+    }
   public function productsListAction(Request $request){
       $em = $this->getDoctrine()->getManager();
       $producto = $em->getRepository('WsunBundle:Producto')
@@ -153,12 +174,43 @@ class DefaultController extends Controller
              array('estado'=>'1'), 
              array('nombreProducto' => 'ASC')
            ); 
+		$query = $request->get('query');
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->from('WsunBundle:Categoria', 'c');
+        $qb->select('c.nombreCat N1, c.id, cp.nombreCat N2 ,cp2.nombreCat N3 ,cp3.nombreCat N4');
+        $qb->andWhere($qb->expr()->isNotNull('c.padreId'));
+        $qb->andWhere($qb->expr()->like($qb->expr()->lower('c.nombreCat'), $qb->expr()->lower(":nombre")));
+        $qb->setParameter('nombre', "%{$query}%");
+        $qb->leftJoin('c.padre', 'cp');
+        $qb->leftJoin('cp.padre', 'cp2');
+        $qb->leftJoin('cp2.padre', 'cp3');
+        $qb->setMaxResults(40);
+        $categoria = $qb->getQuery()->execute();
+      
+       // $em = $this->getDoctrine()->getManager();
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+       /* $qb = $em->createQueryBuilder();
+        $qb->select('a')->addSelect('b')->from('WsunBundle:Categoria', 'a');
+        $qb->andWhere($qb->expr()->isNull('a.padreId'));
+        $qb->leftJoin('a.hijos', 'b');
+        $qb->andWhere('a.estado = :estado');
+        $qb->andWhere('b.estado = :estado');
+        $qb->setParameter('estado', '1');
+        $qb->addOrderBy('a.nombre','ASC');
+        $qb->addOrderBy('b.nombre','ASC');
+        $query = $qb->getQuery();
+        $rows = $query->execute();*/
+      
+      /*
       $categoria = $em->getRepository('WsunBundle:Categoria')
           ->findBy(
              array('padreId'=>null),
+             array('estado'=>'1'),
              array('nombreCat' => 'ASC')
-           );
+           );*/
+      //var_dump($categoria );die;
 
-      return $this->render('WsunBundle:Default:productsList.html.twig',array('categoria' => $categoria,'productos'=>$producto));
+      return $this->render('WsunBundle:Default:productsList.html.twig',array('categoria' =>$categoria,'productos'=>$producto));
   }
 }

@@ -1,19 +1,26 @@
 {% extends 'WsunBundle:Default:index.html.twig'%}
 
 {% block bloque1 %}
+<div class="box">
+<div class="panel panel-azul">
     <fieldest>
-     <legend class="text-center header">Nuevo Usuario</legend>
+    <legend class="text-center header"><strong><span>Nuevo</span> Usuario</strong></legend>
+	
     {{ form_start(form,{'class':"form-horizontal",'method':"POST"})}}
     <table  width="90%" cellpadding="10"  > 
          <tr>
                 <td > <span class="help-block text-muted text-center" > {{ form_label(form.username)}}</td>
                 <td> {{ form_widget(form.username) }}</td>
         </tr>
-        <tr>
-                <td > <span class="help-block text-muted text-center" > {{ form_label(form.password)}}</td>
-                <td> {{ form_widget(form.password) }}</td>
-        </tr> 
-        <tr>
+		<tr>
+				<td>{{form_label(form.password.first)}}</td>
+				<td>{{ form_widget(form.password.first) }}</td>
+			</tr>
+			<tr>
+				<td>{{form_label(form.password.second)}}</td>
+				<td>{{ form_widget(form.password.second) }}{{form_errors(form.password.first)}}.</td>
+			</tr>
+			<tr>
                 <td > <span class="help-block text-muted text-center" > {{ form_label(form.ruc)}}</td>
                 <td> {{ form_widget(form.ruc   ) }}</td>
         </tr>
@@ -39,9 +46,9 @@
              </div>
 
     </table>
-        
+        </fieldest>
     {{ form_end(form) }}
-    
+    </div></div>
 {% endblock %}
 
 

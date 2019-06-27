@@ -259,9 +259,7 @@ class Usuarios implements UserInterface
     {
         return $this->correo;
     }
-
-
-    /**
+	   /**
      * Add userRole
      *
      * @param \WsunBundle\Entity\Role $userRole

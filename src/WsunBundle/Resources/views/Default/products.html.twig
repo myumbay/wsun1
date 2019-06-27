@@ -1,18 +1,64 @@
 
 <div class="box">
 <div class="panel panel-azul">
-<!--<div class="col-xs-12">   -->
+<div class="col-md-6">
+  <div id="MainMenu">
+    <div class="list-group panel">
+	
+	{% if categoria|length > 0 %}
+		{% set idPadre = categoria[0].padreId %}
+		{% set idS = [] %}
+		{% for c in categoria %}
+			
+			{% if c.padreId not in idS %}
+				{# My name is {{c.padreId}} #}
+			{% set idS = idS|merge([c.padreId~'.'~c.nc2]) %}	
+			{% endif %}
+		{% endfor %}
+		{% for idMain in idS %}
+		{% set name = idMain|split('.') %}
+			
+			<a href="#cat{{name[0]}}" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">{{name[1]}}</a>
+			 <div class="collapse" id="cat{{name[0]}}">
+			{% for c in categoria %}
+				{% if name[0]==c.idC2%}
+					<a href="javascript:listaProductos({{c.id}})" id="myHref" class="list-group-item">{{c.nc1}}</a>
+				{% endif%}
+			{% endfor %}
+			</div>
+		{% endfor %}
+	{% endif %}
+
+	{#
+      <a href="#demo3" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">Item 3</a>
+      <div class="collapse" id="demo3">
+        <a href="#SubMenu1" class="list-group-item" data-toggle="collapse" data-parent="#SubMenu1">Subitem 1 <i class="fa fa-caret-down"></i></a>
+        <div class="collapse list-group-submenu" id="SubMenu1">
+          <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 1 a</a>
+          <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 2 b</a>
+          <a href="#SubSubMenu1" class="list-group-item" data-toggle="collapse" data-parent="#SubSubMenu1">Subitem 3 c <i class="fa fa-caret-down"></i></a>
+          <div class="collapse list-group-submenu list-group-submenu-1" id="SubSubMenu1">
+            <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 1</a>
+            <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 2</a>
+          </div>
+          <a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 4 d</a>
+        </div>
+#}
+
+
 {% set contador = 1 %}
 <div class="row">
     <div class="col-xs-4 " class="text-justify">
-        {% for c in categoria %}
-            <ul list-style-type ><span onclick="subcategoria({{c.id}})">{{c.nombreCat}}</span>
-                <li id="submenu{{c.id}}" >  </li>
-            </ul>
-        {% endfor %}
+        
+		{#% for c in categoria %#}
+           {# <ul list-style-type ><span onclick="subcategoria({{c.idC1}})">{{c.nc1}}</span>
+                <li id="submenu{{c.idC1}}" >  </li>
+            </ul>#}
+        {#% endfor %#}
+		
     </div>
- <div class="col-xs-8 ">
+
  </div>
- 
+ </div>
 </div>
 </div>  </div> 

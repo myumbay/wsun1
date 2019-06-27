@@ -1,5 +1,6 @@
 <?php
 namespace WsunBundle\Services;
+use Swift_Attachment;
 
 class Correo {
 
@@ -84,18 +85,20 @@ class Correo {
         $this->mailer->send($mail);
     }
 
-    public function nuevaOrden($rucProveedor, $nombreProveedor, $correoProveedor, $codOrden) {
+    public function nuevaOrden($rucProveedor, $nombreProveedor, $correoProveedor, $codOrden,$filename) {
         $mail = \Swift_Message::newInstance();
        /* foreach ($correoProveedor as $correo) {
             $mail->addTo($correo);
         } */
-        $mail->setTo($correoProveedor);
+		//var_dump(\Swift_Attachment::fromPath("/..prueba.pdf"));die;
+		$mail->setTo($correoProveedor);
         $mail->setSubject("Se ha generado una nueva orden a su nombre ({$codOrden})");
         $mail->setFrom($this->remitente, $this->remitente_nombre);
         $mail->setBody($this->twig->render(
                         'WsunBundle:correo:nueva_orden.html.twig', array('rucProveedor' => $rucProveedor, 'nombreProveedor' => $nombreProveedor, 'codOrden' => $codOrden)
                 ), 'text/html'
         );
+		$mail->attach(\Swift_Attachment::fromPath($filename));
         $this->mailer->send($mail);
     }
 

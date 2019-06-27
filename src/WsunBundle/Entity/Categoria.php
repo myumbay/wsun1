@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Categoria
  *
- * @ORM\Table(name="categoria", indexes={@ORM\Index(name="categoria_estado_idx1", columns={"id"})})
+ * @ORM\Table(name="categoria", indexes={@ORM\Index(name="categoria_estado_idx1", columns={"id"},name="categoria_padre_idx1", columns={"padre_id"})})
  * @ORM\Entity
  */
 class Categoria 

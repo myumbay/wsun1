@@ -53,14 +53,22 @@ class ProductoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
         $iva=$iva->getValor();
-
+		
+		$repo = $this->getDoctrine()->getRepository('WsunBundle:producto');
+		$id = $repo->find(1);
+		if ($id == null ){
+			$codigoProducto='SUMER01';
+		}else {
+			$codigoProducto='SUMER0'.$id;
+		}
+		
         if ($form->isSubmitted() && $form->isValid()) {
-            
+           
                if(!$em->getRepository('WsunBundle:Producto')->findByNombreProducto(trim($producto->getNombreProducto())))
                 {
                    $em = $this->getDoctrine()->getManager();
                    $em->persist($producto);
-                   $em->flush();  
+                 //  $em->flush();  
                    /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
                    $file = $producto->getImagen(); 
                    $path = "{$this->get('kernel')->getRootDir()}/../Documentos/Productos/";
@@ -68,7 +76,7 @@ class ProductoController extends Controller
                    $narchivo = $producto->getId() . '.' . $file->getClientOriginalName();
                    $producto->setImagen($file->getClientOriginalName());    
                    $em->persist($producto);
-                    $em->flush(); 
+                   $em->flush(); 
                
                 $file->move(realpath($path), $narchivo);
                 //$em->getConnection()->commit();
@@ -79,9 +87,9 @@ class ProductoController extends Controller
                     return $this->redirectToRoute('admin_producto_new');
                 }   
         }
-
+		//var_dump($codigoProducto);die;
         return $this->render('WsunBundle:producto:new.html.twig', array(
-            'producto' => $producto,'iva'=>$iva,
+            'producto' => $producto,'iva'=>$iva,'codigoProducto'=>$codigoProducto,
             'form' => $form->createView(),
         ));
     }
@@ -142,14 +150,16 @@ public function redimensionar($src, $ancho_forzado){
     public function editAction(Request $request, Producto $producto)
     {        
         $deleteForm = $this->createDeleteForm($producto);
+		$idPadre=$producto->getCategoria()->getPadreId();
         $editForm = $this->createForm('WsunBundle\Form\ProductoType', $producto);
         $editForm->handleRequest($request);
-        //var_dump($producto->getCategoria()->getPadreId());die;
+        //$idPadre=$producto->getCategoria()->getPadreId();
         $img = $producto->getId().'.'.$producto->getImagen();
         $url= '../Documentos/Productos/'.$img;
         $em = $this->getDoctrine()->getManager();
         $iva = $em->getRepository('WsunBundle:Parametro')->findOneByDescripcion('IVA');
         $iva=$iva->getValor();
+		//$producto->getCategoria());
         if ($editForm->isSubmitted()) {
             
             
@@ -172,12 +182,12 @@ public function redimensionar($src, $ancho_forzado){
                     $em->persist($producto);
                     $em->flush();
                     $this->getDoctrine()->getManager()->flush();
-                    return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId()));
+                    return $this->redirectToRoute('admin_producto_show', array('id' => $producto->getId(),'idPadre'=>$idPadre));
         }
 
         return $this->render('WsunBundle:producto:edit.html.twig', array(
         'url'=>$url,
-            'producto' => $producto,'iva'=>$iva,
+            'producto' => $producto,'iva'=>$iva,'idPadre'=>$idPadre,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));

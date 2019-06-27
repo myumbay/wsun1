@@ -20,7 +20,7 @@ class DepartamentoType extends AbstractType
                 ->add('telefono', TextType::class,array('label'=>'Telf.:'))
                 ->add('valor', TextType::class,array('label'=>'Valor:'))
                 ->add('idEmpresa')
-                ->add('departamento')
+                ->add('parametroDepartamento')
                 ;
         
         
